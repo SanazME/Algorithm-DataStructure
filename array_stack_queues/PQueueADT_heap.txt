@@ -1,0 +1,56 @@
+
+Stack and Queues ( inclduing priority queues) are ADT but binary heap is a 
+data structure and not ADT. An abstract data type: https://bradfieldcs.com/algos/stacks/introduction/
+data structure is the implementation of an ADT.
+ADT is a cetrain behaviours we define for a data type, what data it represents and what operations
+are allowed on that but not how it is implemented.
+
+For Stack ADT, we need to support: push() and pop(),peek()
+for Queue ADT, we need to support: Enqueue() and Dequeue()
+For Priority Queue, we need to support: 
+1. isEmpty(), 
+2. insertWithPriority() (insert any type item with a priority tag and items with higher 
+priority gets precedence for removal)
+3. PullHighetsPriorityItem()
+4. peek()
+
+**Priority Queue (ADT):
+Binary heap is a data structure and is the maximally optimal implementation of
+priority queue ADT.
+
+Binary heap is a "complete binary tree". A complete BT, we fill tree from root and go from
+"left to rigth",then "top tp bottom". The node is not necessarily always > its left child nodes 
+or < right child(BST):
+
+            Min Heap
+               5
+           /       \
+         7          6
+        /  \        /  \
+      10    15    17   12
+
+Min heap or Max heap: the name of the heap tells the item we'll have access to in const time O(1).with 
+peak() in minheap we get access to the minimum item in the heap.
+
+Important: when we get a problem that says the "maximum of something" or "the minimum of something"
+we should immediately think about "heap".
+
+Implementation:
+- we initialize a binary heap with a list of [0] and a current size of 0.
+
+- insert an item is at the "last position" (because it is a complete BT), farthest to the right and farthest to the bottom. Then we 
+need to restore the heap.percolate or bubblw item up if it is not in its location.
+
+- remove an item always from the top of the list (the smallest or largest element). Then we take the element
+from the last position (because it is a compleet BT) and put it in the front. We then need to bubble down the items to restore the heap.
+For that we compare the each parent with its children and swap it with the smallest childern.
+
+- we see in the worst case scaneraio, insert and remove (bubble up and bubble down) have O(h), h: height of the tree.
+=> O(log n)
+
+- creating a binary heap from a list of keys:Given a list of keys, you could easily build a heap by inserting each key one 
+at a time. Since you are starting with a list of one item, the list is sorted and you could use binary search to find the
+ right position to insert the next key at a cost of approximately O(logn) operations. However, remember that inserting an
+  item in the middle of the list may require O(n) operations to shift the rest of the list over to make room for the new 
+  key. Therefore, to insert n keys into the heap would require a total of O(nlogn) operations. However, if we start with 
+  an entire list then we can build the whole heap in O(n) operations.
