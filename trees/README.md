@@ -8,3 +8,9 @@
 - trees are recursive data structures, a tree has a nested subtrees.
 - **balanced trees**: if any two **sibling subtree** do not differ in the height by more than one level.(otherwise it will be an unbalanced tree)
 - filesystems are trees
+
+**Binary Search Tree (BST)**
+1. BST, every parent node can only have two possible child nodes and not more than that
+2. so the root node points to two subtrees, left subtree and right subtree and this recursively is true for each subtrees that are binary trees and two subtrees...
+3. the searchable part of the BST is that all the subtrees to the left a node are smaller than the value of that node and all the subtrees to the right of that node are larger in value than the value of that node.
+- like the indexing databases are BST. or **git bisect** to find where the bad commit happens uses BST.
