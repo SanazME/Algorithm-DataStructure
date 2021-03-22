@@ -32,4 +32,13 @@
 ```python
 for count, value in enumerate(values):
     print(count, value)
+0 a
+1 b
+2 c
+    
+for count, value in enumerate(values, start=1): // the count starts from number 1 
+    print(count, value)
+1 a
+2 b
+3 c
 ```
