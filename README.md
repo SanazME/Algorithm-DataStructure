@@ -24,3 +24,12 @@
 
 - **Leetcode picks for algorithms & Design patterns**: https://leetcode.com/discuss/general-discussion/1041234/Become-LeetCode's-pick!-Win-LeetCoins-and-LeetCode-goodies?ref=site
     - **System Design: Designing a distributed Job Scheduler**: https://leetcode.com/discuss/general-discussion/1082786/System-Design%3A-Designing-a-distributed-Job-Scheduler-or-Many-interesting-concepts-to-learn
+
+
+
+**Useful Python methods**
+1. `enumerate()` for enumerate :
+```python
+for count, value in enumerate(values):
+    print(count, value)
+```
