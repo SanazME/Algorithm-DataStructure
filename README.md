@@ -42,3 +42,9 @@ for count, value in enumerate(values, start=1): // the count starts from number 
 2 b
 3 c
 ```
+
+2. To compare a number with Inf or -Inf map float to string:
+```py
+x = -float('Inf')
+x < 1 # True
+```
