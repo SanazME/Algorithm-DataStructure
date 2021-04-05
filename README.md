@@ -48,3 +48,17 @@ for count, value in enumerate(values, start=1): // the count starts from number 
 x = -float('Inf')
 x < 1 # True
 ```
+
+3. To create default dict to supply missing values:
+```py
+fron collections import defaultdict
+s = [('yellow', 1), ('blue', 2), ('yellow', 3), ('blue', 4), ('red', 1)]
+d = defaultdict(list)
+for k, v in s:
+    d[k].append(v)
+    
+s = 'mississippi'
+d = defaultdict(int)
+for k in s:
+    d[k] += 1
+```
