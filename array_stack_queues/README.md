@@ -11,16 +11,23 @@ import collections
 def bfs(graph, root):
     queue = collections.deque([root])
     visited = set()
-    visited.add(root)
+    depth = -1
     
     while queue:
-        cur = queue.popleft()
-        print(cur)
+        size = len(queue)
+        depth += 1
         
-        for neighbor in graph[cur]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                queue.append(neighbor)
+        for _ in range(size):
+            cur = queue.popleft()
+            if cur in visited: continue
+            visited.add(cur)
+            queue.extend(nextLayer(node))
+        
+def nextLayer(node):
+    listNodes = []
+    // add all successors of node to listNodes
+    return listNodes
+    
             
 if __name__ == '__main__':
     graph = {0: [1, 2], 1: [2], 2: [3], 3: [1, 2]}
