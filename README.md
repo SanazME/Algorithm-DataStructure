@@ -62,3 +62,26 @@ d = defaultdict(int)
 for k in s:
     d[k] += 1
 ```
+4. To round toward zero in integers (positive or negative):
+```py
+return a//b if a*b>0 else (a+(-a%b))//b
+```
+
+5. There is no switch statement, instead we can use dictionary:
+```py
+def plus(x,y):
+        return x + y
+def minus(x,y):
+    return x - y
+def product(x,y):
+    return x*y
+def division(x,y):
+    return round(x//y)
+    
+operations = {'+': plus,
+              '-': minus,
+              '/': division,
+              '*': product}
+              
+operations['+'](23,12)
+```
