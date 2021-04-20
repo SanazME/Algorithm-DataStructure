@@ -40,8 +40,11 @@ if __name__ == '__main__':
 
 - We don't know if the found path is the shortest path between two vertices.
 - Instead of queue in BFS, we use stack (LIFO) in DFS.
+- The average time complexity for DFS on a graph is O(V + E), where V is the number of vertices and E is the number of edges. In case of DFS on a tree, the time complexity is O(V), where V is the number of nodes.
+- We say average time complexity because a set’s `in` operation has an average time complexity of O(1). If we used a list, the complexity would be higher.
 
 ```py
+visited = set() # Set to keep track of visited nodes.
 def dfs(visited, graph, node):
     if node not in visited:
         print (node)
