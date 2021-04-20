@@ -42,6 +42,8 @@ if __name__ == '__main__':
 - Instead of queue in BFS, we use stack (LIFO) in DFS.
 - The average time complexity for DFS on a graph is O(V + E), where V is the number of vertices and E is the number of edges. In case of DFS on a tree, the time complexity is O(V), where V is the number of nodes.
 - We say average time complexity because a set’s `in` operation has an average time complexity of O(1). If we used a list, the complexity would be higher.
+- What if you want to find the shortest path?
+Hint: Add one more parameter to indicate the shortest path you have already found.
 
 ```py
 visited = set() # Set to keep track of visited nodes.
