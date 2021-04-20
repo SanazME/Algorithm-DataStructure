@@ -35,3 +35,17 @@ if __name__ == '__main__':
     print("Following is Breadth First Traversal: ")
     bfs(graph, 0)
 ```
+
+# Depth First Search (DFS)
+
+- We don't know if the found path is the shortest path between two vertices.
+- Instead of queue in BFS, we use stack (LIFO) in DFS.
+
+```py
+def dfs(visited, graph, node):
+    if node not in visited:
+        print (node)
+        visited.add(node)
+        for neighbour in graph[node]:
+            dfs(visited, graph, neighbour)
+```
