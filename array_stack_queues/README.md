@@ -54,3 +54,13 @@ def dfs(visited, graph, node):
         for neighbour in graph[node]:
             dfs(visited, graph, neighbour)
 ```
+
+# # Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.
+# Example:
+# Input: [0,1,0,2,1,0,1,3,2,1,2,1]
+# Output: 6
+
+- The brute force solution: for each location, find the max on the left and max on the right of that location and take the min of them
+- Optimal solution: calculate the column of water in each location based on the followings:
+    - If there was an infinite tall wall on the right end of the array, the water in each location would be the height of max so far on the left of the location - height of the location
+    - Now for the locations on the right of the infinite wall, the water in each location coming from right to left is heigth of max so far on the right of the location - height of location.
