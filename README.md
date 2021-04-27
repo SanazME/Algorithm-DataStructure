@@ -85,3 +85,12 @@ operations = {'+': plus,
               
 operations['+'](23,12)
 ```
+
+6. To add, remove item in a set and to clear a set:
+```py
+hashset = set()
+hashset.add(3)
+hashset.add(5)
+hashset.remove(3)
+hashset.clear() # ()
+```
