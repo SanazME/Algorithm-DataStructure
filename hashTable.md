@@ -20,8 +20,10 @@ Ideally, if our hash function is a perfect one-one mapping, we will not need to 
 A collision resolution algorithm should solve the following questions:
 
 1 How to organize the values in the same bucket?
+
 2. What if too many values are assigned to the same bucket?
-3. How to search a target value in a specific bucket?
+
+4. How to search a target value in a specific bucket?
 
 These questions are related to the capacity of the bucket and the number of keys which might be mapped into the same bucket according to our hash function.
 
