@@ -31,5 +31,16 @@ Let's assume that the **bucket**, which holds the **maximum number of keys, has 
 
 Typically, if **N is constant and small**, we can simply use an **array to store keys in the same bucket**. If **N is variable or large**, we might need to use **height-balanced binary search tree** instead.
 
+### Space and time complexity
+- If there are M keys in total, we can achieve the space complexity of O(M) easily when using a hash table.
+- In built-in hash tables: The average time complexity of both **insertion and search** is still **O(1)**. And the time complexity in the **worst case is O(logN) for both insertion and search by using height-balanced BST**. It is a trade-off between insertion and search.
+- 
+- Most of us might have used an array in each bucket to store values in the same bucket. Ideally, the bucket size is small enough to be regarded as a constant. The time complexity of both insertion and search will be O(1). But in the worst case, the maximum bucket size will be N. And the time complexity will be O(1) for insertion but O(N) for search.
 
 
+**The typical design of built-in hash table is:**
+
+- The key value can be any **hashable type**. And a value which belongs to a hashable type will have a **hashcode**. This code will be used in the mapping function to **get the bucket index.**
+- **Each bucket contains an array to store all the values in the same bucket initially.**
+- If there are too many values in the same bucket, these values will be maintained in a **height-balanced binary search tree instead.**
+- 
