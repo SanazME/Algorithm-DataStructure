@@ -94,3 +94,8 @@ hashset.add(5)
 hashset.remove(3)
 hashset.clear() # ()
 ```
+7. To find a number in an array that does not repeated twice (all other numbers do) and to not use extra space, we can use XOR (exclusive OR) operation:
+a XOR a = 0
+a XOR 0 = a
+XOR is associative
+so if we XOR all the numbers the non repeated number will be returned: 1 XOR 4 XOR 1 XOR 2 XOR 2 = (1 XOR 1 ) XOR 4 XOR (2 XOR 2) = 0 XOR 4 = 4
