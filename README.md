@@ -113,4 +113,7 @@ while n > 0:
     n = n//10
 print(digits)
 ```
-    
+10. For list comprehension: 
+```py
+result = [num**2 for num in numList]
+```
