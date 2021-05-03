@@ -105,3 +105,12 @@ so if we XOR all the numbers the non repeated number will be returned: 1 XOR 4 X
 ```py
 for i in range(len(arr) - 1, idx1, -1)
 ```
+9. To get a digits of a number (17988):
+```py
+digits = []
+while n > 0:
+    digits.append(n%10)
+    n = n//10
+print(digits)
+```
+    
