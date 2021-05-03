@@ -117,3 +117,10 @@ print(digits)
 ```py
 result = [num**2 for num in numList]
 ```
+
+11. We can have `else` branch for `while`:
+```py
+while ():
+
+else:
+```
