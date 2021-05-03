@@ -94,6 +94,23 @@ hashset.add(5)
 hashset.remove(3)
 hashset.clear() # ()
 ```
+
+6.1 For hash map:
+```py
+hashMap = {1: 4, 5: 6}
+
+del hasMap[1] # delete an element 
+
+if 2 not in hashMap: # check the existence of a key
+
+for key in hashMap:
+
+hashMap.keys() # get all keys
+
+hashMap.clear() # clear the hashMap {}
+
+```
+
 7. To find a number in an array that does not repeated twice (all other numbers do) and to not use extra space, we can use XOR (exclusive OR) operation:
 ```py
 a XOR a = 0
