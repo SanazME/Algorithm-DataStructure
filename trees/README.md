@@ -30,7 +30,6 @@
   1. Is the subtree height balanced?
   2. What is the height of the tree rooted at that node?
 
-
 **Complexities**
 
 **Time: O( n )**
@@ -38,4 +37,35 @@
 At worst we will still touch all n nodes if we have no early termination.
 
 **Space: O( h )**
-- Our call stack (from recursion) will only go as far deep as the height of the tree, so h (the height of the tree) is our space bound for the amount of call stack frames that we will create
+- Our call stack (from recursion) will only go as far deep as the height of the tree, so h (the height of the tree) is our space bound for the amount of call stack frames that we will create.
+
+1. Example 1: check if the tree is height-balanced:
+```py
+class TreeNode(object):
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+root = [1,2,2,3,3,None,None,4,4]
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.left.right = TreeNode(5)
+root.left.left.left = TreeNode(6)
+root.left.left.right = TreeNode(7)
+
+def isBalanced(node):
+    if node is None:
+        return (-1, True)
+    
+    leftHeight, isLeftSubtreeBalanced = isBalanced(node.left)
+    rightHeight, isRightSubtreeBalanced = isBalanced(node.right)
+    height = max(leftHeight, rightHeight) + 1
+    isSubtreeBalanced = isLeftSubtreeBalanced and isRightSubtreeBalanced and abs(height) <= 1
+    print('For Node:{} height:{} and balanced: {}'.format(node.val, height, isSubtreeBalanced))
+    return (height, isSubtreeBalanced)
+    
+print(isBalanced(root))
+```
