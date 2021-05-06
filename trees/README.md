@@ -63,7 +63,7 @@ def isBalanced(node):
     leftHeight, isLeftSubtreeBalanced = isBalanced(node.left)
     rightHeight, isRightSubtreeBalanced = isBalanced(node.right)
     height = max(leftHeight, rightHeight) + 1
-    isSubtreeBalanced = isLeftSubtreeBalanced and isRightSubtreeBalanced and abs(leftHeight, rightHeight) <= 1
+    isSubtreeBalanced = isLeftSubtreeBalanced and isRightSubtreeBalanced and abs(leftHeight - rightHeight) <= 1
     print('For Node:{} height:{} and balanced: {}'.format(node.val, height, isSubtreeBalanced))
     return (height, isSubtreeBalanced)
     
