@@ -152,3 +152,10 @@ class MyLinkedList(object):
  - To find the index of the start of a loop in a cyclic linked-list:
     1. find out if the linked-list is cyclic or not and if so, return the node where `slow == fast`
     2. define another function with input: head and the node from previous calculations and return the node where the two nodes reaches eachother (https://www.youtube.com/watch?v=zbozWoMgKW0&t=2s) - based on Floyd's cycle detecting algorithm, the `distance from head to the start of the cycle is always == distance from slow and fast meets to the start of the cycle`
+
+- It is easy to analyze the space complexity. If you only use pointers without any other extra space, the space complexity will be O(1). However, it is more difficult to analyze the time complexity. In order to get the answer, we need to analyze how many times we will run our loop. In our previous finding cycle example, let's assume that we move the faster pointer 2 steps each time and move the slower pointer 1 step each time.
+  1. If there is no cycle, the fast pointer takes N/2 times to reach the end of the linked list, where N is the length of the linked list.
+  2. If there is a cycle, the fast pointer needs M times to catch up the slower pointer, where M is the length of the cycle in the list.
+Obviously, M <= N. So we will run the loop up to N times. And for each loop, we only need constant time. So, the time complexity of this algorithm is O(N) in total.
+
+
