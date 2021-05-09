@@ -150,5 +150,5 @@ class MyLinkedList(object):
  ``` 
  
  - To find the index of the start of a loop in a cyclic linked-list:
-  1. find out if the linked-list is cyclic or not and if so, return the node where slow == fast
-  2. define another function with input: head and the node from previous calculations and return the node where the two nodes reaches eachother (https://www.youtube.com/watch?v=zbozWoMgKW0&t=2s)
+    1. find out if the linked-list is cyclic or not and if so, return the node where `slow == fast`
+    2. define another function with input: head and the node from previous calculations and return the node where the two nodes reaches eachother (https://www.youtube.com/watch?v=zbozWoMgKW0&t=2s) - based on Floyd's cycle detecting algorithm, the `distance from head to the start of the cycle is always == distance from slow and fast meets to the start of the cycle`
