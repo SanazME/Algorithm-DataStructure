@@ -8,3 +8,145 @@
 - 1. Find *cur*'s previous node *prev* and its next node *next*;
 - 2. Link *prev* to *cur*'s next node *next*.
 In our first step, we need to find out *prev* and *next*. It is easy to find out *next* using the reference field of *cur*. However, we have to traverse the linked list from the head node to find out *prev* which will take O(N) time on average, where N is the length of the linked list. So the time complexity of deleting a node will be O(N).
+
+- Each node in a linked list can be defined by a class with a val and next:
+```py
+class Node(object):
+  def __init__(self, val):
+      self.val = val
+      self.next = None
+```
+- We can implement a linked-list defined by the head and the size of the list. We can implement the following methods:
+  - `MyLinkedList()` :  Initializes the `MyLinkedList` object.
+  - `get(index)` :  Get the value of the indexth node in the linked list. If the index is invalid, return -1.
+  - `void addAtHead(int val)` Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list.
+  - `void addAtTail(int val)` :  Append a node of value val as the last element of the linked list.
+  - `void addAtIndex(int index, int val)`:  Add a node of value val before the indexth node in the linked list. If index equals the length of the linked list, the node will be appended to the end of the linked list. If index is greater than the length, the node will not be inserted.
+  - `void deleteAtIndex(int index)` :  Delete the indexth node in the linked list, if the index is valid.
+  ```py
+  class Node(object):
+    def __init__(self, val):
+        self.val = val
+        self.next = None
+
+  class MyLinkedList(object):
+
+      def __init__(self):
+          """
+          Initialize your data structure here.
+          """
+          self.head = None
+          self.size = 0
+
+
+      def get(self, index):
+          """
+          Get the value of the index-th node in the linked list. If the index is invalid, return -1.
+          :type index: int
+          :rtype: int
+          """
+          if self.size == 0: return -1
+
+          current = self.head
+
+          for i in range(self.size):
+              if i == index: return current.val
+              current = current.next
+
+          return -1
+
+
+
+      def addAtHead(self, val):
+          """
+          Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list.
+          :type val: int
+          :rtype: None
+          """
+          node = Node(val)
+          node.next = self.head
+          self.head = node
+
+          self.size += 1
+
+      def addAtTail(self, val):
+          """
+          Append a node of value val to the last element of the linked list.
+          :type val: int
+          :rtype: None
+          """
+          node = Node(val)
+          if self.size == 0:
+              self.head = node
+
+          i = 0
+          curr = self.head
+
+          # Last element in the linked list
+          for i in range(self.size - 1):
+              curr = curr.next
+
+          curr.next = node
+
+          self.size += 1
+
+
+      def addAtIndex(self, index, val):
+          """
+          Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted.
+          :type index: int
+          :type val: int
+          :rtype: None
+          """
+          node = Node(val)
+
+          if index < 0 or index > self.size:
+              return
+
+          if index == 0:
+              self.addAtHead(val)
+          else:
+              curr = self.head
+              for i in range(1,index):
+                  curr = curr.next
+              node.next = curr.next
+              curr.next = node
+              self.size += 1
+
+
+      def deleteAtIndex(self, index):
+          """
+          Delete the index-th node in the linked list, if the index is valid.
+          :type index: int
+          :rtype: None
+          """
+          if self.size == 0: return
+
+          if index < 0 or index >= self.size: return
+
+          if index == 0:
+              node = self.head
+              self.head = node.next
+              self.size -= 1
+          else:
+              prev = None
+              curr = self.head
+
+              for i in range(1, self.size):
+                  prev = curr
+                  curr = curr.next
+
+                  if i == index:
+                      prev.next = curr.next
+                      self.size -= 1
+                      return
+              return
+             
+        # Your MyLinkedList object will be instantiated and called as such:
+        # obj = MyLinkedList()
+        # param_1 = obj.get(index)
+        # obj.addAtHead(val)
+        # obj.addAtTail(val)
+        # obj.addAtIndex(index,val)
+        # obj.deleteAtIndex(index)
+  ``` 
