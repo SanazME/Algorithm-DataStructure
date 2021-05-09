@@ -23,7 +23,7 @@ class Node(object):
   - `void addAtTail(int val)` :  Append a node of value val as the last element of the linked list.
   - `void addAtIndex(int index, int val)`:  Add a node of value val before the indexth node in the linked list. If index equals the length of the linked list, the node will be appended to the end of the linked list. If index is greater than the length, the node will not be inserted.
   - `void deleteAtIndex(int index)` :  Delete the indexth node in the linked list, if the index is valid.
-  ```py
+```py
   class Node(object):
     def __init__(self, val):
         self.val = val
@@ -147,4 +147,4 @@ class MyLinkedList(object):
         # obj.addAtTail(val)
         # obj.addAtIndex(index,val)
         # obj.deleteAtIndex(index)
-  ``` 
+ ``` 
