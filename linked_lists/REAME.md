@@ -162,7 +162,11 @@ Obviously, M <= N. So we will run the loop up to N times. And for each loop, we 
 - One solution is to iterate the nodes in original order and move them to the head of the list one by one. (https://leetcode.com/explore/learn/card/linked-list/219/classic-problems/1204/)
 - Therefore, the time complexity is O(N), where N is the length of the linked list. We only use constant extra space so the space complexity is O(1).
 - This problem is the foundation of many linked-list problems you might come across in your interview.
+- 
 **1. Iterative :**
+- Assume that we have linked list 1 → 2 → 3 → Ø, we would like to change it to Ø ← 1 ← 2 ← 3.
+
+While you are traversing the list, change the current node's next pointer to point to its previous element. Since a node does not have reference to its previous node, you must store its previous element beforehand. You also need another pointer to store the next node before changing the reference. Do not forget to return the new head reference at the end!
 ```py
 def reverseList(self, head):
         """
