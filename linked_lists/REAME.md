@@ -162,3 +162,25 @@ Obviously, M <= N. So we will run the loop up to N times. And for each loop, we 
 - One solution is to iterate the nodes in original order and move them to the head of the list one by one. (https://leetcode.com/explore/learn/card/linked-list/219/classic-problems/1204/)
 - Therefore, the time complexity is O(N), where N is the length of the linked list. We only use constant extra space so the space complexity is O(1).
 - This problem is the foundation of many linked-list problems you might come across in your interview.
+**1. Iterative :**
+```py
+def reverseList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        # zero or one-element list
+        if head is None or head.next is None: return head
+
+        curr = head
+        prev = None
+
+        while curr is not None:
+            nextNode = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nextNode
+            
+
+        return prev
+ ```
