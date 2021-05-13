@@ -219,7 +219,8 @@ def reverseList(self, head):
 ```
 
 
-- For removing nodes with a given value from a linked list and returning the head: (https://leetcode.com/problems/remove-linked-list-elements/)
+## Removing nodes with a given value from a linked list and returning the head 
+(https://leetcode.com/problems/remove-linked-list-elements/)
 
 Before writing any code, it's good to make a list of edge cases that we need to consider. This is so that we can be certain that we're not overlooking anything while coming up with our algorithm, and that we're testing all special cases when we're ready to test. These are the edge cases that I came up with.
 
@@ -260,3 +261,33 @@ Otherwise, we know that current_node.next should be kept, and so we move current
 The loop condition only needs to check that current_node.next != None. The reason it does not need to check that current_node != None is because this is an impossible state to reach. Think about it this way: The ONLY case that we ever do current_node = current_node.next in is immediately after the loop has already confirmed that current_node.next is not None.
 
 The algorithm requires O(1) extra space and takes O(n) time.
+
+## Check a linked list is Palindrome and return False or True
+Reversed first half == Second half?
+
+Phase 1: Reverse the first half while finding the middle.
+Phase 2: Compare the reversed first half with the second half.
+```py
+def isPalindrome(self, head):
+    # rev records the first half, need to set the same structure as fast, slow, hence later we have rev.next
+    rev = None
+    # initially slow and fast are the same, starting from head
+    slow = fast = head
+    while fast and fast.next:
+        # fast traverses faster and moves to the end of the list if the length is odd
+        fast = fast.next.next
+        
+        # take it as a tuple being assigned (rev, rev.next, slow) = (slow, rev, slow.next), hence the re-assignment of slow would not affect rev (rev = slow)
+        rev, rev.next, slow = slow, rev, slow.next
+    if fast:
+       # fast is at the end, move slow one step further for comparison(cross middle one)
+        slow = slow.next
+    # compare the reversed first half with the second half
+    while rev and rev.val == slow.val:
+        slow = slow.next
+        rev = rev.next
+    
+    # if equivalent then rev become None, return True; otherwise return False 
+    return not rev
+
+```
