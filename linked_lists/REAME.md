@@ -167,7 +167,7 @@ Obviously, M <= N. So we will run the loop up to N times. And for each loop, we 
 - This problem is the foundation of many linked-list problems you might come across in your interview.
 - 
 **1. Iterative :**
-- Assume that we have linked list 1 → 2 → 3 → Ø, we would like to change it to Ø ← 1 ← 2 ← 3.
+- Assume that we have linked list 1 → 2 → 3 → Ø, we would like to change it to Ø ← 1 ← 2 ← 3. (`curr, curr.next, nextNode = nextNode, curr, nextNode.next `)
 
 While you are traversing the list, change the current node's next pointer to point to its previous element. Since a node does not have reference to its previous node, you must store its previous element beforehand. You also need another pointer to store the next node before changing the reference. Do not forget to return the new head reference at the end!
 ```py
