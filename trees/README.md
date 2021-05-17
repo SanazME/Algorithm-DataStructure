@@ -110,6 +110,40 @@ def preorder(root):
 ```
 
 **2. In-order Traversal**: In-order traversal is to traverse the left subtree first. Then visit the root. Finally, traverse the right subtree. Typically, **for binary search tree, we can retrieve all the data in sorted order using in-order traversal.**
+``py
+# recursive
+def inorder(root):
+  return helper(root, result=[])
+  
+def helper(root, result):
+  if root == None: 
+    return result
+    
+  helper(root.left, result)
+  result.append(root.val)
+  helper(root.right, result)
+  
+  return result
+  
+# iterative
+def inorder(root):
+  result = []
+  if root == None: return result
+  
+  stack = []
+  
+  while True:
+    while root:
+      stack.append(root)
+      root = root.left
+      
+    if len(stack) == 0:
+      return result
+      
+    node = stack.pop()
+    result.append(node.val)
+    root = node.right
+```
 
 **3. Post-order Traversal**: Post-order traversal is to traverse the left subtree first. Then traverse the right subtree. Finally, visit the root. It is worth noting that **when you delete nodes in a tree, deletion process will be in post-order. That is to say, when you delete a node, you will delete its left child and its right child before you delete the node itself.**
 
