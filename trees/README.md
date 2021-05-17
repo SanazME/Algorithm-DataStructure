@@ -20,7 +20,6 @@
 
 
 
-
 ### Height-balanced Binary Tree
 [**Drill Down With Recursion And Respond Back Up**](https://www.youtube.com/watch?v=LU4fGD-fgJQ) : 
 
@@ -72,12 +71,50 @@ print(isBalanced(root))
 ### Traverse a Tree 
 
 **1. Pre-order Tree Traversal**: Pre-order traversal is to visit the root first. Then traverse the left subtree. Finally, traverse the right subtree.
+In iterative method, we want to make sure that the left node is popped before the right node:
+```py
+class TreeNode(object):
+  def __init__(self, val):
+      self.val = val
+      self.left = None
+      self.right = None
+
+# Recursive
+def preorder(root):
+  return helper(root, result=[])
+  
+def helper(root, result):
+  if root == None: 
+     return result
+     
+  result.append(root.val)
+  helper(root.left, result)
+  helper(root.right, result)
+  return result
+  
+# Iterative
+def preorder(root):
+  result = []
+  if root == None: return result
+  
+  stack = [root]
+  
+  while stack:
+    node = stack.pop()
+    result.append(node.val)
+    
+    if node.right: stack.append(node.right)
+    if node.left: stack.append(node.left)
+    
+  return result
+```
 
 **2. In-order Traversal**: In-order traversal is to traverse the left subtree first. Then visit the root. Finally, traverse the right subtree. Typically, **for binary search tree, we can retrieve all the data in sorted order using in-order traversal.**
 
 **3. Post-order Traversal**: Post-order traversal is to traverse the left subtree first. Then traverse the right subtree. Finally, visit the root. It is worth noting that **when you delete nodes in a tree, deletion process will be in post-order. That is to say, when you delete a node, you will delete its left child and its right child before you delete the node itself.**
 
 Also, **post-order is widely use in mathematical expression. It is easier to write a program to parse a post-order expression. you can easily handle the expression using a stack. Each time when you meet a operator, you can just pop 2 elements from the stack, calculate the result and push the result back into the stack.**
+
 
 
 
