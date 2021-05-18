@@ -150,6 +150,31 @@ def inorder(root):
 
 Also, **post-order is widely use in mathematical expression. It is easier to write a program to parse a post-order expression. you can easily handle the expression using a stack. Each time when you meet a operator, you can just pop 2 elements from the stack, calculate the result and push the result back into the stack.**
 
+```py
+# Iterative
+def postorder(root):
+  result = []
+  if root == None: return result
+  
+  stack = []
+  visited = set()
+  
+  while True:
+    while root:
+      stack.append(root)
+      root = root.left
+
+    if not stack: return result
+    node = stack[-1]
+
+    if node.right and node not in visited:
+      visited.add(node)
+      root = node.right
+    else:
+      node2 = stack.pop()
+      result.append(node2.val)
+    
+```
 
 
 
