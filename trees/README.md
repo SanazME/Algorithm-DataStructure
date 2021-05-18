@@ -72,6 +72,7 @@ print(isBalanced(root))
 
 **1. Pre-order Tree Traversal**: Pre-order traversal is to visit the root first. Then traverse the left subtree. Finally, traverse the right subtree.
 In iterative method, we want to make sure that the left node is popped before the right node:
+
 ```py
 class TreeNode(object):
   def __init__(self, val):
@@ -110,7 +111,7 @@ def preorder(root):
 ```
 
 **2. In-order Traversal**: In-order traversal is to traverse the left subtree first. Then visit the root. Finally, traverse the right subtree. Typically, **for binary search tree, we can retrieve all the data in sorted order using in-order traversal.**
-``py
+```py
 # recursive
 def inorder(root):
   return helper(root, result=[])
