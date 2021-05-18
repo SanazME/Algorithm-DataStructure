@@ -71,7 +71,7 @@ print(isBalanced(root))
 ### Traverse a Tree 
 
 **1. Pre-order Tree Traversal**: Pre-order traversal is to visit the root first. Then traverse the left subtree. Finally, traverse the right subtree.
-In iterative method, we want to make sure that the left node is popped before the right node:
+**In iterative method, we want to make sure that the left node is popped before the right node**:
 
 ```py
 class TreeNode(object):
