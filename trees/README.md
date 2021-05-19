@@ -181,6 +181,41 @@ def postorder(root):
 - **"Bottom-up"** is another recursive solution. In each recursive call, we will firstly call the function recursively for all the children nodes and then come up with the answer according to the returned values and the value of the current node itself. This process can be regarded as a kind of postorder traversal. 
 - When you meet a tree problem, ask yourself two questions: Can you determine some parameters to help the node know its answer? Can you use these parameters and the value of the node itself to determine what should be the parameters passed to its children? If the answers are both yes, try to solve this problem using a **"top-down" recursive solution.**
 - Or, you can think of the problem in this way: for a node in a tree, if you know the answer of its children, can you calculate the answer of that node? If the answer is yes, solving the problem recursively using a **bottom up** approach might be a good idea.
+- **Bottom-up approach to find the max depth of a binary tree**:
+```py
+class TreeNode(object):
+  def __init__(self, val):
+      self.val = val
+      self.left = left
+      self.right = right
 
+def maxDepth(root):
+  if root == None:
+      return 0
+      
+  left-depth = maxDepth(root.left)
+  right-depth = maxDepth(root.right)
+  depth = max(left-depth, right-depth) + 1
+  
+  return depth
+```
+
+- **Top-down approach:**
+```py
+def maxDepth(root):
+  if root == None:
+    return 0
+    
+  self.answer = 0
+  def probe(node, depth):
+    # leaf node
+    if node.left == None and node.right == None
+        self.answer = max(self.answer, depth + 1)
+    if node.left: probe(node.left, depth + 1)
+    if node.right: probe(node.right, depth + 1)  
+  
+  probe(root, 0)
+  return self.answer
+```
 
 
