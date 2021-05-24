@@ -229,3 +229,10 @@ def maxDepth(root):
 - *Time complexity* : O(n). Because we traverse the entire input tree once, the total run time is O(n), where nn is the total number of nodes in the tree.
 
 - *Space complexity* : **The number of recursive calls is bound by the height of the tree**. In the worst case, the tree is linear and the height is in O(n)O(n). Therefore, space complexity due to recursive calls on the stack is O(n)O(n) in the worst case.
+
+** The Iterative Complexity**
+- *Time complexity* : O(n). Because we traverse the entire input tree once, the total run time is O(n)O(n), where nn is the total number of nodes in the tree.
+
+- *Space complexity* : There is additional space required for the search queue. In the worst case, we have to insert O(n) nodes in the queue. Therefore, space complexity is O(n).
+
+- For iterative call, we use BFS & queue and compare two adjacent nodes to see if the symmtric condition holds. At the beginning, we need to push root node twice to pass the comparison in the loop.
