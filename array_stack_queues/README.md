@@ -65,16 +65,16 @@ def hasPathSum(root, targetSum):
     if not root:
         return False
         
-    stack = [(root, targetSum)]
+    stack = [(root, root.val)]
     
     while stack:
-        node, nodeSum = stack.pop()
+        node, val = stack.pop()
         
-        if node.val == nodeSum and not(node.left or node.right):
+        if val == targetSum and not(node.left or node.right):
             return True
             
-        hasPathSum(node.left, nodeSum - node.val)
-        hasPathSum(node.right, nodeSum - node.val)
+        if node.left: stack.append(node.left, val + node.left.val)
+        if node.right: stack.append(node.right, val + node.right.val)
     return False
 ```
 **DFS**
