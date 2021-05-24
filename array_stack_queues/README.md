@@ -77,6 +77,22 @@ def hasPathSum(root, targetSum):
         hasPathSum(node.right, nodeSum - node.val)
     return False
 ```
+**DFS**
+```py
+# 1. DFS
+def hasPathSum(root, targetSum):
+    result = []
+    dfs(root, targetSum, result)
+    return any(result)
+    
+def dfs(node, nodeSum, result):
+    if node:
+        if node.val == nodeSum and not (node.left or node.right):
+            result.append(True)
+        if node.left: dfs(node.left, nodeSum - node.val, result)
+        if node.right: dfs(node.right, nodeSum - node.val, result)
+     
+```
 **Recursive**
 ```py
 def hasPathSum(root, targetSum):
@@ -87,6 +103,23 @@ def hasPathSum(root, targetSum):
         return True
         
     return hasPathSum(root.left, targetSum - root.val) or hasPathSum(root.right, targetSum - root.val)
+```
+**BFS with queue**
+```py
+def hasPathSum(root, targetSum):
+    if not root:
+        return False
+        
+    queue = [(root, targetSum - root.val)]
+    
+    while queue:
+        curr, val = queue.popleft()
+        if val == 0 and not(curr.left or curr.right):
+            return True
+        if curr.left: queue.append((curr.left, val - curr.left.val))
+        if curr.right: queue.append((curr.right, val - curr.right.val))
+    return False
+
 ```
 
 # # Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.
