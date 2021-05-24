@@ -55,6 +55,40 @@ def dfs(visited, graph, node):
             dfs(visited, graph, neighbour)
 ```
 
+# DFS with stack:
+- Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum.
+
+**DFS with Stack**
+```py
+# 1. DFS with stack
+def hasPathSum(root, targetSum):
+    if not root:
+        return False
+        
+    stack = [(root, targetSum)]
+    
+    while stack:
+        node, nodeSum = stack.pop()
+        
+        if node.val == nodeSum and not(node.left or node.right):
+            return True
+            
+        hasPathSum(node.left, nodeSum - node.val)
+        hasPathSum(node.right, nodeSum - node.val)
+    return False
+```
+**Recursive**
+```py
+def hasPathSum(root, targetSum):
+    if not root:
+        return False
+        
+    if root.val == targetSum and not(root.left, root.right):
+        return True
+        
+    return hasPathSum(root.left, targetSum - root.val) or hasPathSum(root.right, targetSum - root.val)
+```
+
 # # Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.
 # Example:
 # Input: [0,1,0,2,1,0,1,3,2,1,2,1]
