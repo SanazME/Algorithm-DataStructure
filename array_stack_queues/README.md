@@ -73,8 +73,8 @@ def hasPathSum(root, targetSum):
         if val == targetSum and not(node.left or node.right):
             return True
             
-        if node.left: stack.append(node.left, val + node.left.val)
-        if node.right: stack.append(node.right, val + node.right.val)
+        if node.left: stack.append((node.left, val + node.left.val))
+        if node.right: stack.append((node.right, val + node.right.val))
     return False
 ```
 **DFS**
