@@ -122,6 +122,60 @@ def hasPathSum(root, targetSum):
 
 ```
 
+### Path Sum II: https://leetcode.com/problems/path-sum-ii/
+**DFS with stack**
+```py
+def pathSum(self, root, targetSum):
+        """
+        :type root: TreeNode
+        :type targetSum: int
+        :rtype: List[List[int]]
+        """
+        result = []
+        if not root:
+            return result
+        
+        stack = [(root, targetSum, [root.val])]      
+        
+        while stack:
+            node, sumNodes, branchResult = stack.pop()
+                  
+            # reaching a leaf node
+            if not(node.left or node.right) and node.val == sumNodes:
+                result.append(branchResult)    
+                
+            if node.left: stack.append((node.left, sumNodes - node.val, branchResult+ [node.left.val]))
+            if node.right: stack.append((node.right, sumNodes - node.val, branchResult+[node.right.val]))
+
+        return result
+
+```
+**Recursive DFS
+```py
+def pathSum(self, root, targetSum):
+        """
+        :type root: TreeNode
+        :type targetSum: int
+        :rtype: List[List[int]]
+        """
+        # Recursive DFS
+        if not root:
+            return []
+        result = []
+        self.dfs(root, targetSum, [root.val], result)
+        return result
+    
+    def dfs(self, node, sumNodes, branchResult, result):
+        
+        if not(node.left or node.right) and sumNodes == node.val:
+            result.append(branchResult)
+            
+        if node.left: self.dfs(node.left, sumNodes - node.val, branchResult + [node.left.val], result)     
+        if node.right: self.dfs(node.right, sumNodes - node.val,  branchResult + [node.right.val], result)
+
+```
+
+
 # # Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.
 # Example:
 # Input: [0,1,0,2,1,0,1,3,2,1,2,1]
