@@ -236,3 +236,12 @@ def maxDepth(root):
 - *Space complexity* : There is additional space required for the search queue. In the worst case, we have to insert O(n) nodes in the queue. Therefore, space complexity is O(n).
 
 - For iterative call, we use BFS & queue and compare two adjacent nodes to see if the symmtric condition holds. At the beginning, we need to push root node twice to pass the comparison in the loop.
+
+### Populating Next Right Pointers in Each Node (Leetcode)
+- Since we are manipulating tree nodes on the same level, it's easy to come up with
+a very standard BFS solution using queue. But because of next pointer, we actually
+don't need a queue to store the order of tree nodes at each level, we just use a next
+pointer like it's a link list at each level; In addition, we can borrow the idea used in
+the Binary Tree level order traversal problem, which use cur and next pointer to store
+first node at each level; we exchange cur and next every time when cur is the last node
+at each level.
