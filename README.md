@@ -143,3 +143,8 @@ while ():
 
 else:
 ```
+
+12. we can add up boolean variables as integer:
+```py
+x = (5==5) + (4==4) + (3==2) = 1 + 1 + 0 = 2
+```
