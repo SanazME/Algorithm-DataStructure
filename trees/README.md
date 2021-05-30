@@ -245,3 +245,37 @@ pointer like it's a link list at each level; In addition, we can borrow the idea
 the Binary Tree level order traversal problem, which use cur and next pointer to store
 first node at each level; we exchange cur and next every time when cur is the last node
 at each level.
+
+- https://leetcode.com/explore/learn/card/data-structure-tree/133/conclusion/1016/:
+- when we're given a tree with tree nodes having `.next`, It's a BFS traversal. now pointer is the current level traveler and head is the left most element at next level and the tail is the right most element at next level till now. We move now pointer at current level and populate the the next-link at its children level.
+
+```py
+def connect(self, root):
+        """
+        :type root: Node
+        :rtype: Node
+        """
+        curr = root
+        head = tail = None
+        
+        while curr:
+            if curr.left:
+                if tail:
+                    tail.next = curr.left
+                    tail = tail.next
+                else:
+                    head = tail = curr.left
+            if curr.right:
+                if tail:
+                    tail.next = curr.right
+                    tail = tail.next
+                else:
+                    head = tail = curr.right
+
+            if not curr.next:
+                curr = head
+                head = tail = None
+            else:
+                curr = curr.next
+        return root
+   ```
