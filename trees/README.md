@@ -279,3 +279,7 @@ def connect(self, root):
                 curr = curr.next
         return root
    ```
+### Lowest common ancestor
+https://www.youtube.com/watch?v=13m9ZCB8gjw
+https://www.youtube.com/watch?v=py3R23aAPCA
+- In recursion problems in trees, always think about a node, what the node should be and should return from its left subtree and right subtree.
