@@ -149,3 +149,10 @@ else:
 ```py
 x = (5==5) + (4==4) + (3==2) = 1 + 1 + 0 = 2
 ```
+
+13. To define a global variable in a class, we define an init function and define a global variable:
+```py
+class Solution(object):
+    def __init__(self):
+        self.memo = dict()
+```
