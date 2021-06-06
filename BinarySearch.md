@@ -110,3 +110,6 @@ def binarySearch(nums, target):
   - Termination: `left == right`
   - Searching Left: `right = mid`
   - Searching Right: `left = mid+1`
+
+-**First bad version**: https://leetcode.com/problems/first-bad-version/
+
