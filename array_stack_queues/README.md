@@ -188,8 +188,31 @@ def pathSum(self, root, targetSum):
 
 ## Longest consecutive sequence:
 - https://leetcode.com/problems/longest-consecutive-sequence/
-- solution:
-- First turn the input into a set of numbers. That takes O(n) and then we can ask in O(1) whether we have a certain number. Then go through the numbers. If the number x is the start of a streak (i.e., x-1 is not in the set), then test y = x+1, x+2, x+3, ... and stop at the first number y not in the set. The length of the streak is then simply y-x and we update our global best with that. Since we check each streak only once, this is overall O(n). 
+- **solutions:**
+- **1. Brute force**:
+- it just considers each number in nums, attempting to count as high as possible from that number using only numbers in nums. After it counts too high (i.e. currentNum refers to a number that nums does not contain), it records the length of the sequence if it is larger than the current best. The algorithm is necessarily optimal because it explores every possibility.
+```py
+def longestConsecutive(nums):
+    if not nums:
+        return 0
+
+    longest = 0
+    for num in nums:
+        curr = num
+        local_streak = 1
+        
+        while curr + 1 in nums:
+            local_streak += 1
+            curr += 1
+        
+        longest = max(longest, local_streak)
+    return longest
+```
+- **Time complexity**: O(n^3) - the for loop: n, the while loop is n and the `in` operator in `while` is O(n)..
+- **Space complexity** O(1).
+
+**2. Define nums as a set so we do lookup in in O(1) time:**
+- First turn the input into a set of numbers. That takes O(n) and then we can ask in O(1) whether we have a certain number. Then go through the numbers. If the number x is the start of a streak (i.e., x-1 is not in the set), then test y = x+1, x+2, x+3, ... and stop at the first number y not in the set. The length of the streak is then simply y-x and we update our global best with that. Since we check each streak only once, this is overall **O(n)**.
 ```py
 def longestConsecutive(self, nums):
         """
