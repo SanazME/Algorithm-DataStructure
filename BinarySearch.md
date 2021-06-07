@@ -167,6 +167,7 @@ def binarySearch(nums, target):
     return -1
  ```
  -  It is used to search for an element or condition which requires accessing the current index and its immediate left and right neighbor's index in the array.
+ 
  **Distinguishing Syntax:**
   - Initial Condition: `left = 0, right = length-1`
   - Termination: `left + 1 = right`
