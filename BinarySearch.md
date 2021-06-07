@@ -76,6 +76,21 @@ def search(self, nums, target):
         return -1
 ```
 
+- also in an ascending array `[3,5,8,8,8,9,10]`, to find the first occurance of target (`8`) is to use the above template:
+```py
+def search(nums, target):
+    left, right = 0, len(nums)
+    
+    while left < right:
+        mid  = (left + right) // 2
+        
+        if nums[mid] >= target:
+            right = mid
+        else:
+            left = mid + 1
+    return left
+```
+
 **2. template 2:**
 ```py
 def binarySearch(nums, target):
