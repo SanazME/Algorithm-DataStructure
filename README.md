@@ -156,3 +156,5 @@ class Solution(object):
     def __init__(self):
         self.memo = dict()
 ```
+
+14. Time complexity of list, array and dictionary for different operations and functions: https://wiki.python.org/moin/TimeComplexity
