@@ -113,3 +113,28 @@ def binarySearch(nums, target):
 
 -**First bad version**: https://leetcode.com/problems/first-bad-version/
 
+- **Find min in ratated sorted array; ***: https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
+- If the array is rotated, there will be an inflection point, where all points on the left of it are larger than the first element of the rotated array and all elements on its right are smaller than the first element.
+```py
+def findMin(self, nums):
+    """
+    :type nums: List[int]
+    :rtype: int
+    """
+    if nums[0] < nums[-1]:
+        return nums[0]
+
+    left, right = 0, len(nums) - 1
+    min_sofar = float('Inf')
+
+    while left < right:
+        mid = (left + right) // 2
+        # inflection point is on the left
+        if nums[mid] < nums[0]:
+            right = mid
+
+        elif nums[mid] > nums[-1]:
+            left = mid + 1
+
+    return nums[left]
+```
