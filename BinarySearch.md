@@ -188,3 +188,52 @@ def binarySearch(nums, target):
   - Termination: `left + 1 = right`
   - Searching Left: `right = mid`
   - Searching Right: `left = mid`
+
+## to find the first and last occurance of a number in an array
+- we can use binary search twice, once for finding the first occurance (the position) and the second for the position of the last occurance of that number. The runtime would be **O(logn)**.
+- To find the first occurance, we use template 2 to check with the right hand-side element of the midpoint.
+- To find the last occurance, we use template 3 to check left and right hand side of the midpoint.
+- https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+```py
+def searchRange(nums, target):
+    if not nums:
+        return [-1, -1]
+        
+    def start(n):
+        left, right = 0, len(nums) - 1
+        
+        while left < right:
+            mid = (left + right) // 2
+            
+            if nums[mid] >= n:
+                right = mid
+            else:
+                left = mid + 1
+        if nums[left] == n:
+            return left
+        else:
+            return -1
+    
+    
+    def finish(n):
+        left, right = 0, len(nums) - 1
+        
+        while left + 1 < right:
+            mid = (left + right)//2
+
+            if nums[mid] <= n:
+                left = mid
+            else: 
+                right = mid
+        if nums[right] == n:
+            return right
+        elif nums[left] == n:
+            return left
+        else:
+            return -1
+    
+    start = start(target)
+    end = finish(target)
+    
+    return [start, end]
+```
