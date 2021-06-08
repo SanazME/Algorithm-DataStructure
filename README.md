@@ -28,6 +28,8 @@
 - **Leetcode picks for algorithms & Design patterns**: https://leetcode.com/discuss/general-discussion/1041234/Become-LeetCode's-pick!-Win-LeetCoins-and-LeetCode-goodies?ref=site
     - **System Design: Designing a distributed Job Scheduler**: https://leetcode.com/discuss/general-discussion/1082786/System-Design%3A-Designing-a-distributed-Job-Scheduler-or-Many-interesting-concepts-to-learn
 
+-**Study program - topics (6 months)**: https://leetcode.com/discuss/general-discussion/1129503/Powerful-studying-program-for-Beginners-and-Intermediate-levels.-All-common-mistakes-analyzed
+
 **Serialization and Deserialization**
 - Serialization is the process of converting a data structure or object into a sequence of bits so that it can be saved in a file or memory buffer, or transmitted across a network connection.
 
