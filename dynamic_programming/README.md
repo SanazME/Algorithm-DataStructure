@@ -1,3 +1,14 @@
+## Articles and exercises
+
+
+- **Tech Dose (youtube):** https://www.youtube.com/c/TECHDOSE4u/search?query=dynamic%20programming
+- **Dynamic Programming patterns:** https://leetcode.com/discuss/general-discussion/458695/Dynamic-Programming-Patterns
+- **ABCs of Greedy:** https://leetcode.com/discuss/general-discussion/1061059/ABCs-of-Greedy
+- https://leetcode.com/discuss/interview-question/815454/Amazon-OA-question-or-SDE-1
+- https://leetcode.com/problems/largest-rectangle-in-histogram/
+- **Must do Dynamic programming Category wise:** https://leetcode.com/discuss/general-discussion/1050391/Must-do-Dynamic-programming-Problems-Category-wise
+
+
 ## Memoization
 - Interleaving string (https://leetcode.com/problems/interleaving-string/). 
 - Explanation: https://www.youtube.com/watch?v=EzQ_YEmR598
