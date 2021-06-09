@@ -2,6 +2,7 @@
 
 
 - **Tech Dose (youtube):** https://www.youtube.com/c/TECHDOSE4u/search?query=dynamic%20programming
+- **strating point:** https://leetcode.com/problems/min-cost-climbing-stairs/solution/
 - **Dynamic Programming patterns:** https://leetcode.com/discuss/general-discussion/458695/Dynamic-Programming-Patterns
 - **ABCs of Greedy:** https://leetcode.com/discuss/general-discussion/1061059/ABCs-of-Greedy
 - https://leetcode.com/discuss/interview-question/815454/Amazon-OA-question-or-SDE-1
