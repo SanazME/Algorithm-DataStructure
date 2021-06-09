@@ -217,7 +217,9 @@ def reverseList(self, head):
         head.next = None
         return p
 ```
-
+## Swap Nodes in Pairs: 
+(https://leetcode.com/problems/swap-nodes-in-pairs/)
+- Solution: we swap the first two nodes, make a recusion call for the rest and then link the solution to the swapped node.
 
 ## Removing nodes with a given value from a linked list and returning the head 
 (https://leetcode.com/problems/remove-linked-list-elements/)
