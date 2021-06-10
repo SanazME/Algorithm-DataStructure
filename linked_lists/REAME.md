@@ -205,6 +205,13 @@ So,
 nk.next.next = nk;
 
 Be very careful that n1's next must point to Ø. If you forget about this, your linked list has a cycle in it. This bug could be caught if you test your code with a linked list of size 2.
+
+**so in  1->2->3, when head=2**
+```py
+head.next.next = head   # 1-> 2 <=> 3  we create next from 3 to 2 while the next from 2 to 3 still exists
+head.next = None        # 1-> 2 <- 3 we remove the next from 2 to 3 here
+```
+
 ```py
 def reverseList(self, head):
         """
