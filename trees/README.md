@@ -283,3 +283,32 @@ def connect(self, root):
 https://www.youtube.com/watch?v=13m9ZCB8gjw
 https://www.youtube.com/watch?v=py3R23aAPCA
 - In recursion problems in trees, always think about a node, what the node should be and should return from its left subtree and right subtree.
+
+### Search in a Binary Search Tree
+- remember the property of a binary search tree that at each node, the left subtree values are less than the parent node and the right subtree values are larger than the parent node. So if we try to find a value in a binary search tree, we can use this property to reduce the search. In the recursion approach: **Time and space complexity: O(h) the height of the tree**.
+- https://leetcode.com/problems/search-in-a-binary-search-tree/
+```py
+def __init__(self):
+    self.result = None
+        
+def searchBST(self, root, val):
+    """
+    :type root: TreeNode
+    :type val: int
+    :rtype: TreeNode
+    """
+    # Binary search tree has the property that left nodes are less and right nodes are larger than the root
+
+    self.helper(root, val)
+    return self.result
+
+def helper(self, root, val):
+    if root == None or root.val == val:
+        self.result = root
+        return root
+
+    if root.val < val:
+        return self.helper(root.right, val)
+    else:
+        return self.helper(root.left, val)
+```
