@@ -34,6 +34,8 @@ This space in the stack is the minimal cost that is incurred during a function c
 - **Note that in tail recursion, we know that as soon as we return from the recursive call we are going to immediately return as well, so we can skip the entire chain of recursive calls returning and return straight to the original caller. That means we don't need a call stack at all for all of the recursive calls, which saves us space.**
 
 ## Pow(x,n): https://leetcode.com/problems/powx-n/
+- Time complexity: **O(logN)**
+- Space complexity: **O(logN)**
 ```py
 def myPow(self, x, n):
    """
