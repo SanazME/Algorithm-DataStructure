@@ -12,7 +12,7 @@
 - The execution tree of a recursive function would form an **n-ary tree, with n as the number of times recursion appears in the recurrence relation**. For instance, the execution of the Fibonacci function would form a **binary tree**. In a full binary tree with n levels, the **total number of nodes would be 2^n-1** Therefore, the upper bound (though not tight) for the number of recursion in f(n) would be **2^n -1** as well. As a result, we can estimate that the time complexity for f(n) would be **O(2^n)**.
 - **Memoization not only optimizes the time complexity of algorithm, but also simplifies the calculation of time complexity.**
 
-## Space Complexity - Recursion**
+## Space Complexity - Recursion
 - There are mainly two parts of the space consumption that one should bear in mind when calculating the space complexity of a recursive algorithm: **recursion related and non-recursion related space.**
 - The recursion related space refers to the memory cost that is incurred directly by the recursion, i.e. the stack to keep track of recursive function calls. In order to complete a typical function call, **the system allocates some space in the stack to hold three important pieces of information:
 
@@ -27,3 +27,33 @@ This space in the stack is the minimal cost that is incurred during a function c
 - **It is due to recursion-related space consumption that sometimes one might run into a situation called stack overflow, where the stack allocated for a program reaches its maximum space limit and the program crashes. Therefore, when designing a recursive algorithm, one should carefully check if there is a possibility of stack overflow when the input scales up**.
 
 - For non-recursion related space, we should take into account the space cost incurred by the **memoization**.
+
+## Tail recursion
+- Tail recursion is a recursion where the **recursive call is the final instruction in the recursion function**. And there should be only one recursive call in the function. **There are no computations after the recursive call returned.** python and Java do not support tail recursion optimization.
+- **The benefit of having tail recursion is that it could avoid the accumulation of stack overheads during the recursive calls, since the system could reuse a fixed amount space in the stack for each recursive call.**
+- **Note that in tail recursion, we know that as soon as we return from the recursive call we are going to immediately return as well, so we can skip the entire chain of recursive calls returning and return straight to the original caller. That means we don't need a call stack at all for all of the recursive calls, which saves us space.**
+
+## Pow(x,n): https://leetcode.com/problems/powx-n/
+```py
+def myPow(self, x, n):
+   """
+   :type x: float
+   :type n: int
+   :rtype: float
+   """
+   if n == 0:
+       return 1.0
+
+   if n < 0:
+       return self.myPow(1/x, -n) 
+
+   else:
+       lower = self.myPow(x, n//2)
+
+       if n%2 == 0:
+           return lower*lower
+       else:
+           return x * lower * lower
+
+```
+
