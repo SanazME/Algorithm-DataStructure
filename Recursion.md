@@ -14,11 +14,11 @@
 
 ## Space Complexity - Recursion
 - There are mainly two parts of the space consumption that one should bear in mind when calculating the space complexity of a recursive algorithm: **recursion related and non-recursion related space.**
-- The recursion related space refers to the memory cost that is incurred directly by the recursion, i.e. the stack to keep track of recursive function calls. In order to complete a typical function call, **the system allocates some space in the stack to hold three important pieces of information:
+- The recursion related space refers to the memory cost that is incurred directly by the recursion, i.e. the stack to keep track of recursive function calls. In order to complete a typical function call, **the system allocates some space in the stack to hold three important pieces of information:**
 
-  **1. The returning address of the function call. Once the function call is completed, the program must know where to return to, i.e. the line of code after the function call.**
-  **2. The parameters that are passed to the function call. **
-  **3. The local variables within the function call.**
+  - **1. The returning address of the function call. Once the function call is completed, the program must know where to return to, i.e. the line of code after the function call.**
+  - **2. The parameters that are passed to the function call.**
+  - **3. The local variables within the function call.**
 This space in the stack is the minimal cost that is incurred during a function call. However, once the function call is done, this space is freed. 
 
 - For recursive algorithms, the function calls chain up successively until they reach a base case (a.k.a. bottom case). This implies that the space that is used for each function call is accumulated.
@@ -57,5 +57,60 @@ def myPow(self, x, n):
        else:
            return x * lower * lower
 
+```
+
+## Merge two sorted lists:
+- https://leetcode.com/problems/merge-two-sorted-lists/
+- iterative in-place and recursive:
+```py
+def mergeTwoLists(self, l1, l2):
+     """
+     :type l1: ListNode
+     :type l2: ListNode
+     :rtype: ListNode
+     """
+     # Iterative - In-place
+     if not l1 and not l2:
+         return None
+     if not l1:
+         return l2
+     if not l2:
+         return l1
+
+     head = dummy = TreeNode(-101)
+
+     while l1 and l2:
+         if l1.val <= l2.val:
+             head.next = l1
+             head = head.next
+             l1 = l1.next
+         else:
+             head.next = l2
+             head = head.next
+             l2 = l2.next
+
+     while l1:
+         head.next = l1
+         head = head.next
+         l1 = l1.next
+
+     while l2:
+         head.next = l2
+         head = head.next
+         l2 = l2.next
+
+     return dummy.next
+
+     # Recursive
+     if not l1 or not l2:
+         return l1 or l2
+
+     if l1.val <= l2.val:
+         l1.next = self.mergeTwoLists(l1.next, l2)
+         return l1
+
+     else:
+         l2.next = self.mergeTwoLists(l1, l2.next)
+         return l2
 ```
 
