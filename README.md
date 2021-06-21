@@ -161,3 +161,9 @@ class Solution(object):
 ```
 
 14. Time complexity of list, array and dictionary for different operations and functions: https://wiki.python.org/moin/TimeComplexity
+15. Catalan number: 
+```py
+C0 = C1 = 1
+Cn = sigma(Ci * Cn-1-i) i=0 -> n
+C3 = C0 * C2 + C1 * C1 + C2 * C0
+```
