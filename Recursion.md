@@ -114,3 +114,24 @@ def mergeTwoLists(self, l1, l2):
          return l2
 ```
 
+- How many unique BST can be created from an integer n? (https://leetcode.com/explore/learn/card/recursion-i/253/conclusion/2384/)
+- If we write down the possibilities for each 1, ..., n as a root, the number of possibilities can be calculated from Catalan Number. Dynamic programming to return Catalan number:
+```py
+def catalanNumber(n):
+    catalan = [0] * (n+1)
+
+    def helper(n):
+        if n == 0 or n == 1:
+            return 1
+
+        if catalan[n]: # non-zero value
+            return catalan[n
+        else:
+            catalan[n] = 0
+            for i in range(n):
+                catalan[n] +=helper(i)*helper(n-1-i)
+            return catalan[n]
+    
+    return helper(n)
+
+```
