@@ -125,9 +125,8 @@ def catalanNumber(n):
             return 1
 
         if catalan[n]: # non-zero value
-            return catalan[n
+            return catalan[n]
         else:
-            catalan[n] = 0
             for i in range(n):
                 catalan[n] +=helper(i)*helper(n-1-i)
             return catalan[n]
