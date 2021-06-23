@@ -197,8 +197,45 @@ def helper(self, start, end):
 
   1. We recursively divide the input list into two sublists, until a sublist with single element remains. This dividing step computes the midpoint of each of the sublists, which takes O(1) time. This step is repeated N times until a single element remains, therefore the total time complexity is **O(N).**
  
-  2. Then, we repetitively merge the sublists, until one single list remains. The recursion tree in Fig. 1 or Fig. 2 above is useful for visualizing how the recurrence is iterated. As shown in the recursion tree, there are a total of N elements on each level. Therefore, it takes O({N})O(N) time for the merging process to complete on each level. And since there are a total of **logN levels**, the overall complexity of the merge process is **O(NlogN).**
+  2. Then, we repetitively merge the sublists, until one single list remains. The recursion tree in Fig. 1 or Fig. 2 above is useful for visualizing how the recurrence is iterated. As shown in the recursion tree, there are a total of N elements on each level. Therefore, it takes **O(N) time for the merging process to complete on each level**. And since there are a total of **logN levels**, the **overall complexity of the merge process is** **O(NlogN).**
 Taking into account the complexity of the above two parts in the merge sort algorithm, we conclude that the overall time complexity of merge sort is O(N\log{N})O(NlogN).
 
 The **space complexity** of the merge sort algorithm is **O(N)**, where N is the length of the input list, since we need to keep the sublists as well as the buffer to hold the merge results at each round of merge process.
+
+```py
+def sortArray(self, nums):
+    """
+    :type nums: List[int]
+    :rtype: List[int]
+    """
+    if len(nums) <= 1:
+        return nums
+
+    pivot = len(nums)//2
+    left_side = self.sortArray(nums[0:pivot])
+    right_side = self.sortArray(nums[pivot:])
+
+    return self.merge(left_side, right_side)
+
+
+def merge(self, left_side, right_side):
+
+    left, right = 0, 0
+    result = []
+
+    while left < len(left_side) and right < len(right_side):
+        if left_side[left] <= right_side[right]:
+            result.append(left_side[left])
+            left += 1
+        else:
+            result.append(right_side[right])
+            right += 1
+
+    if left < len(left_side):
+        result.extend(left_side[left:])
+    if right < len(right_side):
+        result.extend(right_side[right:])
+
+    return result
+```
 
