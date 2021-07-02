@@ -239,3 +239,54 @@ def merge(self, left_side, right_side):
     return result
 ```
 
+### Quick sort
+- Picture: https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2870/
+- In detail, given a list of values to sort, the quick sort algorithm works in the following steps:
+
+1. First, it selects a value from the list, which serves as a **pivot** value to divide the list into two sublists. One sublist contains all the values that are less than the pivot value, while the other sublist contains the values that are greater than or equal to the pivot value. This process is also called **partitioning**. The strategy of choosing a pivot value can vary. Typically, one can choose the first element in the list as the pivot, or randomly pick an element from the list.
+
+2. After the partitioning process, the original list is then reduced into two smaller sublists. We then **recursively** sort the two sublists.
+
+3. After the partitioning process, we are sure that all elements in one sublist are less or equal than any element in another sublist. Therefore, we can simply **concatenate** the two sorted sublists that we obtain in step [2] to obtain the final sorted list. 
+
+```py
+def quicksort(lst):
+    """
+    Sorts an array in the ascending order in O(n log n) time
+    :param nums: a list of numbers
+    :return: the sorted list
+    """
+    n = len(lst)
+    qsort(lst, 0, n - 1)
+    return lst
+
+def qsort(lst, lo, hi):
+    """
+    Helper
+    :param lst: the list to sort
+    :param lo:  the index of the first element in the list
+    :param hi:  the index of the last element in the list
+    :return: the sorted list
+    """
+    if lo < hi:
+        p = partition(lst, lo, hi)
+        qsort(lst, lo, p - 1)
+        qsort(lst, p + 1, hi)
+
+def partition(lst, lo, hi):
+    """
+    Picks the last element hi as a pivot
+     and returns the index of pivot value in the sorted array
+    """
+    pivot = lst[hi]
+    i = lo
+    for j in range(lo, hi):
+        if lst[j] < pivot:
+            lst[i], lst[j] = lst[j], lst[i]
+            i += 1
+    lst[i], lst[hi] = lst[hi], lst[i]
+    return i
+
+print(quicksort([1,5,3,2,8,7,6,4]))
+```
+
