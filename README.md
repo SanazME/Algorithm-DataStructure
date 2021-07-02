@@ -98,6 +98,7 @@ operations['+'](23,12)
 hashset = set()
 hashset.add(3)
 hashset.add(5)
+hashset.update(result) # to add update multiple elements, result can be a list, tuples or strings
 hashset.remove(3)
 hashset.clear() # ()
 ```
