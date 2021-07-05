@@ -304,7 +304,19 @@ print(quicksort([1,5,3,2,8,7,6,4]))
 ### Partial subset sum
 - https://leetcode.com/problems/partition-equal-subset-sum/
 - https://leetcode.com/problems/partition-equal-subset-sum/discuss/462699/Whiteboard-Editorial.-All-Approaches-explained.
-
+- Note that sum of all possible subsets of a list can be found by O(2^n)? time when we use tree:
+`list=[1,2,3]`
+```
+                          0
+                       /    \ +1
+                      0      1
+                     /        \ +2
+                    0,1       2,3
+                   /            \ +3
+                  0,1,2,3       3,4,5,6
+                  
+              => 0,1,2,3,4,5,6
+```                  
 ```py
 def canPartition(self, nums):
         """
