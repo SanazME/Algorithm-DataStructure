@@ -349,5 +349,8 @@ def canPartition(self, nums):
         else:
             return False
 ```
+### Knapsack solution for the above problem:
+if there is combination out if the first i element that sums up to w, it can foudn either by excluding the ith element(if we find a combination of the first i-1 elements that sums up to w) or including the ith element(if we find a combination of the first i-1 elements that sums up to w-wi and so by adding ith element, the sum goes up to w)
+    B[i][w] = B[i-1][w] || B[i-1][w-wi]
 
 
