@@ -404,3 +404,26 @@ def canPartition(nums):
     return arr[len(nums)][target]
 
 ```
+- Optimized in space Knapsack version O(W). To calculate `B[i][w]`, we just need the element above and an item before that. So we update our elements from right to left, we only need one row instead of the whole 2D array:
+```py
+
+def canPartition(nums):
+    sumAll = sum(nums)
+    if sumAll % 2 != 0:
+        return False
+    
+    target = sumAll/2
+    # Sum of the first i items (w):
+    #  B[i][w] = B[i-1][w] || B[i-1][w-wi]
+    # 
+    # Create Rows & columns
+    arr = [False]*(target + 1)
+    arr[0] = True
+    
+    for i in range(len(nums)):
+        for j in range(target, 0, -1):
+            if j >= nums[i-1]:
+                arr[j] = arr[j] | arr[j-nums[i-1]]
+            
+    return arr[target]
+```
