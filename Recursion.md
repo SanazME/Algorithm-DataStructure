@@ -327,7 +327,7 @@ def canPartition(self, nums):
         """
         Brute force: search for a subset S1 with sum(S1)= sum(nums)/2 
         - search for every possible sum of all possible subsets of nums
-        time complexity?????? O(2^n)
+        time complexity?????? O(2^n) but with memoization DP 
         """
         totalSum = sum(nums)
         if (totalSum % 2 != 0):
@@ -350,7 +350,31 @@ def canPartition(self, nums):
             return False
 ```
 ### Knapsack solution for the above problem:
-if there is combination out if the first i element that sums up to w, it can foudn either by excluding the ith element(if we find a combination of the first i-1 elements that sums up to w) or including the ith element(if we find a combination of the first i-1 elements that sums up to w-wi and so by adding ith element, the sum goes up to w)
+- https://leetcode.com/problems/partition-equal-subset-sum/discuss/462699/Whiteboard-Editorial.-All-Approaches-explained.
+- The highest value I get from the first `i` items having a weight constraint of `w`:
+```
+The highest value 
+out of all possible
+combinations of the first i elements = max(If I have the highest value from the first i-1 elements, I can either ignore the ith element or choose it)
+with a weight containt of w
+
+
+V[i][w] = max(V[i-1][w] , V[i-1][w - wi] + Vi)
+- Create 2D table with rows as elements and columns as weight containt
+- if w - wi < 0, V[i][w] = V[i-1][w]
+```
+- The similarity of this problem and Knapsack one:
+```
+                            My problem    |  Knapsack
+                         --------------------------------
+   - Given n number (array)               |   - n items, their weights
+   - Constraint: A target sum: sum A / 2  |   - a weight constaint K
+   --------------------------------------------------------------------------
+   I want to find out IF there is  a      |   Maximum value of my ideam combination
+   combination that sums up to sumA/2     |
+   
+```
+- if there is combination out if the first i element that sums up to w, it can foudn either by excluding the ith element(if we find a combination of the first i-1 elements that sums up to w) or including the ith element(if we find a combination of the first i-1 elements that sums up to w-wi and so by adding ith element, the sum goes up to w)
     B[i][w] = B[i-1][w] || B[i-1][w-wi]
 
 
