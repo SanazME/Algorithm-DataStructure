@@ -169,3 +169,8 @@ C0 = C1 = 1
 Cn = sigma(Ci * Cn-1-i) i=0 -> n
 C3 = C0 * C2 + C1 * C1 + C2 * C0
 ```
+15. Create a 2D array:
+```py
+arr = [[2,3,4] for i in range(2)]
+arr = [[3]*n for i in range(3)]
+```
