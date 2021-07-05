@@ -294,3 +294,9 @@ print(quicksort([1,5,3,2,8,7,6,4]))
 - https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2871/
 
 
+## Backtracking
+
+
+### Subset sum problem
+- https://www.youtube.com/watch?v=34l1kTIQCIA
+- https://leetcode.com/problems/partition-equal-subset-sum/
