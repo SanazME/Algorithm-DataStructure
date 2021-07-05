@@ -299,4 +299,43 @@ print(quicksort([1,5,3,2,8,7,6,4]))
 
 ### Subset sum problem
 - https://www.youtube.com/watch?v=34l1kTIQCIA
+
+
+### Partial subset sum
 - https://leetcode.com/problems/partition-equal-subset-sum/
+- https://leetcode.com/problems/partition-equal-subset-sum/discuss/462699/Whiteboard-Editorial.-All-Approaches-explained.
+
+```py
+def canPartition(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+#         https://leetcode.com/problems/partition-equal-subset-sum/discuss/462699/Whiteboard-Editorial.-All-Approaches-explained.
+        """
+        Brute force: search for a subset S1 with sum(S1)= sum(nums)/2 
+        - search for every possible sum of all possible subsets of nums
+        time complexity?????? O(2^n)
+        """
+        totalSum = sum(nums)
+        if (totalSum % 2 != 0):
+            return False
+        
+        targetSum = totalSum/2
+        subsetSums = set([0])
+        
+        for _, num in enumerate(nums):
+            ll = []
+            for ele in subsetSums:
+                if ele+num == targetSum:
+                    return True
+                ll.append(ele+num)
+            subsetSums.update(ll)
+            
+        if targetSum in subsetSums:
+            return True
+        else:
+            return False
+```
+
+
