@@ -373,8 +373,34 @@ V[i][w] = max(V[i-1][w] , V[i-1][w - wi] + Vi)
    I want to find out IF there is  a      |   Maximum value of my ideam combination
    combination that sums up to sumA/2     |
    
-```
-- if there is combination out if the first i element that sums up to w, it can foudn either by excluding the ith element(if we find a combination of the first i-1 elements that sums up to w) or including the ith element(if we find a combination of the first i-1 elements that sums up to w-wi and so by adding ith element, the sum goes up to w)
+
+- if there is combination out if the first i element that sums up to w, it can be found either by excluding the ith element(if we find a combination of the first i-1 elements that sums up to w) or including the ith element(if we find a combination of the first i-1 elements that sums up to w-wi and so by adding ith element, the sum goes up to w)
     B[i][w] = B[i-1][w] || B[i-1][w-wi]
 
+```
 
+- Not optimized: Time O(nW) and space O(nW) where W is the sum of elements
+```py
+def canPartition(nums):
+    sumAll = sum(nums)
+    if sumAll % 2 != 0:
+        return False
+    
+    target = sumAll/2
+    # Sum of the first i items (w):
+    #  B[i][w] = B[i-1][w] || B[i-1][w-wi]
+    # 
+    # Create Rows & columns
+    arr = [[False]*(target+1) for i in range(len(nums)+1)]
+    arr[0][0] = True
+    
+    for i in range(1,len(nums)+1):
+        for j in range(target+1):
+            if j >= nums[i-1]:
+                arr[i][j] = arr[i-1][j] | arr[i-1][j-nums[i-1]]
+            else:
+                arr[i][j] = arr[i-1][j]
+    
+    return arr[len(nums)][target]
+
+```
