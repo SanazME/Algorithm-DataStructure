@@ -174,3 +174,10 @@ C3 = C0 * C2 + C1 * C1 + C2 * C0
 arr = [[2,3,4] for i in range(2)]
 arr = [[3]*n for i in range(3)]
 ```
+
+16. Sort a dictionary based on its values `sorted(d, key=d.get, reverse=True)`:
+```py
+freq # dictionary  
+for ele in sorted(freq, key=freq.get, reverse=True):
+  print(ele, freq[ele)
+```
