@@ -175,9 +175,10 @@ arr = [[2,3,4] for i in range(2)]
 arr = [[3]*n for i in range(3)]
 ```
 
-16. Sort a dictionary based on its values `sorted(d, key=d.get, reverse=True)`:
+16. Sort a dictionary based on its values in descending order `sorted(d, key=d.get, reverse=True)`:
 ```py
 freq # dictionary  
 for ele in sorted(freq, key=freq.get, reverse=True):
   print(ele, freq[ele)
 ```
+17. `arr.sort()` sorts the list in-place and it's only for lists but `sorted(arr, key=arr.get, reverse=True)` creates a new one and it's used for any iterable like list, dictionary, ...
