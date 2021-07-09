@@ -237,3 +237,121 @@ def searchRange(nums, target):
     
     return [start, end]
 ```
+
+## Median of Two Sorted Arrays (https://leetcode.com/problems/median-of-two-sorted-arrays/)
+- In O(n+m) runtime:
+```py
+def findMedianSortedArrays(nums1, nums2):
+    """
+    :type nums1: List[int]
+    :type nums2: List[int]
+    :rtype: float
+    """
+    totalSize = len(nums1) + len(nums2)
+        
+    # if totalSize is even, we take result[totalSize-1] & resutl[totalSize]
+    midLocation = totalSize // 2
+
+    i1, i2 = 0, 0
+    r = 0
+    result = []
+
+    while r <= midLocation:
+        if i1 < len(nums1) and i2 < len(nums2):
+            if nums1[i1] < nums2[i2]:
+                result.append(nums1[i1])
+                i1 += 1
+            else:
+                result.append(nums2[i2])
+                i2 += 1
+        else:
+            if i1 < len(nums1):
+                result.append(nums1[i1])
+                i1 += 1
+            if i2 < len(nums2):
+                result.append(nums2[i2])
+                i2 += 1
+
+        r += 1
+
+    if totalSize % 2 == 0:
+        return float(result[-1] + result[-2])/2
+    else:
+        return result[-1]
+```
+
+
+
+- In O(log(min(n,m))) runtime (https://www.youtube.com/watch?v=LPFhl65R7ww)
+```py
+def findMedianSortedArrays(nums1, nums2):
+    """
+    :type nums1: List[int]
+    :type nums2: List[int]
+    :rtype: float
+    """
+    totalSize = len(nums1) + len(nums2)
+    isTotalSizeEven = True if totalSize % 2 == 0 else False
+    
+    """
+    Conditions for finding a median in two sorted arrays with length X, Y:
+    1. if 
+        partionX: number of elements left of the partition line
+        partitionY: number of elements left of the partition line
+        
+        partitionX + partitionY = (X + Y + 1) / 2
+        => length of the overall left partition == length of the overall right partition
+    2. if 
+        ..., maxLeftX | minRightX, ....
+        ..., maxLeftX | minRightY, ...
+        
+        if maxLeftX <= minRightY & maxLeftY <= minRightX =>
+            for Even number in total array: 
+                median = avg(max(maxLeftX, maxLeftY), min(minRightX, minRightY))
+            else:
+                median = max(maxLeftX, maxLeftY)
+                
+        elif maxLeftX > minRightY, we need to move to left of X
+        else: we need to move to right of X
+        
+        for part 2, we use binary search to search the location of the partition in  shortest array and then from that, the location of the partition on the other array will be derived.
+    """
+    sizeX = len(nums1)
+    sizeY = len(nums2)
+    
+    # start with the shortest array
+    if sizeY < sizeX:
+        return findMedianSortedArrays(nums2, nums1)
+    
+    low, high = 0, sizeX
+    
+    while low <= high:
+        
+        partitionX = (low + high + 1) / 2
+        partitionY = (sizeX + sizeY + 1)/2 - partitionX
+        
+        print(low, high, partitionX, partitionY)
+        maxLeftX = float('-Inf') if partitionX == 0 else nums1[partitionX-1]
+        minRightX = float('Inf') if partitionX == sizeX else nums1[partitionX]
+        
+        maxLeftY = float('-Inf') if partitionY == 0 else nums2[partitionY-1]
+        minRightY = float('Inf') if partitionY == sizeY else nums2[partitionY]
+        
+        print(maxLeftX,minRightY, maxLeftY, minRightX)
+        
+        if maxLeftX <= minRightY and maxLeftY <= minRightX:
+            if isTotalSizeEven:
+                median = float(max(maxLeftX, maxLeftY)+ min(minRightX, minRightY)) / 2
+            else:
+                median = max(maxLeftX, maxLeftY)
+            
+            return median
+
+        
+        elif maxLeftX > minRightY:
+            high = partitionX - 1
+        else:
+            low = partitionX + 1
+```
+
+
