@@ -47,6 +47,9 @@ Typically, if **N is constant and small**, we can simply use an **array to store
 
 ## Sliding Window
 - when you see s substring problem: "longest substring with a condition", think about sliding window pattern: [https://leetcode.com/problems/longest-substring-without-repeating-characters/](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+- Time complexity O(n)
+- Space complexity: hashmap O(min(m,n)). m is the size of charset
+- Space complexity table O(m)
 
 ```py
 def lengthOfLongestSubstring( s):
