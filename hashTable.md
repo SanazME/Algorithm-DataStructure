@@ -78,3 +78,69 @@ def lengthOfLongestSubstring( s):
     return maxLen
         
 ```
+
+### find a longest palindromic substring : https://leetcode.com/problems/longest-palindromic-substring/
+- The brute force approach is O(n^3)
+```py
+def longestPalindrome(self, s):
+      """
+      :type s: str
+      :rtype: str
+      """
+      size = len(s)
+      maxSoFar = 0
+      palin = s[0]
+
+      for i in range(size - 1):
+          for j in range(i+1,size):
+              if self.isPalindrome(s[i:j+1]):
+                  if j-i+1 > maxSoFar:
+                      maxSoFar = j-i+1
+                      palin = s[i:j+1]
+
+      return palin
+
+def isPalindrome(self,strg):
+        
+    if len(strg) <= 1:
+        return True
+
+    if strg[1:-1] not in self.dic:
+        self.dic[strg[1:-1]] = self.isPalindrome(strg[1:-1]) 
+
+    return self.dic[strg[1:-1]] and strg[0] == strg[-1]
+```
+
+- for O(n^2) time complexity and O(1) space:
+
+```py
+def longestPalindrome(self, s):
+      """
+      :type s: str
+      :rtype: str
+      """
+      if len(s) <= 1:
+          return s
+
+      soFar = ''
+      for i, char in enumerate(s):
+          # for odd case: 'aba'
+          tmp = self.helper(s, i, i)
+          if len(tmp) >= len(soFar):
+              soFar = tmp
+
+          # for even case: 'abba'
+          tmp = self.helper(s, i, i+1)
+
+          if len(tmp) >= len(soFar):
+              soFar = tmp
+
+      return soFar
+      
+def helper(self, s, left, right):
+      while left >= 0 and right < len(s) and s[left] == s[right]:
+          left -= 1
+          right += 1
+      return s[left+1:right]
+
+```
