@@ -43,4 +43,35 @@ Typically, if **N is constant and small**, we can simply use an **array to store
 - The key value can be any **hashable type**. And a value which belongs to a hashable type will have a **hashcode**. This code will be used in the mapping function to **get the bucket index.**
 - **Each bucket contains an array to store all the values in the same bucket initially.**
 - If there are too many values in the same bucket, these values will be maintained in a **height-balanced binary search tree instead.**
-- 
+
+
+## Sliding Window
+- when you see s substring problem: "longest substring with a condition", think about sliding window pattern: [https://leetcode.com/problems/longest-substring-without-repeating-characters/](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+
+```py
+def lengthOfLongestSubstring( s):
+    """
+    :type s: str
+    :rtype: int
+    """
+    if len(s) <= 1:
+        return len(s)
+
+    start = 0
+    maxLen = 0
+    seen = {}
+    
+    for i, char in enumerate(s):
+        print('char, i: ', char, i)
+        print('seen: ', seen)
+        print('start: ', start)
+        if char in seen and start <= seen[char]:
+            start = seen[char] + 1
+            seen[char] = i
+        else:
+            # print(start)
+            maxLen = max(maxLen, i - start + 1)
+            seen[char] = i
+    return maxLen
+        
+```
