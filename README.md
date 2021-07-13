@@ -195,3 +195,8 @@ chars = [0]*128
 for char in s:
     chars[ord(char)] += 1
 ```
+
+19. 
+    - `s.strip()` : returns **a new string** after removing **any leading and trailing whitespaces including tabs (\t)**
+    - `s.lstrip()` : returns **a new string** after removing **any leading and trailing whitespaces from the left of the string**
+    - `s.rstrip()` : returns **a new string** after removing **any leading and trailing whitespaces from right of the string **
