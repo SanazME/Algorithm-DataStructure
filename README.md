@@ -183,7 +183,13 @@ for ele in sorted(freq, key=freq.get, reverse=True):
 ```
 17. `arr.sort()` sorts the list in-place and it's only for lists but `sorted(arr, key=arr.get, reverse=True)` creates a new one and it's used for any iterable like list, dictionary, ...
 
-18. `ord()` method converts a character into its Unicode code value. `ord()` is useful, if you want to check whether a string contains a character. `ord(char)`. We can also create an array of all characters with their Unicode value as the key and their frequency in a string as a value:
+18. `ord()` method converts a character into its Unicode code value. 
+    - Try to avoid using `int` and use `ord` in problems when we convert a string to integer because `int` conversion increases time significantly. To convert a string to a integer:
+    ```py
+    numStr = '4'
+    num = ord(numStr) - ord('0')  => that will give num = 4
+    ```
+    - `ord()` is useful, if you want to check whether a string contains a character. `ord(char)`. We can also create an array of all characters with their Unicode value as the key and their frequency in a string as a value:
 ```py
 chars = [0]*128
 for char in s:
