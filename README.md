@@ -189,6 +189,10 @@ for ele in sorted(freq, key=freq.get, reverse=True):
     numStr = '4'
     num = ord(numStr) - ord('0')  => that will give num = 4
     ```
+    - to first check if a char is digit or not
+    ```py
+    s[i].isdigit()
+    ```
     - `ord()` is useful, if you want to check whether a string contains a character. `ord(char)`. We can also create an array of all characters with their Unicode value as the key and their frequency in a string as a value:
 ```py
 chars = [0]*128
