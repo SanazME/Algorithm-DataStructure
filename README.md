@@ -204,3 +204,62 @@ for char in s:
     - `s.strip()` : returns **a new string** after removing **any leading and trailing whitespaces including tabs (\t)**
     - `s.lstrip()` : returns **a new string** after removing **any leading and trailing whitespaces from the left of the string**
     - `s.rstrip()` : returns **a new string** after removing **any leading and trailing whitespaces from right of the string **
+
+20. `zip` and `*`: zip takes iterables (zero or more) and aggregates them in a tuple and return it. The zip()function returns an iterator of tuples based on the iterable objects.
+
+    - If we do not pass any parameter, zip() returns an empty iterator
+    - If a single iterable is passed, zip() returns an iterator of tuples with each tuple having only one element.
+    - If multiple iterables are passed, zip() returns an iterator of tuples with each tuple having elements from all the iterables.
+
+    - Suppose, two iterables are passed to zip(); one iterable containing three and other containing five elements. Then, the returned iterator will contain three tuples. It's because iterator stops when the shortest iterable is exhausted.
+```py
+number_list = [1, 2, 3]
+str_list = ['one', 'two', 'three']
+
+# No iterables are passed
+result = zip()
+
+# Converting iterator to list
+result_list = list(result)
+print(result_list)   #[]
+
+# Two iterables are passed
+result = zip(number_list, str_list)
+
+# Converting iterator to set
+result_set = set(result)
+print(result_set) # {(2, 'two'), (3, 'three'), (1, 'one')}
+
+
+numbersList = [1, 2, 3]
+str_list = ['one', 'two']
+numbers_tuple = ('ONE', 'TWO', 'THREE', 'FOUR')
+
+# Notice, the size of numbersList and numbers_tuple is different
+result = zip(numbersList, numbers_tuple)
+
+# Converting to set
+result_set = set(result)
+print(result_set)  # {(2, 'TWO'), (3, 'THREE'), (1, 'ONE')}
+
+result = zip(numbersList, str_list, numbers_tuple)
+
+# Converting to set
+result_set = set(result)
+print(result_set)  # {(2, 'two', 'TWO'), (1, 'one', 'ONE')}
+```
+
+- The * operator can be used in conjunction with zip() to unzip the list. `zip(*zippedList)`:
+```py
+coordinate = ['x', 'y', 'z']
+value = [3, 4, 5]
+
+result = zip(coordinate, value)
+result_list = list(result)
+print(result_list)   # [('x', 3), ('y', 4), ('z', 5)]
+
+c, v =  zip(*result_list)
+print('c =', c)  # c = ('x', 'y', 'z')
+print('v =', v)  # v = (3,4,5)
+```
+
