@@ -23,3 +23,39 @@
 7. to improve it, we can use memoization to remember and save the result of a calculation and for that we use map to save key-value pairs. keys should be the unique states and so one way to create unique keys from three pointers p1, p2 and p3: key = p1 + * + p2 + * + p3 and the value will be whether 
 
 - In memoization version of pascal number or fibonacci, the **Time complexity is O(N) and the space complexity if O(N)**. Without memoization, the time complexity would be **O(2^N)**.
+
+
+## Regular Expression Matching (https://leetcode.com/problems/regular-expression-matching/)
+- (https://www.youtube.com/watch?v=l3hda49XcDE)
+
+```py
+def isMatch(s,p):
+    
+    dp = [[False]*(len(p) + 1) for _ in range(len(s) + 1)]
+    dp[0][0] = True
+    
+    # Deals with edge cases like a*, a*b*, a*b*c* which is correct for an empty string s:''
+    for j in range(1, len(p)+1):
+        if p[j-1] == '*':
+            dp[0][j] = dp[0][j-2]
+            
+            
+    for i in range(1, len(s) + 1):
+        for j in range(1, len(p) + 1):
+            # matching characters or .
+            if p[j-1] == s[i-1] or p[j-1] == '.':
+                dp[i][j] = dp[i-1][j-1]
+                
+            elif p[j-1] == '*':
+                # consider either zero occurance or one or more occurances
+                dp[i][j] = dp[i][j-2] or dp[i][j-1]
+                
+                if p[j-2] == s[i-1] or dp[j-2] == '.':
+                    dp[i][j] = dp[i-1][j] or dp[i][j]
+                                
+            else:
+                dp[i][j] = False
+                   
+    return dp[-1][-1]
+
+```
