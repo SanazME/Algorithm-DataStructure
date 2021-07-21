@@ -368,3 +368,22 @@ def missingNum(arr):
 ```
 
 - To find it in O(logn), since the array is in order, we can use binary search.
+```py
+def missingNum(arr):
+    
+    delta = (arr[-1] - arr[0]) / len(arr)
+    left, right = 0, len(arr) - 1
+    
+    while left < right:
+        mid = (left + right) // 2
+        
+        if arr[mid+1] - arr[mid] != delta:
+            return arr[mid] + delta
+        if mid > 0 and arr[mid] - arr[mid-1] != delta:
+            return arr[mid-1] + delta
+        if arr[mid] == arr[0] + mid * delta:
+            left = mid + 1
+        else:
+            right = mid
+
+```
