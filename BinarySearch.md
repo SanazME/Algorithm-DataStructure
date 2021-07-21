@@ -354,4 +354,17 @@ def findMedianSortedArrays(nums1, nums2):
             low = partitionX + 1
 ```
 
+## Find the missing number in Arithmetic progression
+- The O(n) time solution is to iterate throught the array and find the missing number knowing that **if there is only one element is missing, we can find the difference of arthimetic progression from `arr[-1] - arr[0] / len(arr)` because with that missing element we would have (x+nk - x)/n+1 **
+```py
+def missingNum(arr):
+    delta = (arr[0] + arr[-1])/len(arr)
+    
+    for i in range(1, len(arr)):
+        localDiff = arr[i] - arr[i-1]
+        
+        if localDiff != delta:
+            return arr[i-1] + delta
+```
 
+- To find it in O(logn), since the array is in order, we can use binary search.
