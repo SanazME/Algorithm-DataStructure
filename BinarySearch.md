@@ -76,6 +76,40 @@ def search(self, nums, target):
         return -1
 ```
 
+OR 
+```py
+def search(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+        if len(nums) == 0:
+            return -1
+    
+        left, right = 0, len(nums)
+
+        while left < right:
+            mid = (left + right) // 2
+
+            if (target >= nums[0]) == (nums[mid] >= nums[0]):
+                midNum = nums[mid]
+            elif target < nums[0]:
+                midNum = -float('Inf')
+            else:
+                midNum = float('Inf')
+
+            if target == midNum:
+                return mid
+            elif target < midNum:
+                right = mid - 1
+            else:
+                left = mid + 1
+        if left < len(nums) and nums[left] == target:
+            return left
+        return -1
+```
+
 - also in an ascending array `[3,5,8,8,8,9,10]`, to find the first occurance of target (`8`) is to use the above template:
 ```py
 def search(nums, target):
