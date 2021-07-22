@@ -353,3 +353,23 @@ def helper(self, start, end):
     return all_trees
 
  ```
+### Trie
+- Trie is a tree datastructure used for storing collections of strings. If 2 strings have a common prefix then they will have a same ancestor in a trie.
+- Used for prefix-based search and you can sort strings lexographically in a trie.
+- Each trie node has two main components: a map and a boolean for end of word:
+```py
+TrieNode {
+  map<key: character, value: TrieNode children>
+  bool endOfWord
+}
+```
+### Insertion:
+- Start with a root node with an empty map and F bool. Go to the first char of a word:
+1. is char is in map (as a key)? 
+    - if Yes, jump to the next letter and a child of that node. 
+    - if No, 
+      - insert that char into the node
+      - create a TrieNode with empty map and F (unless we're at the last char in word)
+      - create a connection between the new node (as a child) and the current node
+2. Move to the next char in word and move to the newly created TrieNode.
+3. The time complexity for insertion: O(l*n) where l: average lenght of a word, n: number of words
