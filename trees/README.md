@@ -373,3 +373,8 @@ TrieNode {
       - create a connection between the new node (as a child) and the current node
 2. Move to the next char in word and move to the newly created TrieNode.
 3. The time complexity for insertion: O(l*n) where l: average lenght of a word, n: number of words
+
+### Search a word:
+- There are 2 kinds of searching:
+  - prefix-based search: we're checking if there is at least one word which start with a given prefix or not
+  - whole word search: we're checking if the entire word exists in the trie or not.
