@@ -271,3 +271,9 @@ for key, val in dd.items():
     if key.startswith('app'):
         print(key, val)
 ```
+- to get a value of a key from a dictionary and if the key does not exist a value to return:
+```py
+dd.get(keyName, value)
+keyname: the keyname of the item you want to return the value from 
+value: optional, to return if the key does not exist.
+```
