@@ -411,7 +411,10 @@ class Trie(object):
         current.endOfWord = True
         
     # insert recursion
-    def insertRecursion(self, current, word, idx):
+    def insertRecursive(self, word):
+        return self.helper(word, self.root, 0)
+        
+    def helper(self, current, word, idx):
         if idx == len(word):
             current.endOfWord = True
             return
@@ -438,11 +441,18 @@ class Trie(object):
             return False
         
     # search recursive
-    def searchRecursive(self, current, word, idx):
-        
+    def searchRecursive(self, word):
+        return self.helperSearch(word, self.root, 0)
+    
+    def helperSearch(self, word, current, idx):
         if idx == len(word):
-            return False
+            return current.endOfWord
+            
         char = word[idx]
+        
+        if char not in current.children.keys():
+            return False
+        return self.helperSearch(word, current.children[char], idx + 1)
         
         
 s = Trie()
