@@ -262,4 +262,12 @@ c, v =  zip(*result_list)
 print('c =', c)  # c = ('x', 'y', 'z')
 print('v =', v)  # v = (3,4,5)
 ```
+21. In a dictionary to check for a key or to get key/vale and also to check if a key/string starts with some value:
+```py
+dd= {'apple':3, 'app': 5, 'lsd':78}
 
+for key, val in dd.items():
+    print(key, val)
+    if key.startswith('app'):
+        print(key, val)
+```
