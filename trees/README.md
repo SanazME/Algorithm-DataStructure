@@ -386,3 +386,71 @@ TrieNode {
 
 - for the whole word deletion, if the end of the word (the next node with T) has children, we can't delete the terminating (endofword) node because then we loose another word, in that case we just set the boolean from T to F.(https://www.youtube.com/watch?v=AXjmTQ8LEoI&t=960s, min:13.02)
 - If the endofword node does not have any children & it is empty, we can safely remove it. Then we can go up and delete the one before ( as long as it does not have any childre)
+
+```py
+class TrieNode(object):
+    def __init__(self):
+        self.children = dict()
+        self.endOfWord = False
+        
+        
+class Trie(object):
+    def __init__(self):
+        self.root = TrieNode()
+        
+        
+    def insert(self, word):
+        current = self.root
+        for char in word:
+            if char not in current.children.keys():
+                node = TrieNode()
+                current.children[char] = node
+            else:
+                node = current.children[char]
+            current = node
+        current.endOfWord = True
+        
+    # insert recursion
+    def insertRecursion(self, current, word, idx):
+        if idx == len(word):
+            current.endOfWord = True
+            return
+        
+        char = word[idx]
+        if char not in current.children.keys():
+            node = TrieNode()
+            current.children[char] = node
+        else:
+            node = current.children[char]
+        self.insertRecursion(node, word, idx + 1)
+    
+    
+    # search
+    def search(self, word):
+        current = self.root
+        for char in word:
+            if char not in current.children.keys():
+                return False
+            current = current.children[char]
+        if current.endOfWord:
+            return True
+        else:
+            return False
+        
+    # search recursive
+    def searchRecursive(self, current, word, idx):
+        
+        if idx == len(word):
+            return False
+        char = word[idx]
+        
+        
+s = Trie()
+print(s)
+s.insert('apple')
+s.insert('apcd')
+s.insert('lmn')
+# s.insertRecursion(TrieNode(), 'apple', 0)
+print(s.search('lmne'))
+            
+```
