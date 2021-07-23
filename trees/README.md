@@ -354,7 +354,7 @@ def helper(self, start, end):
 
  ```
 ### Trie
-- Trie is a tree datastructure used for storing collections of strings. If 2 strings have a common prefix then they will have a same ancestor in a trie.
+- Trie is a tree data structure used for storing collections of strings. If 2 strings have a common prefix then they will have a same ancestor in a trie.
 - Used for prefix-based search and you can sort strings lexographically in a trie.
 - Each trie node has two main components: a map and a boolean for end of word:
 ```py
@@ -369,7 +369,7 @@ TrieNode {
     - if Yes, jump to the next letter and a child of that node. 
     - if No, 
       - insert that char into the node
-      - create a TrieNode with empty map and F (unless we're at the last char in word)
+      - create a TrieNode with empty map and F (unless we're at the last char in word which is then T)
       - create a connection between the new node (as a child) and the current node
 2. Move to the next char in word and move to the newly created TrieNode.
 3. The time complexity for insertion: O(l*n) where l: average lenght of a word, n: number of words
@@ -378,3 +378,11 @@ TrieNode {
 - There are 2 kinds of searching:
   - prefix-based search: we're checking if there is at least one word which start with a given prefix or not
   - whole word search: we're checking if the entire word exists in the trie or not.
+
+### Delete
+- There are 2 types of delete:
+  - delete an entire word
+  - delete alll the words start with the given prefix
+
+- for the whole word deletion, if the end of the word (the next node with T) has children, we can't delete the terminating (endofword) node because then we loose another word, in that case we just set the boolean from T to F.(https://www.youtube.com/watch?v=AXjmTQ8LEoI&t=960s, min:13.02)
+- If the endofword node does not have any children & it is empty, we can safely remove it. Then we can go up and delete the one before ( as long as it does not have any childre)
