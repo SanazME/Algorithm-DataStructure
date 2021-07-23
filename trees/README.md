@@ -453,6 +453,34 @@ class Trie(object):
         if char not in current.children.keys():
             return False
         return self.helperSearch(word, current.children[char], idx + 1)
+     
+    # delete a word 
+    def delete(self, word):
+        return self.helperDelete(word, self.root, 0)
+    
+    def helperDelete(self, word, current, idx):
+        if idx == len(word):
+            # when end of word is reached only delete if current.endOfWord is true
+            if not current.endOfWord:
+                return False
+            current.endOfWord = False
+            # if current has no other mapping then return true
+            return len(current.children) == 0
+        
+        char = word[idx]
+        if char not in current.children.keys():
+            return False
+        
+        node = current.children[char]
+        shouldDeleteCurrentNode = self.helperDelete(word, node, idx + 1)
+        
+        # if true is returning then delete the mapping of character and trienode reference from map.
+        if shouldDeleteCurrentNode:
+            del current.children[char]
+            # return true if no mappings are left in the map
+            return len(current.children) == 0
+
+        return False
         
         
 s = Trie()
