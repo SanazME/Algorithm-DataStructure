@@ -269,6 +269,47 @@ def pathSum(self, root, targetSum):
     - If there was an infinite tall wall on the right end of the array, the water in each location would be the height of max so far on the left of the location - height of the location
     - Now for the locations on the right of the infinite wall, the water in each location coming from right to left is heigth of max so far on the right of the location - height of location.
 
+```py
+def trap(self, height):
+    """
+    :type height: List[int]
+    :rtype: int
+    """
+    size = len(height)
+    area = 0
+
+    if size == 0:
+        return area
+
+    globalIdx, globalMax = self.findGlobalMax(height)
+
+    # water trap values coming from left to right: find the local max on the left side and calculate the trapped water = (local_max - current_height)*width(=1)
+    max_height_local = height[0]
+    for i in range(0, globalIdx):
+        if height[i] > max_height_local:
+            max_height_local = height[i]
+
+        area += (max_height_local - height[i]) * 1
+
+    # water trap values coming from right to left: find the local max on the right side and calculate trapped water = (local_max - current_height)*width
+    max_height_local = height[-1]
+    for i in range(size - 1, globalIdx, -1):
+        if height[i] > max_height_local:
+            max_height_local = height[i]
+        area += (max_height_local - height[i]) * 1
+
+    return area
+
+def findGlobalMax(self, height):
+    maxIdx, maxHeight = 0, height[0]
+
+    for i, val in enumerate(height):
+        if val > maxHeight:
+            maxIdx = i
+            maxHeight = val
+    return (maxIdx, maxHeight)
+ ```
+
 ## Longest consecutive sequence:
 - https://leetcode.com/problems/longest-consecutive-sequence/
 - **solutions:**
