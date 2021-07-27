@@ -211,7 +211,7 @@ def pathSum(self, root, targetSum):
         return result
 
 ```
-**Recursive DFS
+**Recursive DFS**
 ```py
 def pathSum(self, root, targetSum):
         """
