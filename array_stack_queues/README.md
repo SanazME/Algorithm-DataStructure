@@ -181,6 +181,35 @@ def pathSum(self, root, targetSum):
         result = []
         if not root:
             return result
+
+        stack = [(root, 0, [])]
+
+
+        while stack:
+            node, localSum, branchList = stack.pop()
+            localSum += node.val
+
+            if localSum == targetSum and not(node.left or node.right):
+                result.append(branchList + [node.val])
+
+            else:
+                if node.right:
+                    stack.append((node.right, localSum, branchList + [node.val]))
+                if node.left:
+                    stack.append((node.left, localSum, branchList + [node.val]))
+
+        return result
+```
+```py
+def pathSum(self, root, targetSum):
+        """
+        :type root: TreeNode
+        :type targetSum: int
+        :rtype: List[List[int]]
+        """
+        result = []
+        if not root:
+            return result
         
         stack = [(root, targetSum, [root.val])]      
         
