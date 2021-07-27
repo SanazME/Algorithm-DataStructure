@@ -83,6 +83,30 @@ dfs(graph, '0')
 
 **DFS with Stack**
 ```py
+def hasPathSum(root, targetSum):
+    if not root:
+        return False
+
+    sumSofar = root.val
+    stack = [(root, 0)]
+
+    while stack:
+        print([(node.val, sumAll) for node, sumAll in stack])
+        node, localSum = stack.pop()
+
+        currentSum = node.val + localSum
+
+        if not(node.left or node.right):
+            if currentSum == targetSum:
+                return True
+
+        else:
+            if node.left: stack.append((node.left, currentSum))
+            if node.right: stack.append((node.right, currentSum))
+                
+    return False
+```
+```py
 # 1. DFS with stack
 def hasPathSum(root, targetSum):
     if not root:
