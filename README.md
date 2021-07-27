@@ -277,3 +277,12 @@ dd.get(keyName, value)
 keyname: the keyname of the item you want to return the value from 
 value: optional, to return if the key does not exist.
 ```
+
+22. For just getting elements that are excluded we can use diff between sets:
+```py
+orig = set(['1','2','8','7'])
+dup = set('1', '8'])
+
+for ele in orig - dup:
+    print(ele)  # '2', '7'
+```
