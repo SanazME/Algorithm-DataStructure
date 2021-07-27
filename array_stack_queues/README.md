@@ -107,7 +107,7 @@ def hasPathSum(root, targetSum):
     return False
 ```
 ```py
-# 1. DFS with stack
+# 1. DFS with stack 2
 def hasPathSum(root, targetSum):
     if not root:
         return False
@@ -124,22 +124,7 @@ def hasPathSum(root, targetSum):
         if node.right: stack.append((node.right, val + node.right.val))
     return False
 ```
-**DFS**
-```py
-# 1. DFS
-def hasPathSum(root, targetSum):
-    result = []
-    dfs(root, targetSum, result)
-    return any(result)
-    
-def dfs(node, nodeSum, result):
-    if node:
-        if node.val == nodeSum and not (node.left or node.right):
-            result.append(True)
-        if node.left: dfs(node.left, nodeSum - node.val, result)
-        if node.right: dfs(node.right, nodeSum - node.val, result)
-     
-```
+
 **Recursive**
 ```py
 def hasPathSum(root, targetSum):
@@ -227,6 +212,28 @@ def pathSum(self, root, targetSum):
 
 ```
 **Recursive DFS
+```py
+def pathSum(self, root, targetSum):
+        """
+        :type root: TreeNode
+        :type targetSum: int
+        :rtype: List[List[int]]
+        """
+        return helper(root, targetSum, [], [])
+    
+def helper(node, targetSum, branchList, result):
+    if node == None:
+        return []
+    
+    if node.val == targetSum and not(node.left or node.right):
+        newBranch = branchList + [node.val]
+        result.append(newBranch)
+        
+    if node.left: helper(node.left, targetSum - node.val, branchList + [node.val], result) 
+    if node.right: helper(node.right, targetSum - node.val, branchList + [node.val], result)
+    
+    return result
+```
 ```py
 def pathSum(self, root, targetSum):
         """
