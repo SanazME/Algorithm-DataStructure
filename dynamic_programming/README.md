@@ -57,5 +57,39 @@ def isMatch(s,p):
                 dp[i][j] = False
                    
     return dp[-1][-1]
+```
+
+## Leetcode: Stone Game (https://leetcode.com/problems/stone-game/)
+- https://www.youtube.com/watch?v=YVmTjwBjYwo, we define a helper function which returns the difference bw Alice's total stone and Bob's total stones. The helper function gets `i` and `j` as the left and right indices of the stone array. If's a recursive function and when `i > j` then the recursive finishes. So Alice has two options: she can either choose the first element or the last one:
+    - If she takes p[i:left], the difference between Alice's and Bob's total stones are: `p[i] - helper[i + 1, j]`
+    - If she takes p[j:right], the difference between Alice's and Bob's total stones are: `p[j] - helper[i, j - 1]`
+    - We want to find the max between those two options for Alice.
+    - The `helper[i+1, j] or helper[i, j-1]` is Bob's pick.
+
+So if the return result from `helper[0, len(p) - 1] > 0` it means Alice wins otherwise Bob wins. Since some of those indices are repeated, we use memoization:
+
+```py
+def stoneGame(piles):
+    """
+    :type piles: List[int]
+    :rtype: bool
+    """
+    memo = dict()
+    def helper(i,j):
+        if i > j: return 0
+
+        if (i,j) in memo:
+            return memo[(i,j)]
+        else:
+            leftPlay = piles[i] - helper(i+1, j)
+            rightPlay = piles[j] - helper(i, j-1)
+
+        memo[(i,j)] = max(leftPlay, rightPlay)
+        return memo[(i,j)]
+
+
+    n = len(piles)
+    return helper(0, n-1) > 0
 
 ```
+
