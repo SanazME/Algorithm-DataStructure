@@ -334,6 +334,7 @@ def findMedianSortedArrays(nums1, nums2):
         partitionY: number of elements left of the partition line
         
         partitionX + partitionY = (X + Y + 1) / 2
+        Note that we give more elements to (partitionleft = partitionX + partitionY) vs (partitionRight) so that we can calculate the median of the total Array based on the following formulas:
         => length of the overall left partition == length of the overall right partition
     2. if 
         ..., maxLeftX | minRightX, ....
