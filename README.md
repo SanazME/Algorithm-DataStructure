@@ -293,3 +293,21 @@ dup = set('1', '8'])
 for ele in orig - dup:
     print(ele)  # '2', '7'
 ```
+
+
+####################################################################################
+- In dividing a even or odd array into two partitions and later on calculate the median. We put the partition line in a place where the left side partition would always have one more element than the right side so the median was calculated:
+    - if the array has even number of elements: median = (left of partition + partition line) / 2
+    - if the array has odd number of elements: median = left of partition
+Then we need to divide the array this way: `(totalSize + 1)/2`. 
+
+
+- When trying to add two numbers (defined in reverse by linked lists), we can always start from least-significant digit and have a `carry` variable to keep track of carry. Don't forget to add the carry at the end, if it is 1 (not 0).
+
+- In an array if we try to find for each x, whether `2x` or `x/2` exits, to simplify, we can first order the array based on absolute value while maintaining the signs by using `sorted(arr, key=abs)` to start from the least value x and then only check for the existence of 2x. For that we also need to create a hash map with key==numbers in array and value==frequency of numbers `collections.Counter(arr)` so that everytime, we find 2x for a x, we remove both them (-1 frequency) from the hash map, so they won't be used more than once.
+
+- Given an integer array of even length arr, return true if it is possible to reorder arr such that arr[2 * i + 1] = 2 * arr[2 * i] for every 0 <= i < len(arr) / 2, or false otherwise. The elemnts can be pos or negative and repeating:
+
+- For stone game where there is an array with piles of stones as its elements, two playes play and each time they can only get stones from the left or right of the array. Determine which player wins?
+    - We can think of DP and think of a helper function that takes the first and last indices of the array (recursion) and returns a tuple of `(total stones for the first player, total stones of the second player)`. Now when the first player go, they can either take the left elem + the second choice of the remaining array or take the right ele + the second choice of the remaining array. (Second choice cause the second player will take the first choice). We then try to optimize it by taking the max value. Since the choices are repeated, we can use memoization to save in computation of the value for the same orders. (https://leetcode.com/submissions/detail/537560546/)
+
