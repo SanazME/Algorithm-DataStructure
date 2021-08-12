@@ -183,7 +183,7 @@ for ele in sorted(freq, key=freq.get, reverse=True):
 ```
 17. `arr.sort()` sorts the list in-place and it's only for lists but `sorted(arr, key=arr.get, reverse=True)` creates a new one and it's used for any iterable like list, dictionary, ...
 
-17.1. To sort an array based on a function like `abs` absolute value of each element: `sorted(arr, key=abs)`
+17.1. To sort an array based on a function like `abs` absolute value of each element: `sorted(arr, key=abs)`. So for an array with pos and neg values: `[2,-4,0,0,-8,1]`, the result of `sorted(arr, key=abs)` will be `[0, 0, 1, 2, -4, -8]`.
 
 17.2. If we have a list and we want to create a dictionary where elements are stored as dictionary keys and their counts are stored as dictionary values, we can use `collections.Counter(arr)`:
 ```py
