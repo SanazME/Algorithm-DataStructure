@@ -305,6 +305,8 @@ def isPalindrome(self, head):
 - (https://leetcode.com/problems/add-two-numbers/)
 - We can start adding two linked list from least-significat to most ones and keep track of carry which is either 0 or 1 (because the max number + carry: 9 + 9 + 1 = 19).
 - Another way which might be a bit expensive is read through both linked lists and save the digits in reverse as strings and then add them as ints and then create a new linked list from it. 
+- Time complexity : `O(max(m, n))`. Assume that m and m represents the length of l1 and l2 respectively, the algorithm above iterates at most `max(m,n)` times.
+- Space complexity : `O(max(m,n))`. The length of the new list is at most `max(m,n)+1`.
 
 ```py
 def addTwoNumbers(self, l1, l2):
@@ -365,3 +367,4 @@ def addTwoNumbers(self, l1, l2):
             
         return dummy.next
 ```
+
