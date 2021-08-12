@@ -183,6 +183,13 @@ for ele in sorted(freq, key=freq.get, reverse=True):
 ```
 17. `arr.sort()` sorts the list in-place and it's only for lists but `sorted(arr, key=arr.get, reverse=True)` creates a new one and it's used for any iterable like list, dictionary, ...
 
+17.1. To sort an array based on a function like `abs` absolute value of each element: `sorted(arr, key=abs)`
+
+17.2. If we have a list and we want to create a dictionary where elements are stored as dictionary keys and their counts are stored as dictionary values, we can use `collections.Counter(arr)`:
+```py
+arr = collections.Counter([3,1,3,6]) # Counter({3: 2, 1: 1, 6: 1})
+```
+
 18. `ord()` method converts a character into its Unicode code value. 
     - Try to avoid using `int` and use `ord` in problems when we convert a string to integer because `int` conversion increases time significantly. To convert a string to a integer:
     ```py
