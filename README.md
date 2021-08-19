@@ -315,3 +315,21 @@ Then we need to divide the array this way: `(totalSize + 1)/2`.
 1. If the given input is sorted (array, list, or matrix), we will use a variation of **Binary Search** or a **Two Pointers** strategy.
 2. If we’re dealing with **top/maximum/minimum/closest k elements among n elements**, we will use a **Heap**.
 3. If we **need to try all combinations (or permutations) of the input**, we can either use **recursive Backtracking** or **iterative Breadth-First Search**.
+
+1.1. Find a pair of numbers with sum equal to target in a sorted array:
+- we can use two pointers approach to go through the elements (starting with the first and last element in the array) and adjust the pointers based on their sum compared with the target value:
+```py
+def targetSum(nums, target):
+    left, right = 0, len(nums) - 1
+    
+    while left < right:
+        sumVal = nums[left] + nums[right]
+        
+        if sumVal == target:
+            return (left, right)
+        elif sumVal > target:
+            right = right - 1
+        else:
+            left = left + 1
+
+```
