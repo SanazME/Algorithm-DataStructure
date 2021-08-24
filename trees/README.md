@@ -492,6 +492,18 @@ s.insert('lmn')
 print(s.search('lmne'))
             
 ```
+## Binary Tree Height, Depth, node indices based on depth
+
+- **Height** is measured from a leaf node. Height of a node is the number of edges on the longest path from the node to a leaf. A leaf node has a height of 0.
+- **Depth** is measured from the root node. Depth of a node is the number of edges from the node to the root. A root has a depth of 0.
+- Full binary tree means each node has either 0 or 2 children.
+- Complete binary tree means all the levels except the lowest one is filled and the lead nodes are filled from left to right. Some leaf nodes might not have a right sibling.
+- Number of nodes in a full binary tree at depth `k` is: `2^k`.
+- The first lead node in a full binary tree with height `h` is: `2^h`.
+- Number of nodes in a full binary tree is at least: `2^h + 1` and at most `2^(h+1) - 1`. Where `h` is the height of the tree.
+- The first index of non-leaf node in a complete tree is `n/2 - 1` where `n` is the number of nodes in complete tree.
+- In a complete/full tree for each non-leaf node with index `i`, the left and right children of the node has indices: `2*i + 1` and `2*i + 2`.    
+
 ## Heap data structure/ Binary Heap / Min-heap, Max-heap / Priority Queue
 (https://www.programiz.com/dsa/heap-data-structure)
 - Heap data structure is a complete binary tree that satisfies the heap property, where any given node is
