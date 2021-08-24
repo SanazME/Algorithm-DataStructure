@@ -492,3 +492,17 @@ s.insert('lmn')
 print(s.search('lmne'))
             
 ```
+## Heap data structure/ Binary Heap / Min-heap, Max-heap / Priority Queue
+(https://www.programiz.com/dsa/heap-data-structure)
+- Heap data structure is a complete binary tree that satisfies the heap property, where any given node is
+  - always greater than its child node/s and the key of the root node is the largest among all other nodes. This property is also called max heap property.
+  - always smaller than the child node/s and the key of the root node is the smallest among all other nodes. This property is also called min heap property.
+
+### Heap Operations:
+#### Heapify
+- given a binary tree (array) we change it into a binary heap data structure. It is used to create a Min-Heap or Max-Heap.
+#### Insert an element into heap O(log n)
+#### Delete an element from heap O(log n)
+#### Peak (find max/min) - Extract min/max O(1)
+
+
