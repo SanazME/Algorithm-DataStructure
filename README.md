@@ -311,7 +311,7 @@ Then we need to divide the array this way: `(totalSize + 1)/2`.
 - For stone game where there is an array with piles of stones as its elements, two playes play and each time they can only get stones from the left or right of the array. Determine which player wins?
     - We can think of DP and think of a helper function that takes the first and last indices of the array (recursion) and returns a tuple of `(total stones for the first player, total stones of the second player)`. Now when the first player go, they can either take the left elem + the second choice of the remaining array or take the right ele + the second choice of the remaining array. (Second choice cause the second player will take the first choice). We then try to optimize it by taking the max value. Since the choices are repeated, we can use memoization to save in computation of the value for the same orders. (https://leetcode.com/submissions/detail/537560546/)
 
-### Some data structure patterns
+### Some data structure patterns (https://betterprogramming.pub/the-ultimate-strategy-to-preparing-for-the-coding-interview-ee9f7eb439f3)
 1. If the given input is sorted (array, list, or matrix), we will use a variation of **Binary Search** or a **Two Pointers** strategy.
 2. If we’re dealing with **top/maximum/minimum/closest k elements among n elements**, we will use a **Heap**.
 3. If we **need to try all combinations (or permutations) of the input**, we can either use **recursive Backtracking** or **iterative Breadth-First Search**.
