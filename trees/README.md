@@ -499,9 +499,9 @@ print(s.search('lmne'))
 - Full binary tree means each node has either 0 or 2 children.
 - Complete binary tree means all the levels except the lowest one is filled and the lead nodes are filled from left to right. Some leaf nodes might not have a right sibling.
 - Number of nodes in a full binary tree at depth `k` is: `2^k`.
-- The first lead node in a full binary tree with height `h` is: `2^h`.
+- The first leaf node in a full binary tree with height `h` is: `2^h` and so its index is `2^h - 1`.
 - Number of nodes in a full binary tree is at least: `2^h + 1` and at most `2^(h+1) - 1`. Where `h` is the height of the tree.
-- The first index of non-leaf node in a complete tree is `n/2 - 1` where `n` is the number of nodes in complete tree.
+- The index of the **last non-leaf node** in a complete tree is `n/2 - 1` where `n` is the number of nodes in complete tree.
 - In a complete/full tree for each non-leaf node with index `i`, the left and right children of the node has indices: `2*i + 1` and `2*i + 2`.    
 
 ## Heap data structure/ Binary Heap / Min-heap, Max-heap / Priority Queue
@@ -512,9 +512,33 @@ print(s.search('lmne'))
 
 ### Heap Operations:
 #### Heapify
-- given a binary tree (array) we change it into a binary heap data structure. It is used to create a Min-Heap or Max-Heap.
+- given a binary tree (array) we change it into a binary heap data structure. It is used to create a Min-Heap or Max-Heap. **Heapify a single node is O(log n) so time complexity to heapify the whole binary tree is O(nlog n).**
 #### Insert an element into heap O(log n)
 #### Delete an element from heap O(log n)
 #### Peak (find max/min) - Extract min/max O(1)
 
-
+### Heapify
+- We build a heap from a binary tree in a bottom-top manner. The idea is to find the position of the last non-leaf node and perform the heapify operation of each non-leaf node in **reverse level order all the way to index 0**.
+```py
+def heapify(arr, size, i):
+   largest = i
+   left = 2 * i + 1
+   right = 2 * i + 2
+   
+   if left < size and arr[left] > arr[i]:
+      largest = left
+      
+   if right < size and arr[right] > arr[largest]:
+      largest = right
+      
+   if largest != i:
+      arr[i], arr[largest] = arr[largest], arr[i]
+      heapify(arr, size, largest)
+      
+def buildHeap(arr):
+   size = len(arr)
+   lastNonLeafNode = size // 2 - 1
+   
+   for i in range(lastNonLeafNode, -1, -1):
+       heapify(arr, size, i)
+```
