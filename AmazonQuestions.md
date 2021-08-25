@@ -78,6 +78,112 @@ def mergeKLists(self, lists):
 
 ```
 
+## 1. Design a data structure follows LRU cache (Least recently used cache).
+https://leetcode.com/problems/lru-cache/
+- The functions get and put must each run in O(1) average time complexity.
+- We're asked to implement the structure which provides the following operations in O(1) time :
+    - Get the key / Check if the key exists
+    - Put the key
+    - Delete the first added key
 
+The first two operations in O(1) time are provided by the standard hashmap, and the last one - by linked list.
 
+- The problem can be solved with a hashtable that keeps track of the keys and its values (linked list node) in the double linked list. One interesting property about double linked list is that the node can remove itself without other reference. In addition, it takes constant time to add and remove nodes from the head or tail.
 
+One particularity about the double linked list that I implemented is that I create a pseudo head and tail to mark the boundary, so that we don't need to check the NULL node during the update. This makes the code more concise and clean, and also it is good for the performance. **We always insert or remove nodes between Head and Tail so we don't have to worry about checking for Null node**
+
+```py
+class DLNode(object):
+    def __init__(self):
+        self.key = -1
+        self.val = -1
+        self.next = None
+        self.prev = None
+
+class LRUCache(object):
+
+    def __init__(self, capacity):
+        """
+        :type capacity: int
+        """
+        self.capacity = capacity
+        self.hashTable = {}
+        self.size = 0
+        
+        self.head, self.tail = DLNode(), DLNode()
+        
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        
+
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+        """
+        if key not in self.hashTable:
+            return -1
+        
+        # key is in hashTable
+        node = self.hashTable[key]
+        
+        # move that key,value node to start (after head) of Linked list
+        self._removeNode(node)
+        self._addNode(node)
+        
+        return node.val
+        
+
+    def put(self, key, val):
+        """
+        :type key: int
+        :type value: int
+        :rtype: None
+        """
+        if key not in self.hashTable:
+            node = DLNode()
+            node.key = key
+            node.val = val
+            self.hashTable[key] = node
+            
+            if self.size < self.capacity:
+                self._addNode(node)
+                self.size += 1
+                
+            else:
+                # remove one node before tail
+                # remove from dictionary
+                keyRemove = self.tail.prev.key
+                
+                self._removeNode(self.tail.prev)
+                self._addNode(node)
+                
+                del self.hashTable[keyRemove]
+                
+        else:
+            # update value of that key in hashTable and Linked list
+            curr = self.hashTable[key]
+            curr.val = val
+            self._removeNode(curr)
+            self._addNode(curr)
+            # print([(key, node.val) for key, node in self.hashTable.items()])
+        
+    def _addNode(self, node):
+        node.next = self.head.next
+        self.head.next = node
+        
+        node.next.prev = node
+        node.prev = self.head
+        
+        
+    def _removeNode(self, node):
+        node.prev.next = node.next
+        node.next.prev = node.prev
+        
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
+
+```
