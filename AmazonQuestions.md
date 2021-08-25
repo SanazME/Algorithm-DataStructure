@@ -1,5 +1,5 @@
 
-1. Merge k sorted Lists: https://leetcode.com/problems/merge-k-sorted-lists/
+## 1. Merge k sorted Lists: https://leetcode.com/problems/merge-k-sorted-lists/
 
 - always think a Brute-force approach first!
 - Time complexity : `O(NlogN)` where N is the total number of nodes.
@@ -26,7 +26,7 @@ list2.sort(key=lengthKey)
 
 - The other approach is to compare every k nodes (head of every linked list) and get the node with the smallest value. Extend the final sorted linked list with the selected nodes. We can use PriorityQueue to save the first elements of all lists in a PriorityQueue and then retrieve the smallest value in the queue first and increment the relevant list node till we finish all of those lists.
 
-
+- `from Queue import PriorityQueue`, the `PriorityQueue` : The lowest valued entries are retrieved first. A typical pattern for entries is a tuple in the form: `(priority_number, data)`.
 
 
 
