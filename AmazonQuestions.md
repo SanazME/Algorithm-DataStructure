@@ -25,6 +25,7 @@ list2.sort(key=lengthKey)
 ```
 
 - The other approach is to compare every k nodes (head of every linked list) and get the node with the smallest value. Extend the final sorted linked list with the selected nodes. We can use PriorityQueue to save the first elements of all lists in a PriorityQueue and then retrieve the smallest value in the queue first and increment the relevant list node till we finish all of those lists.
+- Time Complexity: `O(N log k)`, N: number of nodes in final list, k: number of linked lists. Finding a min value among k values in a priority queue is O(1). Inserting and poping which includes sorting in a priorityQueue for k values will be O(log k) and we have N total nodes. The comparison cost will be reduced to O(logk) for every pop and insertion to priority queue. But finding the node with the smallest value just costs O(1) time.
 
 - `from Queue import PriorityQueue`, the `PriorityQueue` : The lowest valued entries are retrieved first. A typical pattern for entries is a tuple in the form: `(priority_number, data)`.
 ```py
@@ -46,7 +47,34 @@ q.empty() # check if it's empty
 
 val = q.get()
 val, nn = q.get()
+```
+```py
+from Queue import PriorityQueue
 
+def mergeKLists(self, lists):
+      """
+      :type lists: List[ListNode]
+      :rtype: ListNode
+      """
+      q = PriorityQueue()
+
+      for l in lists:
+          if l:
+              q.put((l.val, l))
+
+      dummy = head = ListNode(1000)       
+
+      while not q.empty():
+          val, node = q.get()
+          head.next = ListNode(val)
+          head = head.next
+
+          node = node.next
+
+          if node:
+              q.put((node.val, node))
+
+      return dummy.next
 
 ```
 
