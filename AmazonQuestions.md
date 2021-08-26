@@ -259,3 +259,12 @@ def isRobotBounded(self, instructions):
 
             
 ```
+## 4. Merge Intervals
+- https://leetcode.com/problems/merge-intervals/
+
+- Anonymous, `lambda` function in python:
+```py
+g = lambda x, y: x + y
+# sort a list of arrays based on their first element:
+arr.sort(key: lambda x: x[0])
+```
