@@ -78,7 +78,7 @@ def mergeKLists(self, lists):
 
 ```
 
-## 1. Design a data structure follows LRU cache (Least recently used cache).
+## 2. Design a data structure follows LRU cache (Least recently used cache).
 https://leetcode.com/problems/lru-cache/
 - The functions get and put must each run in O(1) average time complexity.
 - We're asked to implement the structure which provides the following operations in O(1) time :
@@ -186,4 +186,76 @@ class LRUCache(object):
 # param_1 = obj.get(key)
 # obj.put(key,value)
 
+```
+
+## 3. Robot Bounded in Circle
+- https://leetcode.com/problems/robot-bounded-in-circle/
+- For example, `GGLLGG` after the first cycle, we're back to the origin but pointing different direction, after the second cycle, we're back to origin and pointing N. For the instruction which is a vector changes 2 things:
+  - Change in position
+  - Change in direction
+
+- How do we know if the instructions causes robot to stuck in a cycle?
+  1. if the change in the position is zero (after the entire iteration through the instructions we started at the origin and end at the origin)
+  2. Both postion and direction change: suppose the position changes after the first iteration but if the direction also changes it means it'll be stuck in a loop. If the direction after the iteration does not change then there won't be a loop. Like `GR` after 4 iteration gets stuck in a loop (because of 4 directions).
+
+- So the loop can appear after **0 or 2 (180 change in direction) or 4 (90 degree change in direction) iterations**. After at most 4 cycle if the postion change was zero we know that we stuck in a loop OR we can run iteration once and if:
+  - if the position did not change after one iteration
+  - if the postion and direction both change after one iteration.
+
+```py
+def isRobotBounded(self, instructions):
+    """
+    :type instructions: str
+    :rtype: bool
+    """
+
+    direction = 0
+    i, j = 0, 0
+
+
+    for instruct in instructions:
+
+        if instruct == 'L':
+            direction = (direction - 1) % 4
+
+        elif instruct == 'R':
+            direction = (direction + 1 ) % 4
+
+        elif instruct == 'G':
+
+            if direction == 0: # North
+                j += 1
+            elif direction == 1: #East
+                i += 1
+            elif direction == 2: # South
+                j -= 1
+            else: # West
+                i -= 1
+
+    return (i,j) == (0,0) or (direction != 0)
+    
+ # Or base on direction
+ def isRobotBounded(self, instructions):
+    """
+    :type instructions: str
+    :rtype: bool
+    """
+
+    dirX, dirY = 0, 1
+    x, y = 0, 0
+
+    for instruct in instructions:
+
+        if instruct == 'G':
+            x, y = x + dirX, y + dirY
+
+        elif instruct == 'L':
+            dirX, dirY = -dirY, dirX
+        else':
+            dirX, dirY = dirY, -dirX
+          
+
+    return (x,y) == (0,0) or (dirX, dirY) != (0, 1)
+
+            
 ```
