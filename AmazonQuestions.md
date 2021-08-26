@@ -268,3 +268,36 @@ g = lambda x, y: x + y
 # sort a list of arrays based on their first element:
 arr.sort(key: lambda x: x[0])
 ```
+
+```py
+def merge(self, intervals):
+    """
+    :type intervals: List[List[int]]
+    :rtype: List[List[int]]
+    """
+    # sort the intervals based on the starting value
+
+    intervals.sort(key = lambda x: x[0])
+    start = intervals[0][0]
+    end = intervals[0][-1]
+    result = []
+
+    for arr in intervals:
+        # print(start, end)
+        # print(arr)
+        # print('**********')
+        if arr[0] > end:
+            result.append([start, end])
+            start = arr[0]
+            end = arr[-1]
+
+        elif arr[0] == end:
+            end = arr[-1]
+
+        elif arr[0] >= start:
+            if arr[-1] > end:
+                end = arr[-1]
+
+    result.append([start, end])
+    return result
+```
