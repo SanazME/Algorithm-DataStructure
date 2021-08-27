@@ -381,3 +381,44 @@ def dfs(node, grid, visited):
     dfs((i,j+1), grid, visited)
 
 ```
+
+## 6. Trapping Rain water
+https://leetcode.com/problems/trapping-rain-water/
+- If find the absolute max in the array, then we know that all the heights on the left side of that max wall will trap water based on a localMax on their left side (coming from left to right). and all the height on the right side of the abs wall, will trap water based on the local max height coming from right to left.
+
+```py
+def trap(height):
+    area = 0
+    
+    # find the global max wall so we can go from left and right up to that wall and calculate trapped water
+    globalIdx, globalMax = findGlobalMax(height)
+    
+    # from left to right to global max height
+    localMax = 0
+    for i in range(0, globalIdx):
+        if height[i] > localMax:
+            localMax = height[i]
+            
+        area += localMax - height[i]
+        
+    # from right to left up to global max height
+    localMax = 0
+    for i in range(len(height)-1, globalIdx, -1):
+        if height[i] > localMax:
+            localMax = height[i]
+            
+        area += localMax - height[i]
+        
+    return area
+
+
+def findGlobalMax(height):
+    globalIdx, globalMax = 0, 0
+    
+    for i, h in enumerate(height):
+        if h > globalMax:
+            globalIdx, globalMax = i, h
+    return (globalIdx, globalMax)
+
+
+```
