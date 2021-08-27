@@ -301,3 +301,83 @@ def merge(self, intervals):
     result.append([start, end])
     return result
 ```
+
+## 5. Number of Islands
+- https://leetcode.com/problems/number-of-islands/
+- we should iterate through the 2D grid and for each point, first check if we've not visited it and if so, run either bfs or dfs to get all connected points and everytime, we get out of those methods, we increment a counter and at the end, we return the counter.
+- bfs, go through the node based on the order they were added while dfs uses stack instead of queue and so it does not maintain the order. In this problem, it does not make any difference.
+
+**BFS**
+```py
+import collections
+
+def numIslands(grid):
+    visited = set()
+    rows = len(grid)
+    cols = len(grid[0])
+    count = 0
+    
+    for i in range(rows):
+        for j in range(cols):
+            node = (i,j)
+            if node not in visited and (grid[i][j] == "1"):
+                bfs(node, grid, visited)
+                count += 1
+    return count
+
+
+def bfs(node, grid, visited):
+    queue = collections.deque([node])
+    
+    while queue:
+        curr = queue.popleft()
+        if curr in visited: continue
+        visited.add(curr)
+        queue.extend(getNeighborNodes(curr, grid))
+        
+    return
+
+def getNeighborNodes(node, grid):
+    result = []
+    i, j = node
+    
+    if i > 0 and grid[i-1][j] == "1": result.append((i-1,j))
+    if j > 0 and grid[i][j-1] == "1": result.append((i,j-1))
+    if i < len(grid) - 1 and grid[i+1][j] == "1": result.append((i+1,j))
+    if j < len(grid[i]) - 1 and grid[i][j+1] == "1": result.append((i,j+1))
+        
+    return result
+```
+
+**DFS**
+- Iterative: similar to the code above instead of queue use stack
+- Recursive (think about the base case when the recursion returns):
+```py
+
+def numIslands(grid):
+    visited = set()
+    rows = len(grid)
+    cols = len(grid[0])
+    count = 0
+    
+    for i in range(rows):
+        for j in range(cols):
+            node = (i,j)
+            if node not in visited and (grid[i][j] == "1"):
+                dfs(node, grid, visited)
+                count += 1
+    return count
+
+
+def dfs(node, grid, visited):
+    i, j = node
+
+    if i < 0 or j < 0 or i > len(grid) - 1 or j > len(grid[i]) - 1 or grid[i][j] != "1" or node in visited: return
+
+    visited.add(node)
+    dfs((i-1,j), grid, visited)
+    dfs((i+1,j), grid, visited)
+    dfs((i,j-1), grid, visited)
+    dfs((i,j+1), grid, visited)
+
+```
