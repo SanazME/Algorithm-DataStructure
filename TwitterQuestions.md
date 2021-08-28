@@ -90,3 +90,56 @@ class RandomizedSet(object):
 # param_3 = obj.getRandom()
 
 ```
+
+## Given a list of leaf nodes, return a list containing all the nodes of the tree in DFS order.
+- https://leetcode.com/discuss/interview-question/859662/Twitter-Phone-Interview
+- Given a list of leaf nodes, return a list containing all the nodes of the tree in DFS order.
+'''
+class Node{
+int id;
+List parentIds; //this will be in the descending order in terms of the precedence of the parents.
+}
+'''
+Example: Given a tree
+    1
+  2  4
+ /   \
+3    5
+
+Input List -{3,5}
+o/p: {1,2,3,4,5}
+
+```py
+class Node(object):
+    def __init__(self, idVal, parentIds):
+        self.id = idVal
+        self.parentIds = parentIds
+        
+
+leafNode1 = Node(5, [4,2,1])
+leafNode2 = Node(6, [2,1])
+leafNode3 = Node(9, [7,1])
+leafNode4 = Node(8, [7,1])
+
+        
+def dfs(leafNodes):
+    result = []
+    visited = set()
+    for leafNode in leafNodes:
+        parents = leafNode.parentIds
+        for i in range(len(parents)-1, -1, -1):
+            if parents[i] not in visited:
+                visited.add(parents[i])
+                result.append(parents[i])
+        
+        if leafNode.id not in visited:
+            result.append(leafNode.id)
+        print('result: ', result)
+        
+    return result
+      
+leafNodes = [leafNode1, leafNode2, leafNode3, leafNode4]
+
+print(dfs(leafNodes))
+
+```
