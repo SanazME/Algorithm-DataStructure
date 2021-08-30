@@ -528,3 +528,27 @@ def maxSubArray(nums):
       
   return globalMax
 ```
+
+## 9. Best Time to Buy and Sell Stock
+- https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+- Brute Force O(n2): iterate and for each node, iterate the rest of array and calculate the max profit.
+- O(n), in one pass: we look at the trend of numbers in the arry, we want to keep track of the min value === lowest price and also the max point === max profit (point - lowest price):
+
+```py
+def maxProfit(prices):
+    profit = 0
+    if len(prices) == 1:
+        return profit
+
+    minPrice = float('Inf')
+    maxProfit = 0
+    
+    for i in range(len(prices)):
+        if prices[i] < minPrice:
+            minPrice = prices[i]
+            
+        elif prices[i] - minPrice > maxProfit:
+            maxProfit = prices[i] - minPrice
+            
+    return maxProfit
+```
