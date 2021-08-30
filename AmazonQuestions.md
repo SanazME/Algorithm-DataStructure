@@ -552,3 +552,24 @@ def maxProfit(prices):
             
     return maxProfit
 ```
+## 10. Best Time to Buy and Sell Stock II
+- https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/solution/
+```py
+def maxProfit(self, prices):
+      """
+      :type prices: List[int]
+      :rtype: int
+      """
+      profit = 0
+      if len(prices) == 1:
+          return profit
+
+      profit = 0
+      for i in range(1, len(prices)):
+          diff = prices[i] - prices[i-1]
+          if diff > 0:
+              profit += diff
+
+      return profit
+
+```
