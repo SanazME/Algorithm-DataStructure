@@ -422,3 +422,93 @@ def findGlobalMax(height):
 
 
 ```
+## 7. Longest Common Prefix 
+- https://leetcode.com/problems/longest-common-prefix/
+- **Approach 1: Horizontal scanning** LCP(S1, ..., Sn) = LCP(LCP(LCP(S1,S2), S3), ...Sn). Iterate through the list of strings and at each iteration i, find the longest common prefix of strings. If it is an empty one, end the algorithm. 
+- Time Complexity: O(S), S: sum of all characters in all strings. In the worst case O(n*m), m: the avg lenght of a string.
+- Space: O(1)
+
+```py
+def longestCommonPrefix(self, strs):
+      """
+      :type strs: List[str]
+      :rtype: str
+      """
+      size = len(strs)
+      if size == 0:
+          return ""
+      if size == 1:
+          return strs[0]
+
+      prefix = strs[0]
+
+      for i in range(1, size):
+          word = strs[i]
+
+          while (word.find(prefix) != 0):
+              prefix = prefix[0:-1]
+
+
+          if prefix == "": return ""
+      return prefix
+```
+
+- The issue with horizantal scanning is that if a very short string (which is also a LCP) is at the end of the list, the above approach still does S comparisons. One way to optimize is to scan vertically. 
+- Another approach is Trie:
+  - Create a TrieNode and Trie and insert all words in it. Creating a prefix-based tree.
+  - Create a method LCP in the Trie so that it return the longest common prefix. For that we walk on the trie and go deeper until we find a node having more than **1 children (branching)** and **end of the word**.
+  - Time complexity: for n string in a list and m largest lenght of the word: O(n * m)
+  - Space: O(n * m)
+
+```py
+class TrieNode(object):
+    def __init__(self):
+        self.children = {}
+        self.endOfWord = False
+        
+class Trie(object):
+    def __init__(self):
+        self.root = TrieNode()
+        
+    def insert(self, word):
+        curr = self.root
+        
+        for char in word:
+            if char in curr.children:
+                curr = curr.children[char]
+                
+            else:
+                curr.children[char] = TrieNode()
+                curr = curr.children[char]
+        curr.endOfWord = True
+        
+        return True
+    
+    def _childrenCount(self, node):
+        return len(node.children.keys())
+    
+    def lcp(self):
+        curr = self.root
+        prefix = ""
+        
+        while (self._childrenCount(curr) == 1 and curr.endOfWord == False):
+            key = curr.children.keys()[0]
+            prefix += key
+            curr = curr.children[key]
+        
+        return prefix
+        
+def longestCommonPrefix(self, strs):
+      """
+      :type strs: List[str]
+      :rtype: str
+      """
+      # Construct Trie
+      trieTree = Trie()
+
+      for word in strs:
+          trieTree.insert(word)
+
+      return trieTree.lcp()
+
+```
