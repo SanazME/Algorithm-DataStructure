@@ -512,3 +512,19 @@ def longestCommonPrefix(self, strs):
       return trieTree.lcp()
 
 ```
+## 8. Maximum Subarray
+- https://leetcode.com/problems/maximum-subarray/
+- to find a **contiguous subarray**, Constantly check if the new element is bigger or the new ele + the localSum_soFar:
+```py
+def maxSubArray(nums):
+  if len(nums) == 1:
+      return nums[0]
+      
+  globalMax, localMax = nums[0], nums[0]
+  
+  for i in range(1, len(nums)):
+      localMax = max(nums[i], localMax + nums[i])
+      globalMax = max(localMax, globalMax)
+      
+  return globalMax
+```
