@@ -226,6 +226,8 @@ Implement the LogSystem class:
 - `LogSystem()` Initializes the LogSystem object.
 - `void put(int id, string timestamp)` Stores the given log (id, timestamp) in your storage system.
 - `int[] retrieve(string start, string end, string granularity)` Returns the IDs of the logs whose timestamps are within the range from start to end inclusive. start and end all have the same format as timestamp, and granularity means how precise the range should be (i.e. to the exact Day, Minute, etc.). For example, start = "2017:01:01:23:59:59", end = "2017:01:02:23:59:59", and granularity = "Day" means that we need to find the logs within the inclusive range from Jan. 1st 2017 to Jan. 2nd 2017, and the Hour, Minute, and Second for each log entry can be ignored.
+- Let's focus on the retrieve function. For each granularity, we should consider all timestamps to be truncated to that granularity. For example, if the granularity is 'Day', we should truncate the timestamp '2017:07:02:08:30:12' to be '2017:07:02'. Now for each log, if the truncated timetuple cur is between start and end, then we should add the id of that log into our answer.
+- we can store logs and timestamps in a dic with `key = tuple(timestamp.split(":"))`. When retrieving data, we first convert the start and end time to the granular level we want (meaning the rest part of time will be 00) and then we compare the `timestamp[:idx]` tuple with startGran and endGran tuples up to the granular idx: `startGran[:idx]...`
 
 ```py
 class LogSystem(object):
