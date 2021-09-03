@@ -31,6 +31,8 @@
 
 -**Study program - topics (6 months)**: https://leetcode.com/discuss/general-discussion/1129503/Powerful-studying-program-for-Beginners-and-Intermediate-levels.-All-common-mistakes-analyzed
 
+- **Time complexity of search data structures: https://en.wikipedia.org/wiki/Search_data_structure**
+
 **Serialization and Deserialization**
 - Serialization is the process of converting a data structure or object into a sequence of bits so that it can be saved in a file or memory buffer, or transmitted across a network connection.
 
