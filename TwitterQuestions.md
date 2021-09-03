@@ -342,4 +342,53 @@ def kthFactor(self, n, k):
     return res
         
 ```
+## Maximum Number of Occurrences of a Substring
+- https://leetcode.com/problems/maximum-number-of-occurrences-of-a-substring/
+- Hints: The max length of substring can get at max 26 character lenght & since we're looking for max occurance of that substring, we need to find ones with minSize. If a substring with `maxSize` reoccurs, it's garanteed that smaller substring reoccurs at least at the same frequency.
+- we use sliding window to move along the string and test the condition for each substring of size `minSize`, i.e, whether its number of unique chars <= `maxLetters`. 
+```py
+def maxFreq(self, s, maxLetters, minSize, maxSize):
+        """
+        :type s: str
+        :type maxLetters: int
+        :type minSize: int
+        :type maxSize: int
+        :rtype: int
+        """
+        def uniqueChar(substr):
+            dic = {}
+            count = 0
+            for char in substr:
+                if char not in dic:
+                    dic[char] = 1
+                    count += 1
+                else:
+                    dic[char] += 1
+            return count
+        
+        def insertFreq(substr, dic):
+            if not substr in dic:
+                dic[substr] = 1
+            else:
+                dic[substr] += 1
+            return dic[substr]
+        
+        if len(s) < minSize: return 0
+        
+        p1 = 0
+        p2 = minSize
+        maxFreq = 0
+        wordFreq = {}
+        
+        while (p1 + minSize) <= len(s):
+            substr = s[p1:p1+minSize]
+            count = uniqueChar(substr)
+            if count <= maxLetters:
+                # insert in dic
+                freq = insertFreq(substr, wordFreq) 
+                maxFreq = max(maxFreq, freq)
+            
+            p1 += 1
                 
+        return maxFreq
+```
