@@ -402,10 +402,7 @@ def maxFreq(self, s, maxLetters, minSize, maxSize):
     :rtype: int
     """
     # find number of 1s in arr === size of the subarray with all 1s
-    ones = 0
-    for num in data:
-        if num == 1:
-            ones += 1
+    ones = sum(data)
 
     if len(data) == ones or ones == 1: return 0
 
@@ -427,4 +424,39 @@ def maxFreq(self, s, maxLetters, minSize, maxSize):
         minSwap = min(minSwap, zeros)
 
     return minSwap                                                 
+```
+- another way to solve is to use a queue to append and pop elments and keep track of number of zeros, be aware of edge cases:
+```py
+ def minSwaps(self, data):
+    """
+    :type data: List[int]
+    :rtype: int
+    """
+    # find number of 1s in arr === size of the subarray with all 1s
+    ones = sum(data)
+
+    if len(data) == ones or ones == 1 or ones == 0: return 0
+
+    queue = collections.deque()
+    zeros = 0
+    minZeros = float('Inf')
+
+    for i in range(len(data)):
+
+        if len(queue) < ones:
+            queue.append(data[i])
+            if data[i] == 0:
+                zeros += 1
+
+        else:
+            minZeros = min(minZeros, zeros)
+            ele = queue.popleft()
+            if ele == 0: 
+                zeros -= 1
+            queue.append(data[i])
+            if data[i] == 0:
+                zeros += 1
+            minZeros = min(minZeros, zeros)
+
+    return minZeros                                               
 ```
