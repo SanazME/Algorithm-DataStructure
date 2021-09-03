@@ -288,3 +288,58 @@ class LogSystem(object):
 # obj.put(id,timestamp)
 # param_2 = obj.retrieve(start,end,granularity)
 ```
+## The kth Factor of n
+- https://leetcode.com/problems/the-kth-factor-of-n/
+- One way O(n) to march from 1 till n and see if you find a dvisor and if so increament a counter till it reached the value of k and then return that element or at the end return -1:
+```py
+def kthFactor(self, n, k):
+    """
+    :type n: int
+    :type k: int
+    :rtype: int
+    """
+    count = 0
+    for num in range(1, n+1):
+        if n % num == 0:
+            count += 1
+        if count == k:
+            return num
+
+    return -1                
+```
+- One improvement, we know that if i is a divisor of n then n/i is also a divisor of n. So instead of iterating all the way to n, we need to iterate till `sqrt(n)` but then we need to push those two divisors in a max heap so we can always access the largest divisor. SO we can use heap to store the numbers with the max at the top (python heap is min heap so to keep max element always on top we need to push negative values.
+```py
+import heapq
+
+def kthFactor(self, n, k):
+    """
+    :type n: int
+    :type k: int
+    :rtype: int
+    """
+    #push into heap
+    #by limiting size of heap to k
+    def heappush_k(num):
+        heappush(heap, -num)
+        if len(heap) > k:
+            heappop(heap)
+
+    # Python heap is min heap 
+    # -> to keep max element always on top,
+    # one has to push negative values
+    heap = []
+    for num in range(1, int(sqrt(n) + 1)):
+        if n % num == 0:
+            heappush_k(num)
+            if num != n // num:
+                heappush_k(n // num)
+
+    if k == len(heap):
+        res = - heappop(heap)
+    else:
+        res = -1
+
+    return res
+        
+```
+                
