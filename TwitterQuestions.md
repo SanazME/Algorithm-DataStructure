@@ -460,3 +460,44 @@ def maxFreq(self, s, maxLetters, minSize, maxSize):
 
     return minZeros                                               
 ```
+## Maximal Square
+- https://leetcode.com/problems/maximal-square/
+- explaination: https://www.youtube.com/watch?v=RElcqtFYTm0
+- with DP, we can solve for the current state if we know the prev state (solution). Here from bottom-top approach, we can create a 2D array for dp and starting from top-left, first we populate the first row and col with the exact values. For each location dp(i,j), we look at the 3 prev direction and take the min of all + 1. If the matrix(i,j) is 0 we just set dp as 0.
+- dp(i,j) represents the side length of the maximum square whose bottom right corner is the cell with index (i,j) in the original matrix. Starting from index (0,0), for every 1 found in the original matrix, we update the value of the current element as
+
+dp(i, j) = min(dp(i-1, j), dp(i-1, j-1), dp(i, j-1)) + 1
+```py
+def maximalSquare(self, matrix):
+    """
+    :type matrix: List[List[str]]
+    :rtype: int
+    """
+    rows = len(matrix)
+    cols = len(matrix[0])
+    maxSoFar = 0
+
+    dp = [[0 for j in range(cols)] for i in range(rows)]
+
+    # populate the first row and col in dp with values from matrix
+    for i in range(rows):
+        dp[i][0] = int(matrix[i][0])
+        maxSoFar = max(maxSoFar, dp[i][0])
+
+    for j in range(cols):
+        dp[0][j] = int(matrix[0][j])
+        maxSoFar = max(maxSoFar, dp[0][j])
+
+    for i in range(1, rows):
+        for j in range(1, cols):
+            if matrix[i][j] == "1":
+                dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1
+            else:
+                dp[i][j] = 0
+
+            maxSoFar = max(maxSoFar, dp[i][j])
+    print(dp)
+
+    return maxSoFar*maxSoFar
+                  
+```
