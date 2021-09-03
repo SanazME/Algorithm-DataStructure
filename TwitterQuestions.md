@@ -392,3 +392,39 @@ def maxFreq(self, s, maxLetters, minSize, maxSize):
                 
         return maxFreq
 ```
+## Minimum Swaps to Group All 1's Together
+- https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together/
+- The total number of 1s shows the size of the subarray. If that number is equal to the length of data array or is one, the swap is not needed (0). Then for that subarray, we find the number of zeros and we can have a sliding window to keep track of zeros coming into the subarray and zeros that leaving the subarray.
+```py
+ def minSwaps(self, data):
+    """
+    :type data: List[int]
+    :rtype: int
+    """
+    # find number of 1s in arr === size of the subarray with all 1s
+    ones = 0
+    for num in data:
+        if num == 1:
+            ones += 1
+
+    if len(data) == ones or ones == 1: return 0
+
+    subarr = data[0: ones]
+    zeros = 0
+
+    for ele in subarr:
+        if ele == 0:
+            zeros += 1
+
+    minSwap = zeros
+
+    for i in range(ones, len(data)):
+        if data[i] == 0:
+            zeros += 1
+        if data[i-ones] == 0:
+            zeros -= 1
+
+        minSwap = min(minSwap, zeros)
+
+    return minSwap                                                 
+```
