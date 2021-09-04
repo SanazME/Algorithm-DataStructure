@@ -361,3 +361,5 @@ def longestConsecutive(self, nums):
                 result = max(result, y - x)
         return result
 ```
+## Heap data structure (min heap, max heap and Priority Queue): https://www.programiz.com/dsa/priority-queue
+- Python heap: `heappush, heappop...` for min heap
