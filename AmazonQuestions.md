@@ -573,3 +573,28 @@ def maxProfit(self, prices):
       return profit
 
 ```
+## 11. Subtree of Another Tree
+- https://leetcode.com/problems/subtree-of-another-tree/
+- the condition of two trees being identical is their root values are the same and recursively valid for their left and right subtrees. Now if both subtree are None, their identical but if one is None and the other is not then it is false: `if not(t1 and t2): return t1 is t2`
+- we use that helper in the main method to see if the whole root and subtree are identical if not then we recursively call the method for each left and right subtrees of the main tree.
+
+```py
+def isSubtree(self, root, subRoot):
+        """
+        :type root: TreeNode
+        :type subRoot: TreeNode
+        :rtype: bool
+        """
+        if self.isIdentical(root, subRoot): return True
+        if root is None: return False
+        
+        return self.isSubtree(root.left, subRoot) or self.isSubtree(root.right, subRoot)
+        
+    def isIdentical(self, t1, t2):
+        if not (t1 and t2):
+            return t1 is t2
+        
+        return (t1.val == t2.val and
+               self.isIdentical(t1.left, t2.left) and 
+               self.isIdentical(t1.right, t2.right))
+```
