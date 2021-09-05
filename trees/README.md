@@ -83,8 +83,16 @@ class TreeNode(object):
 # Recursive
 def preorder(root):
   return helper(root, result=[])
+
+def _helper(self, node, result):
+        if node:
+            result.append(node.val)
+            self._helper(node.left, result)
+            self._helper(node.right, result)
+            
+        return result
   
-def helper(root, result):
+def helper2(root, result):
   if root == None: 
      return result
      
