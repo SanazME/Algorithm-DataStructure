@@ -598,3 +598,86 @@ def isSubtree(self, root, subRoot):
                self.isIdentical(t1.left, t2.left) and 
                self.isIdentical(t1.right, t2.right))
 ```
+## 12. Rotting Oranges:
+- https://leetcode.com/problems/rotting-oranges/
+- we need to find min elapse time meaning that everywhere in the matrix that we have a rotten one (2) they rot their neighboring nodes at the same time.
+- Edge case: where there is no fresh orange, 
+
+
+```py
+
+import collections
+class Solution(object):
+    def __init__(self):
+        self.visited = set()
+        
+    def orangesRotting(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        rows = len(grid)
+        cols = len(grid[0])
+        ones = set()
+        twos = collections.deque()
+        lapse = 0
+        
+        
+        for i in range(rows):
+            for j in range(cols):
+                node = grid[i][j]
+                if node == 1:
+                    ones.add((i,j))
+                    
+                if node == 2:
+                    twos.append((i,j))
+       
+        if len(ones) == 0: return 0
+        
+        lapse = self.bfs(twos, grid)
+        
+        
+        for ele in ones:
+            if ele not in self.visited:
+                return -1
+            
+        return lapse
+    
+    
+    def bfs(self, queue, grid):
+        timeLapse = -1
+        
+        while queue:
+            size = len(queue)
+            timeLapse += 1
+            
+            for idx in range(size):
+                i, j = queue.popleft()
+                if (i, j) in self.visited: continue
+                    
+                self.visited.add((i,j))
+                queue.extend(self.addNeighboringNodes(i,j, grid))
+        return timeLapse
+                
+    
+    def addNeighboringNodes(self, i, j, grid):
+        result = []
+        
+        if i > 0 and grid[i-1][j] == 1 and (i-1, j) not in self.visited:
+            grid[i-1][j] = 2
+            result.append((i-1,j))
+            
+        if (j < len(grid[0]) - 1) and (grid[i][j+1] == 1) and (i,j+1) not in self.visited:
+            grid[i][j+1] = 2
+            result.append((i,j+1))
+            
+        if (i < len(grid) - 1) and grid[i+1][j] == 1 and (i+1, j) not in self.visited:
+            grid[i+1][j] = 2
+            result.append((i+1,j))
+            
+        if j > 0 and grid[i][j-1] == 1 and (i,j-1) not in self.visited:
+            grid[i][j-1] = 2
+            result.append((i,j-1))
+            
+        return result
+```
