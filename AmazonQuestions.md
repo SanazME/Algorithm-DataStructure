@@ -681,3 +681,50 @@ class Solution(object):
             
         return result
 ```
+## 13. Spiral Matrix II
+- https://leetcode.com/problems/spiral-matrix-ii/
+- We can walk in a spiral path and we can change direction when we go beyond the limit of our matrix or when the next element value is not zero. We then change direction. For direction, we can think of 4 direction where di, dj in `i += di, j += dj` are calculated like this: 
+```
+# "1": (0,1)
+# "2": (1,0)
+# "3": (0,-1)
+# "4": (-1,0)
+```
+```py
+def generateMatrix(self, n):
+        """
+        :type n: int
+        :rtype: List[List[int]]
+        """
+        dir = [(0,1), (1,0), (0,-1), (-1,0)]
+        matrix = [[0 for _ in range(n)] for _ in range(n)]
+        
+        i, j = 0, 0
+        dirVal = 0
+        di, dj = dir[dirVal]
+        
+        for val in range(n*n):
+            
+            matrix[i][j] = val + 1
+            
+            # change direction
+            nexti, nextj = i+di, j+dj
+            
+            if self._outOfBound(nexti, nextj, n) or (matrix[nexti][nextj] != 0):
+                dirVal = (dirVal + 1)%4        
+                
+            di, dj = dir[dirVal]
+                
+                
+            i += di
+            j += dj
+            
+            
+        return matrix
+    
+    def _outOfBound(self, i, j, n):
+        return (i < 0) or (j < 0) or (i > n - 1) or (j > n - 1)
+        
+```
+- O(n * n) time complexity
+- O(1) no extra space is being used
