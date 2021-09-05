@@ -730,12 +730,13 @@ def generateMatrix(self, n):
 - O(1) no extra space is being used
 
 
-## 14. 
+## 14. House Robber
 - https://leetcode.com/problems/house-robber/
 - For each house the thief has two options: whether to rob it or not. if he robs that house[i] then he has to advance two before being able to rob but if he doesn't then we can advance to the next house. The outcome is the max of robbed values in those two choices. This is recursion with memoization: 
 - At each step, the robber has two options. If he chooses to rob the current house, he will have to skip the next house on the list by moving two steps forward. If he chooses not to rob the current house, he can simply move on to the next house in the list. Let's see this mathematically.
 
 `robFrom(i)=max( robFrom(i+1) , robFrom(i+2)+nums(i) )`
+
 **- O(N) since we process at most N recursive calls, thanks to caching, and during each of these calls, we make an O(1) computation which is simply making two other recursive calls, finding their maximum, and populating the cache based on that.**
 
 **- Space Complexity: O(N) which is occupied by the cache and also by the recursion stack.**
