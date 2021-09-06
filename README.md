@@ -295,6 +295,46 @@ dup = set('1', '8'])
 for ele in orig - dup:
     print(ele)  # '2', '7'
 ```
+22. list comprehension, join, split, map:
+- by adding if else at the beginning of list comprehension we not only filter but change the value
+```py
+rangestr = '5:10 ,1:7 , 8:10  , 10:15, 13:14'
+# [(1,7), (5,10), (8,10),(10,15),(13,14)]
+
+arr1 = rangestr.split(',')
+arr20 = [tuple(x.strip().split(':')) for x in arr1]
+arr30 = [(int(x[0]), int(x[1])) for x in arr20]
+print(arr30.sort(key=lambda x: x[0]))
+
+print([x if x[0] > 8 else (0,0) for x in arr30])
+
+
+# arr1 = rangestr.split(',')
+# arr2 = map(lambda x: x.strip(), arr1)
+# arr3 = map(lambda x: tuple(x.split(':')), arr2)
+# print(arr3)
+# arr4 = map(lambda x: (int(x[0]), int(x[1])), arr3)
+# print(arr4)
+# arr4.sort(key=lambda x:x[0])
+# print(arr4)
+
+# arr5 = ",".join(map(lambda x: str(x[0])+':'+str(x[1]), arr4))
+# print(arr5)
+
+
+arr1 = rangestr.split(',')
+arr2 = [x.strip() for x in arr1]
+arr3 = [tuple(x.split(':')) for x in arr2]
+print(arr3) 
+arr4 = [(int(x[0]), int(x[1])) for x in arr3]
+arr4.sort(key=lambda x: x[0])
+print(arr4)
+print(','.join([str(x[0])+':'+str(x[1]) for x in arr4]))
+```
+- list comprehension is more pytonic, + conditional for filtering or changing an output:
+```py
+
+```
 
 
 ####################################################################################
