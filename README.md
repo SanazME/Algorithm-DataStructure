@@ -296,7 +296,8 @@ for ele in orig - dup:
     print(ele)  # '2', '7'
 ```
 22. list comprehension, join, split, map:
-- by adding if else at the beginning of list comprehension we not only filter but change the value
+- by adding if else at the beginning of list comprehension we not only filter but change the value: `print([x if x[0] > 8 else (0,0) for x in arr30])`
+- For filtering if cond without else should come at the end: `print([x for x in arr30 if x[0] > 8 ])`
 ```py
 rangestr = '5:10 ,1:7 , 8:10  , 10:15, 13:14'
 # [(1,7), (5,10), (8,10),(10,15),(13,14)]
