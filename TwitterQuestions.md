@@ -513,3 +513,11 @@ def maximalSquare(self, matrix):
     return maxSoFar*maxSoFar
                   
 ```
+## Find a median in a stream of integers
+- condition 1: what if the numbers are only between 1 and 100?
+- what if the range of numbers are really high?
+    
+    
+    
+    
+## Find elements in a pair list which also contain the reverse pair?
