@@ -163,6 +163,14 @@ List<Integer> getTweetCountsPerFrequency(String freq, String tweetName, int star
 freq is one of "minute", "hour", or "day" representing a frequency of every minute, hour, or day respectively.
     
 - **One important to note that one tweet can be tweeted multiple times and so it can have more than one timestamp**.
+- To find the number of intervals based on startTime, endTime and freq value: 
+```py
+q, r = divmod((endTime - startTime + 1), freqVal) 
+if r != 0:
+    intervals = q + 1
+else:
+    intervals = q
+```
 
 ```py
  class TweetCounts(object):
@@ -196,7 +204,7 @@ freq is one of "minute", "hour", or "day" representing a frequency of every minu
         Return int : number of time chunks for a given freq and start and end times
         """
         
-        chunkCount = ((endTime - startTime) // self.freqMap[freq]) + 1
+        chunkCount = ((endTime - startTime + 1) // self.freqMap[freq])
         return chunkCount
         
     def getTweetCountsPerFrequency(self, freq, tweetName, startTime, endTime):
