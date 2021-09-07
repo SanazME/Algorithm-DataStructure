@@ -413,3 +413,29 @@ def stringSplit(unsplit):
 
 print(stringSplit(input_string))
         ```
+
+- Using our web scraping tutorial, you’ve built a great weather scraper. However, it loads string information in a list of lists, each holding a unique row of information you want to write out to a CSV file:
+```py
+[
+    ['Boston', 'MA', '76F', '65% Precip', '0.15 in'],
+    ['San Francisco', 'CA', '62F', '20% Precip', '0.00 in'],
+    ['Washington', 'DC', '82F', '80% Precip', '0.19 in'],
+    ['Miami', 'FL', '79F', '50% Precip', '0.70 in']
+]
+```
+Your output should be a single string that looks like this:
+```py
+"""
+Boston,MA,76F,65% Precip,0.15in
+San Francisco,CA,62F,20% Precip,0.00 in
+Washington,DC,82F,80% Precip,0.19 in
+Miami,FL,79F,50% Precip,0.70 in
+"""
+```
+- Ans:
+```py
+def joinList(data):
+    joined = [','.join(line) for line in data]
+    output = '\n'.join(joined)
+    return output
+```
