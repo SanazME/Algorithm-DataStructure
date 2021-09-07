@@ -368,15 +368,7 @@ def maxFreq(self, s, maxLetters, minSize, maxSize):
         :rtype: int
         """
         def uniqueChar(substr):
-            dic = {}
-            count = 0
-            for char in substr:
-                if char not in dic:
-                    dic[char] = 1
-                    count += 1
-                else:
-                    dic[char] += 1
-            return count
+            return len(set(substr))
         
         def insertFreq(substr, dic):
             if not substr in dic:
