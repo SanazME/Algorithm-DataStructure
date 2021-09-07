@@ -376,3 +376,40 @@ def targetSum(nums, target):
             left = left + 1
 
 ```
+- You were recently handed a comma-separated value (CSV) file that was horribly formatted. Your job is to extract each row into an list, with each element of that list representing the columns of that file. What makes it badly formatted? The “address” field includes multiple commas but needs to be represented in the list as a single element! Assume that your file has been loaded into memory as the following multiline string:
+```csv
+Name,Phone,Address
+Mike Smith,15554218841,123 Nice St, Roy, NM, USA
+Anita Hernandez,15557789941,425 Sunny St, New York, NY, USA
+Guido van Rossum,315558730,Science Park 123, 1098 XG Amsterdam, NL
+```
+your output should be:
+```py
+[
+    ['Mike Smith', '15554218841', '123 Nice St, Roy, NM, USA'],
+    ['Anita Hernandez', '15557789941', '425 Sunny St, New York, NY, USA'],
+    ['Guido van Rossum', '315558730', 'Science Park 123, 1098 XG Amsterdam, NL']
+]
+```
+Ans:
+
+```py
+input_string = """Name,Phone,Address
+Mike Smith,15554218841,123 Nice St, Roy, NM, USA
+Anita Hernandez,15557789941,425 Sunny St, New York, NY, USA
+Guido van Rossum,315558730,Science Park 123, 1098 XG Amsterdam, NL"""
+
+
+def stringSplit(unsplit):
+    results = []
+    
+    lines = unsplit.splitlines()
+    
+    for line in lines[1:]:
+        print('line: ', line)
+        results.append(line.split(',', maxsplit=2))
+        
+    return results
+
+print(stringSplit(input_string))
+        ```
