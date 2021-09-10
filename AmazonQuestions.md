@@ -756,3 +756,54 @@ class Solution(object):
         return self.memo[idx]
 
 ```
+
+## 15. Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts
+- https://leetcode.com/problems/maximum-area-of-a-piece-of-cake-after-horizontal-and-vertical-cuts/
+- Time complexity: `O(N log N + M logM)` where N and M are the size of vertical and horizontal cuts arrays.
+```py
+def maxArea(self, h, w, horizontalCuts, verticalCuts):
+      """
+      :type h: int
+      :type w: int
+      :type horizontalCuts: List[int]
+      :type verticalCuts: List[int]
+      :rtype: int
+      """
+      horizontalCuts.sort()
+      verticalCuts.sort()
+
+      maxHeight = max(horizontalCuts[0], h - horizontalCuts[-1])
+
+      for i in range(1, len(horizontalCuts)): 
+          maxHeight = max(horizontalCuts[i] - horizontalCuts[i-1], maxHeight)
+
+
+      maxWidth = max(verticalCuts[0], w - verticalCuts[-1])
+      for i in range(1, len(verticalCuts)):
+          maxWidth = max(verticalCuts[i] - verticalCuts[i-1], maxWidth)
+
+      return (maxWidth * maxHeight) % (10**9 + 7)
+      
+      
+       # OR
+      horizontalCuts.sort()
+      verticalCuts.sort()
+
+      horizontalCuts.append(h)
+      verticalCuts.append(w)
+
+      prev = 0
+      maxWidth = 0
+      for hCut in horizontalCuts:
+          maxWidth = max((hCut - prev), maxWidth)
+          prev = hCut
+
+      prev = 0
+      maxHeight = 0
+      for wCut in verticalCuts:
+          maxHeight = max((wCut - prev), maxHeight)
+          prev = wCut
+
+      return (maxWidth * maxHeight) % (10**9 + 7)
+        
+```
