@@ -209,30 +209,21 @@ def isRobotBounded(self, instructions):
     :rtype: bool
     """
 
-    direction = 0
+   # direction: N, E, S, W
+    directions = [(1,0), (0,1),(-1,0),(0,-1)] # di, dj
+
+    currDir = 0
     i, j = 0, 0
-
-
-    for instruct in instructions:
-
-        if instruct == 'L':
-            direction = (direction - 1) % 4
-
-        elif instruct == 'R':
-            direction = (direction + 1 ) % 4
-
-        elif instruct == 'G':
-
-            if direction == 0: # North
-                j += 1
-            elif direction == 1: #East
-                i += 1
-            elif direction == 2: # South
-                j -= 1
-            else: # West
-                i -= 1
-
-    return (i,j) == (0,0) or (direction != 0)
+    for instruction in instructions:
+        if instruction == "L":
+            currDir = (currDir - 1) % 4
+        elif instruction == "R":
+            currDir = (currDir + 1) % 4
+        else:
+            di, dj = directions[currDir]
+            i += di
+            j += dj
+    return (i,j)==(0,0) or currDir != 0
     
  # Or base on direction
  def isRobotBounded(self, instructions):
