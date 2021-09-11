@@ -338,6 +338,31 @@ print(','.join([str(x[0])+':'+str(x[1]) for x in arr4]))
 ```
 23. - **`ss.isalpha(), ss.isnumeric()` to check if its a letter or number**
 
+
+24. **Python combination and permutation**:
+- for a given input if we should not change the place of elements in that input, use combination (n choose k: n!/(n-k)! k!):
+```py
+cc = combonations('ABC', 2)  # returns an iterable
+for ele in cc:
+  print(cc)  # returns 2-length tuple in sorted order
+  
+('A', 'B')
+('A', 'C')
+('B', 'C')
+```
+- if we can change the order, user permutation (n permutes k : n!/(n-k)!):
+```py
+cc = permutations('ABC', 2)  # returns an iterable
+for ele in cc:
+  print(cc)  # returns 2-length tuples all possible ordering
+  
+('A', 'B')
+('A', 'C')
+('B', 'A')
+('B', 'C')
+('C', 'A')
+('C', 'B')
+```
 ####################################################################################
 - In dividing a even or odd array into two partitions and later on calculate the median. We put the partition line in a place where the left side partition would always have one more element than the right side so the median was calculated:
     - if the array has even number of elements: median = (left of partition + partition line) / 2
