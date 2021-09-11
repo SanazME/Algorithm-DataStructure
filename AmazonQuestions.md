@@ -882,3 +882,88 @@ class CustomComparator(object):
         else: # case 3: two logs are digits
             return 0
 ```
+## 17. Analyze User Website Visit Pattern
+
+- https://leetcode.com/problems/analyze-user-website-visit-pattern/
+- `zip` and `*`: zip takes iterables (zero or more) and aggregates them in a tuple and return it. The zip()function returns an iterator of tuples based on the iterable objects.
+
+    - If we do not pass any parameter, zip() returns an empty iterator
+    - If a single iterable is passed, zip() returns an iterator of tuples with each tuple having only one element.
+    - If multiple iterables are passed, zip() returns an iterator of tuples with each tuple having elements from all the iterables.
+
+    - Suppose, two iterables are passed to zip(); one iterable containing three and other containing five elements. Then, the returned iterator will contain three tuples. It's because iterator stops when the shortest iterable is exhausted.
+```py
+number_list = [1, 2, 3]
+str_list = ['one', 'two', 'three']
+
+# No iterables are passed
+result = zip()
+
+# Converting iterator to list
+result_list = list(result)
+print(result_list)   #[]
+
+# Two iterables are passed
+result = zip(number_list, str_list)
+
+# Converting iterator to set
+result_set = set(result)
+print(result_set) # {(2, 'two'), (3, 'three'), (1, 'one')}
+
+
+numbersList = [1, 2, 3]
+str_list = ['one', 'two']
+numbers_tuple = ('ONE', 'TWO', 'THREE', 'FOUR')
+
+# Notice, the size of numbersList and numbers_tuple is different
+result = zip(numbersList, numbers_tuple)
+
+# Converting to set
+result_set = set(result)
+print(result_set)  # {(2, 'TWO'), (3, 'THREE'), (1, 'ONE')}
+
+result = zip(numbersList, str_list, numbers_tuple)
+
+# Converting to set
+result_set = set(result)
+print(result_set)  # {(2, 'two', 'TWO'), (1, 'one', 'ONE')}
+```
+
+- The * operator can be used in conjunction with zip() to unzip the list. `zip(*zippedList)`:
+```py
+coordinate = ['x', 'y', 'z']
+value = [3, 4, 5]
+
+result = zip(coordinate, value)
+result_list = list(result)
+print(result_list)   # [('x', 3), ('y', 4), ('z', 5)]
+
+c, v =  zip(*result_list)
+print('c =', c)  # c = ('x', 'y', 'z')
+print('v =', v)  # v = (3,4,5)
+```
+
+- **Python combination and permutation**:
+- for a given input if we should not change the place of elements in that input, use combination (n choose k: n!/(n-k)! k!):
+```py
+cc = combonations('ABC', 2)  # returns an iterable
+for ele in cc:
+  print(cc)  # returns 2-length tuple in sorted order
+  
+('A', 'B')
+('A', 'C')
+('B', 'C')
+```
+- if we can change the order, user permutation (n permutes k : n!/(n-k)!):
+```py
+cc = permutations('ABC', 2)  # returns an iterable
+for ele in cc:
+  print(cc)  # returns 2-length tuples all possible ordering
+  
+('A', 'B')
+('A', 'C')
+('B', 'A')
+('B', 'C')
+('C', 'A')
+('C', 'B')
+```
