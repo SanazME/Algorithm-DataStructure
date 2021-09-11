@@ -807,3 +807,78 @@ def maxArea(self, h, w, horizontalCuts, verticalCuts):
       return (maxWidth * maxHeight) % (10**9 + 7)
         
 ```
+## 16. Reorder Data in Log Files
+- https://leetcode.com/problems/reorder-data-in-log-files/
+- Note that in python `sort` and `sorted` use **Timesort** algorithm which is a hybrid algorithm derived from **insertion sort** and **merge sort**. Time complexity **O(n log)** & worst space complexity **O(N) assuming each element is O(1) or O(M .N) if each element is M lenght**.
+- **`ss.isalpha(), ss.isnumeric()` to check if its a letter or number**
+- If we want to sort an array based on multiple criteria (for example first sort by name and if two entries have the same name, then sort by age and then by job), we use a tuple of keys: `sorted(key = (name, age, job))`.
+- To first order letter ids and then digita ones, we use the first key like `(0, rest, _id) < (1,)`
+
+- **Time complexity O(M . N log N)**
+- Let **N** be the number of logs in the list and **M** be the maximum length of a single log.
+    - **Time Complexity:** **O(M⋅N⋅logN)**
+    - The sorted() in Python is implemented with the Timsort algorithm whose time complexity is **O(N⋅logN).**
+    - Since the keys of the elements are basically the logs itself, the comparison between two keys can take up to **O(M) time.**
+
+Therefore, **the overall time complexity of the algorithm is O(M⋅N⋅logN).**
+
+- **Space Complexity: O(M⋅N)**
+  - First, we need **O(M⋅N) space to keep the keys for the log.**
+  - In addition, the **worst space complexity of the Timsort algorithm is O(N), assuming that the space for each element is O(1). Hence we would need O(M⋅N) space to hold the intermediate values for sorting.**
+
+In total, the overall space complexity of the algorithm is \mathcal{O}(M \cdot N + M \cdot N) = \mathcal{O}(M \cdot N)O(M⋅N+M⋅N)=O(M⋅N).
+```py
+ def reorderLogFiles(self, logs: List[str]) -> List[str]:
+        
+      def getKey(log):
+          _id, rest = log.split(' ', maxsplit=1)
+          re = (0, rest, _id) if rest[0].isalpha() else (1,)
+          print(re)
+          return re
+
+
+      return sorted(logs, key=getKey)
+```
+- If you're asked to write a comparator similar to java for comparison logs, you need to import `cmp_to_key` from `functools` to **convert a comparator function to key**:
+```py
+from functools import cmp_to_key
+
+def reorderLogFiles(logs: List[str]) -> List[str]:
+    c = CustomComparator()
+        
+    return sorted(logs, key=cmp_to_key(c.compare))
+
+class CustomComparator(object):
+    
+    def comparator(self, t1, t2):
+        if t1 < t2:
+            return -1
+        elif t1 > t2:
+            return 1
+        else:
+            return 0
+        
+    def compare(self, log1, log2):
+        split1 = log1.split(' ', maxsplit=1) #(id, rest)
+        split2 = log2.split(' ', maxsplit=1)
+        
+        isDigit1 = split1[1][0].isnumeric()
+        isDigit2 = split2[1][0].isnumeric()
+        
+        # case 1: two logs are letters
+        if (not isDigit1 and not isDigit2):
+            cmp = self.comparator(split1[1], split2[1])
+            
+            if cmp != 0:
+                return cmp
+            else:
+                return self.comparator(split1[0], split2[0])
+        
+        # case 2: one log is letter and the other one is digit
+        if (not isDigit1 and isDigit2):
+            return -1
+        elif (not isDigit2 and isDigit1):
+            return 1
+        else: # case 3: two logs are digits
+            return 0
+```
