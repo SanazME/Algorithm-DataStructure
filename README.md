@@ -336,7 +336,7 @@ print(','.join([str(x[0])+':'+str(x[1]) for x in arr4]))
 ```py
 
 ```
-
+23. - **`ss.isalpha(), ss.isnumeric()` to check if its a letter or number**
 
 ####################################################################################
 - In dividing a even or odd array into two partitions and later on calculate the median. We put the partition line in a place where the left side partition would always have one more element than the right side so the median was calculated:
