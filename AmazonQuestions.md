@@ -967,3 +967,54 @@ for ele in cc:
 ('C', 'A')
 ('C', 'B')
 ```
+- For a list of username, timestamp and websites if we want to extract all websites visited by each users in chronological order, we can use zip to create an interatble consists of tuples of 3 elements and then order based on username and then timestamp so we can a list of websites for each user based on the time order:
+```py
+m = sorted(zip(username, timestamp, website), key= lambda x:(x[0], x[1]))
+```
+
+-  `sorted(myDict)` ona dictionary without any key returns an array of dict keys sorted in **ascending order**.
+- description: https://leetcode.com/problems/analyze-user-website-visit-pattern/discuss/899805/DETAILED-Easy-to-Follow-Python-Solution-%2B-Clearly-Explained
+```py
+def mostVisitedPattern(self, username: List[str], timestamp: List[int], website: List[str]) -> List[str]:
+		
+		# Create tuples as shown in description
+		# The timestamps may not always be pre-ordered (one of the testcases)
+		# Sort first based on user, then time (grouping by user)
+		# This also helps to maintain order of websites visited in the later part of the solution
+		
+		userTable = {}
+    combined = sorted(zip(username, timestamp, website), key=lambda x: (x[0], x[1]))
+
+    for user, time, web in combined:
+        if user in userTable:
+            userTable[user].append(web)
+        else:
+            userTable[user] = [web]
+            
+     # create all possible 3-sequences combinations for each user
+     # Get unique 3-sequence (note that website order will automatically be maintained)
+		# Note that we take the set of each 3-sequence for each user as they may have repeats
+		# For each 3-sequence, count number of users
+     patternCount = {}
+     
+     for user, webs in userTable.items():
+            usersCombinations = set(combinations(webs, 3))
+            for pattern in usersCombinations:
+                if pattern in patternCount:
+                    patternCount[pattern] += 1
+                else: 
+                    patternCount[pattern] = 1
+        
+     print(patternCount)
+     
+    # Re-iterating above step for clarity
+		# 1. first get all possible 3-sequences combinations(sites, 3)
+		# 2. then, count each one once (set)
+		# 3. finally, count the number of times we've seen the 3-sequence for every user (patterns.update(Counter)) 
+		# - updating a dictionary will update the value for existing keys accordingly (int in this case)
+    
+    # get most frequent 3-sequence sorted lexicographically
+     mm = sorted(patternCount) # sorted on dictionary returns a list of dict keys sorted in ascending order
+     
+     return max(mm, key=patternCount.get)
+```
