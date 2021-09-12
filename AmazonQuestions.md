@@ -1128,3 +1128,34 @@ class Solution(object):
         return self.dp[key]
 
 ```
+## 20. Minimum Cost to connect sticks
+- https://leetcode.com/problems/minimum-cost-to-connect-sticks/
+- We can use heap datastructure to always pop the two smallest values. We want to use the smallest sticks and use the longest ones at the end in a fewer times. Everytime we combine two sticks, the result is a larger one and we want to compare that against other sticks in the array to make sure that we always pick the shortest one for the next combine step.
+
+- Time complexity: `O(N log N)`. Adding an array element to a heap takes `N log N` cause it needs to sort them for min heap. Space complexity is `O(N)`.
+
+```py
+import heapq
+
+def connectSticks(sticks: List[int]) -> int:
+	if len(sticks) == 1:
+	    return 0
+
+	h = []
+
+	for stick in sticks:
+	    heappush(h, stick)
+
+	cost = 0
+
+	while len(h) != 1:
+	    ele1, ele2 = heappop(h), heappop(h)
+
+	    sumEle = ele1 + ele2
+
+	    cost += sumEle
+	    # add the combined stick back to heap
+	    heappush(h, sumEle)
+
+	return cost
+```
