@@ -1051,3 +1051,80 @@ def _getBinary(self, num):
 	return (result, count)
 
 ```
+## 19. Ones & Zeros
+- https://leetcode.com/problems/ones-and-zeroes/
+- Total number of subsets of a set is `2^(n) - 1`. So the Brute force solution will be time complexity of `O(m * 2^n)` where n is lenght of the set and m is the average lenght of the subset.
+- Good explanaition: https://leetcode.com/problems/ones-and-zeroes/discuss/814077/Dedicated-to-Beginners
+**- step1 : understand the problem**
+	- we have been given a array of BinaryStrings and two numbers, viz no of zeros and no of ones.
+	Our task is to tell how many strings can we make by using available no of zeros and ones, such that we are able to make the maximum no of strings present in given array.
+
+**- step 2: logic building and deriving recurence relation**
+
+**1st sub step : asking questions**
+
+1. question that i should ask is what is the max no of strings can i make from given avaible choices.
+( now assume you are at a particular index on the array , these are the questions that matter )
+2. if i use this current string then what all choices i am left with ? what is the max possible ans for those choices.
+3. if i dont use this current string then i have other options( other indexes ) to explore , whats going to be the answer for amoung these choices.
+4. Finally : if i know the answer for both the paths then i ould be able to decide wether i should select this current string or not.
+2nd sub step : Ariving at recurence relation
+
+**2nd sub step : Ariving at recurence relation**
+```py
+at some Ith index my options is going to be 
+1 . if i use decide to build this string then 
+	 answerFor( next index , currAvailableZeros - currentStringZeros , currAvailableOnes - currentStringOnes )
+2. if i dont decide to build this string ( assuming i will get better answer later, if i save available zeros and ones)
+	 answerFor( next index , currAvailableZeros , currAvailableOnes  )
+	 
+ans_for_ith = maxOf ( if i build this current string , if i dont build )
+```
+- with memoization:
+- Time complexity: **O(l * m * n)**: memo array with m and n sizes of zeros and ones and l is the lenght of strs array.
+- Space complexity: **O(l * m * n)**: memo array with m and n sizes of zeros and ones and l is the lenght of strs array.
+
+```py
+class Solution(object):
+    def __init__(self):
+        # dp[idx:zeros:ones]
+        self.dp = {}
+        
+    def findMaxForm(self, strs, m, n):
+        """
+        :type strs: List[str]
+        :type m: int
+        :type n: int
+        :rtype: int
+        """
+        # create a list of tuples including #zeros and #ones for each string
+        arr = []
+        for ele in strs:
+            arr.append((ele.count('0'), ele.count('1')))
+
+        return self.helper(arr, 0, m, n)
+    
+    def helper(self, arr, idx, zeros, ones):
+
+        if idx == len(arr) or (zeros == 0 and ones == 0):
+            return 0
+        
+        key = str(idx) + ':' + str(zeros) + ':' + str(ones)
+        
+        if key in self.dp:
+            return self.dp[key]
+        
+        if arr[idx][0] <= zeros and arr[idx][1] <= ones:
+            currentZeros, currentOnes = arr[idx][0], arr[idx][1]
+            include = self.helper(arr, idx + 1, zeros - currentZeros, ones - currentOnes) + 1
+            exclude = self.helper(arr, idx + 1, zeros, ones)
+
+            self.dp[key] = max(include, exclude)
+                
+        else:
+
+            self.dp[key] = self.helper(arr, idx + 1, zeros, ones)
+                
+        return self.dp[key]
+
+```
