@@ -1018,3 +1018,36 @@ def mostVisitedPattern(self, username: List[str], timestamp: List[int], website:
      
      return max(mm, key=patternCount.get)
 ```
+## 18. Sort Integers by The number of 1 Bits
+- https://leetcode.com/problems/sort-integers-by-the-number-of-1-bits/
+- A function to create a binary of an int in python is `bin(123)` which returns as **string** `0b1111011` and we can trim the first two letters by `bin(123)[2:]`.
+```py
+def sortByBits(self, arr):
+	"""
+	:type arr: List[int]
+	:rtype: List[int]
+	"""
+	def getKey(num):
+	    binary, count = self._getBinary(num)
+	    return (count, num)
+
+	return sorted(arr, key = getKey)
+
+
+def _getBinary(self, num):
+	result = 0
+	count = 0
+	n = 0
+
+	while num:
+
+	    resid = num % 2
+	    if resid == 1: count += 1
+
+	    result = resid * 10**n + result
+	    n += 1
+	    num = num // 2
+
+	return (result, count)
+
+```
