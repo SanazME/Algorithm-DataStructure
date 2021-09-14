@@ -293,6 +293,56 @@ def merge(self, intervals):
     return result
 ```
 
+## 4.1 Meeting Rooms II
+- https://leetcode.com/problems/meeting-rooms-ii/
+- we use min heap or priority Queue to save the end time of meetings 
+- Algorithm
+	1. Sort the given meetings by their start time.
+	2. Initialize a new min-heap and add the first meeting's ending time to the heap. We simply need to keep track of the ending times as that tells us when a meeting room will get free.
+	3. For every meeting room check if the minimum element of the heap i.e. the room at the top of the heap is free or not.
+	4. If the room is free, then we extract the topmost element and add it back with the ending time of the current meeting we are processing.
+	5. If not, then we allocate a new room and add it to the heap.
+	6. After processing all the meetings, the size of the heap will tell us the number of rooms allocated. This will be the minimum number of rooms needed to accommodate all the meetings.
+- Time complexity: `O(N logN)`:
+	- There are two major portions that take up time here. One is sorting of the array that takes `O(NlogN)` considering that the array consists of N elements.
+	- Then we have the min-heap. In the worst case, all N meetings will collide with each other. In any case we have N add operations on the heap. In the worst case we will have N extract-min operations as well. Overall complexity being `(NlogN)` since extract-min operation on a heap takes `O(logN)`.
+
+- Space Complexity: `O(N)` because we construct the min-heap and that can contain N elements in the worst case as described above in the time complexity section. Hence, the space complexity is `O(N)`.
+
+```py
+import heapq
+class Solution(object):
+    def minMeetingRooms(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+        
+        if len(intervals) <= 0:
+            return 0
+        
+        heap = []
+        # sort the meetings in increasing order of their start time
+        intervals.sort(key = lambda x: x[0])
+        
+        # Add the firt meesting end time to the heap
+        heappush(heap, intervals[0][1])
+        
+        for i in range(1, len(intervals)):
+            
+            # if the room due to free up the earliest is free, assign that room to his meeting
+            if heap[0] <= intervals[i][0]:
+                heappop(heap)
+              
+            # add the new end time to the heap
+            heappush(heap, intervals[i][1])
+            
+        return len(heap)
+
+```
+
+
+
 ## 5. Number of Islands
 - https://leetcode.com/problems/number-of-islands/
 - we should iterate through the 2D grid and for each point, first check if we've not visited it and if so, run either bfs or dfs to get all connected points and everytime, we get out of those methods, we increment a counter and at the end, we return the counter.
