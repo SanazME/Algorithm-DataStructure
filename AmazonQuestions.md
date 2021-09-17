@@ -1209,3 +1209,45 @@ def connectSticks(sticks: List[int]) -> int:
 
 	return cost
 ```
+## 21. Find All Anagrams in a String
+- https://leetcode.com/problems/find-all-anagrams-in-a-string/
+- we use sliding window + 2 hash maps: one hash map for count of chars in string `p` and the second hashmap gets updatd and constructed for 3-letter substrings in `s` as we move forward in `s` through a sliding window.
+
+- Time complexity: `O(Ns + Np)`, the dictionary comparisons is O(N) though!
+
+- Space complexity: `O(1)`
+```py
+def findAnagrams(self, s, p):
+        """
+        :type s: str
+        :type p: str
+        :rtype: List[int]
+        """
+        
+        ns, np = len(s), len(p)
+        result = []
+
+        if np > ns: 
+            return result
+
+        pCount = collections.Counter(p)
+        sCount = collections.Counter()
+
+        for i in range(ns):
+            char = s[i]
+            sCount[char] += 1
+            
+            if i >= np - 1:
+                startIdx = i - np + 1
+                startChar = s[startIdx]
+
+                if sCount == pCount:
+                    result.append(startIdx)
+
+                if sCount[startChar] == 1:
+                    del sCount[startChar]
+                else:
+                    sCount[startChar] -= 1
+
+        return result
+```
