@@ -1253,4 +1253,6 @@ def findAnagrams(self, s, p):
 ```
 ## 22. Rolling hash and Rabin-Karp algorithm
 - https://leetcode.com/problems/repeated-dna-sequences/solution/
-- 
+
+## 23. Longest repeating substring
+- https://leetcode.com/problems/longest-duplicate-substring/solution/
