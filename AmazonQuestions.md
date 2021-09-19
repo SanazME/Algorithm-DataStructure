@@ -1355,3 +1355,67 @@ class MyHashMap:
 # obj.remove(key)
 
 ```
+## 25. Design In-Memory File System
+- https://leetcode.com/problems/design-in-memory-file-system/
+- Answer: https://leetcode.com/problems/design-in-memory-file-system/discuss/426854/python-scalable-trie-solution
+```py
+class TrieNode():
+    def __init__(self):
+        self.children = {}
+        self.content = ''
+
+class FileSystem:
+
+    def __init__(self):
+        self.root = TrieNode()
+        
+    def _find(self, path):
+        # create or navigate path and return the current node at path
+        if len(path) == 1:
+            return self.root
+        
+        curr = self.root
+        
+        for word in path.split('/')[1:]:
+            if word not in curr.children:
+                curr.children[word] = TrieNode()
+            
+            curr = curr.children[word]
+            
+        return curr
+        
+    def ls(self, path: str) -> List[str]:
+        curr = self._find(path)
+        
+        # for filepath
+        if curr.content:
+            return [path.split('/')[-1]]
+        else:
+            # path of files and dirs
+            return sorted(curr.children.keys())
+        
+
+    def mkdir(self, path: str) -> None:
+        self._find(path)
+        
+        
+
+    def addContentToFile(self, filePath: str, content: str) -> None:
+        curr = self._find(filePath)
+        curr.content += content
+        
+
+    def readContentFromFile(self, filePath: str) -> str:
+        curr = self._find(filePath)
+        if curr.content:
+            return curr.content
+        
+
+
+# Your FileSystem object will be instantiated and called as such:
+# obj = FileSystem()
+# param_1 = obj.ls(path)
+# obj.mkdir(path)
+# obj.addContentToFile(filePath,content)
+# param_4 = obj.readContentFromFile(filePath)
+```
