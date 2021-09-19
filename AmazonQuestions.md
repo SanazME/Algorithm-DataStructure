@@ -1256,3 +1256,102 @@ def findAnagrams(self, s, p):
 
 ## 23. Longest repeating substring
 - https://leetcode.com/problems/longest-duplicate-substring/solution/
+
+## 24. Design HashMap
+- https://leetcode.com/problems/design-hashmap/
+- There are two main issues that we should tackle, in order to design an efficient hashmap data structure: 
+	1.  hash function design
+	2.  collision handling
+
+- we use **Modulo + Array** approach, 
+- As one of the most intuitive implementations, we could adopt the modulo operator as the hash function, since the key value is of integer type. In addition, in order to minimize the potential collisions, it is advisable to use a prime number as the base of modulo, e.g. 2069.
+
+We organize the storage space as an array where each element is indexed with the output value of the hash function.
+
+In case of collision, where two different keys are mapped to the same address, we use a bucket to hold all the values. The bucket is a container that hold all the values that are assigned by the hash function. We could use either a LinkedList or an Array to implement the bucket data structure.
+
+- **Time Complexity**: for each of the methods, the time complexity is `O(K/N)`. Where N is the number of all possible keys (in key - value inputs) and K is the number of predefined buckets in the hashmap, which is 2069 in our case.
+
+	- In the ideal case, the keys are evenly distributed in all buckets. As a result, on average, we could consider the size of the bucket is  `O(K/N)`. 
+	- Since in the worst case we need to iterate through a bucket to find the desire value, the time complexity of each method is  `O(K/N)`.
+
+- **Space Complexity**: `O(K+M)` where K is the number of predefined buckets in the hashmap and M is the number of unique keys that have been inserted into the hashmap.
+
+```py
+class Bucket:
+    def __init__(self):
+        self.bucket = []
+        
+    def get(self, key):
+        for (k,v) in self.bucket:
+            if k == key:
+                return v            
+        return -1
+            
+            
+    def put(self, key, value):
+        found = False
+        for i, kv in enumerate(self.bucket):
+            if kv[0] == key:
+                self.bucket[i] = (key, value)
+                found = True
+                break 
+        
+        if not found:
+            self.bucket.append((key, value))
+        
+            
+    def remove(self, key):
+        for i, (k, v) in enumerate(self.bucket):
+            if k == key:
+                del self.bucket[i]
+        
+        print('bucket: ', self.bucket)
+
+
+class MyHashMap:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.arrHash = [Bucket() for i in range(2069)]
+        
+    def _hashFunction(self, key):
+        return (key % 2069)
+    
+    def put(self, key: int, value: int) -> None:
+        """
+        value will always be non-negative.
+        """
+        idx = self._hashFunction(key)
+        self.arrHash[idx].put(key, value)
+                
+
+    def get(self, key: int) -> int:
+        """
+        Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key
+        """
+        idx = self._hashFunction(key)
+                
+        return self.arrHash[idx].get(key)
+        
+
+    def remove(self, key: int) -> None:
+        """
+        Removes the mapping of the specified value key if this map contains a mapping for the key
+        """
+        idx = self._hashFunction(key)
+        bucket = self.arrHash[idx]
+        
+        bucket.remove(key)
+        
+
+
+# Your MyHashMap object will be instantiated and called as such:
+# obj = MyHashMap()
+# obj.put(key,value)
+# param_2 = obj.get(key)
+# obj.remove(key)
+
+```
