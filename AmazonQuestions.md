@@ -1419,3 +1419,47 @@ class FileSystem:
 # obj.addContentToFile(filePath,content)
 # param_4 = obj.readContentFromFile(filePath)
 ```
+## 26. Min Number of frogs croaking
+- https://leetcode.com/problems/minimum-number-of-frogs-croaking/
+- Solutions:
+	- https://leetcode.com/problems/minimum-number-of-frogs-croaking/discuss/586653/C%2B%2B-Python-Java-Lucid-code-with-documened-comments-%2B-Visualization
+	- https://leetcode.com/problems/minimum-number-of-frogs-croaking/discuss/586543/C%2B%2BJava-with-picture-simulation
+
+```py
+import collections
+class Solution:
+    def minNumberOfFrogs(self, croakOfFrogs: str) -> int:
+        
+        word = 'croak'
+        
+        if len(croakOfFrogs) % len(word) != 0:
+            return -1
+        
+        hashCroak = collections.defaultdict(int)
+        arr = [0 for i in range(len(word))]
+        
+        for char in 'croak':
+            hashCroak[char] += 1
+         
+        count = 0
+        maxSoFar = 0
+        
+        
+        for char in croakOfFrogs:
+            idx = word.find(char)
+            arr[idx] += 1
+            if char == 'c':
+                count += 1
+            elif char == 'k':
+                count -= 1
+                
+            hashCroak[char] += 1
+            
+            if hashCroak['c'] < hashCroak['r'] or hashCroak['r'] < hashCroak['o'] or hashCroak['o'] < hashCroak['a'] or hashCroak['a'] < hashCroak['k']:
+                return -1
+            
+            maxSoFar = max(maxSoFar, count)
+            
+        return maxSoFar
+```
+
