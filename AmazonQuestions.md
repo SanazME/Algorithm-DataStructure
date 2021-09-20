@@ -1555,3 +1555,37 @@ def killProcess(self, pid: List[int], ppid: List[int], kill: int) -> List[int]:
         return dfs(kill)
 
 ```
+## 29. Minimum Time to Collect All Apples in a Tree
+- https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/
+- solution: https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/discuss/623673/Concise-explanation-with-a-Picture-for-Visualization
+
+```py
+class Solution:
+    def minTime(self, n: int, edges: List[List[int]], hasApple: List[bool]) -> int:
+        
+        children = [[] for i in range(n)]
+        
+        for p1, p2 in edges:
+            children[p1].append(p2)
+            children[p2].append(p1)
+            
+        visited = set()
+        
+        def dfs(node):
+            if node in visited:
+                return 0
+            
+            visited.add(node)
+            secs = 0
+            
+            for child in children[node]:
+                secs += dfs(child)
+             
+            print('node, secs', node, secs)
+            if secs > 0:
+                return secs + 2
+            
+            return 2 if hasApple[node] else 0
+            
+        return max(dfs(0) - 2, 0)
+```
