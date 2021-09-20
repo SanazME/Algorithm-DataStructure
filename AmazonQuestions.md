@@ -1462,4 +1462,60 @@ class Solution:
             
         return maxSoFar
 ```
+## 27. Compare Version Numbers
+- https://leetcode.com/problems/compare-version-numbers/
+- We can either split from `.` for both of the version strings from the beginning which takes `O(N + M)` space complexity to save them to two lists and then compare each element (converted to int first). Or we can get each chunk of the version while we're marching the two versions in one go and unpack each chunk on the fly. In that case, instead of storing the whole versions, we need space to store a substring of the input string for comparison. In the worst case, the substring could be the original string: `O(max(N,M))`, N and M are lenght of input strings.
+- Time complexity: first approach `O(N + M)`. The second approach: `O(max(N,M))`
 
+
+```py
+def compareVersion(self, version1: str, version2: str) -> int:
+        
+        
+        p1, p2 = 0, 0
+        n1, n2 = len(version1), len(version2)
+        
+        while p1 < n1 or p2 < n2:
+            ver1, p1 = self._get_next_chunk(version1, n1, p1)
+            ver2, p2 = self._get_next_chunk(version2, n2, p2)
+            
+            if ver1 != ver2:
+                return 1 if ver1 > ver2 else -1
+            
+        return 0
+    
+    def _get_next_chunk(self, version, n, p):
+
+        if p > n - 1:
+            return 0, p
+        
+        p_end = p
+        
+        while p_end < n and version[p_end] != '.':
+            p_end += 1
+            
+        if p_end == n:
+             return int(version[p:p_end]), p_end
+        else:
+            return int(version[p:p_end]), p_end+1
+       
+#         v1 = version1.split('.')
+#         v2 = version2.split('.')
+        
+#         print(v1, v2)
+        
+#         n1, n2 = len(v1), len(v2)
+        
+#         for i in range(max(n1, n2)):
+#             val1 = int(v1[i]) if i < n1 else 0
+#             val2 = int(v2[i]) if i < n2 else 0
+            
+#             if val1 > val2:
+#                 return 1
+#             elif val1 < val2:
+#                 return -1
+            
+#         return 0
+        
+
+```
