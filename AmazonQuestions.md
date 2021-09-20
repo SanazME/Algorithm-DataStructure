@@ -1519,3 +1519,39 @@ def compareVersion(self, version1: str, version2: str) -> int:
         
 
 ```
+## 28. Kill Process
+- https://leetcode.com/problems/kill-process/
+
+```py
+def killProcess(self, pid: List[int], ppid: List[int], kill: int) -> List[int]:
+        childrenList = {}
+        
+        for i, parent in enumerate(ppid):
+            if parent in childrenList:
+                childrenList[parent].append(pid[i])
+            else:
+                childrenList[parent] = [pid[i]]
+                
+                
+        print(childrenList)
+        
+        def dfs(node):
+            stack = [node]
+            visited = set()
+            
+            while stack:
+                ele = stack.pop()
+                
+                if ele in visited: continue
+                
+                visited.add(ele)
+                
+                if ele in childrenList:
+                    for child in childrenList[ele]:
+                        stack.append(child)
+                        
+            return visited
+            
+        return dfs(kill)
+
+```
