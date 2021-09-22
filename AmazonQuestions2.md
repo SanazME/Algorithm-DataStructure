@@ -15,7 +15,7 @@ def allocateSpace(processes, n):
         
         print('totalSum - n: ', totalSum - n)
         if totalSum - n in cumSum:
-            count += 1
+            count += cumSum[totalSum - n]
             
         cumSum[totalSum] += 1
         print(cumSum)
