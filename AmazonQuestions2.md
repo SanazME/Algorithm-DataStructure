@@ -196,6 +196,12 @@ Let’s see how we might implement this functionality:
 
 Otherwise, we get the result from the cache directly.
 
+- **Time Complexity**: `O(N * M^2)`: Let n be the size of the list of strings and m be the average length of a string in the list of strings.
+- There are O(m) different places where each word can be split into prefix and suffix. For every split, every character in the prefix and suffix are processed in the worst case, so that gives us O(m^2) for each word. Since there are n words, we will have O(n×m^2) time complexity.
+
+- **Space Complexity**
+- - In the worst case, all O(n) words will end up in res. This requires O(n \times m)O(n×m) space. The word_set requires another O(n \times m)O(n×m) space. Then, there is the cache. All n words become part of the cache, accounting for O(n \times m)O(n×m) space. In the worst case, all the suffixes and prefixes may be stored there as well. For one word, there are at most O(m)O(m) suffix and prefix pairs. The cumulative size of these prefixes and suffixes is O(m^2). **The first split results in the prefix of size 1, suffix m-1. Then, there is 2, m-2, and so on, resulting in O(m^2). This means the space complexity will be O(n * m^2)**
+
 ```py
 def identify_concatenations(words):
     # Set for O(1) lookups
