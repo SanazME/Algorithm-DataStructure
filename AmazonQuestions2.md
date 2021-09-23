@@ -165,3 +165,70 @@ def schedule_process(n, edges):
 processes = 7
 arr = [[4,6],[5,6], [1,4], [2,1], [3,2], [5,4], [5,0], [3,5], [3,0]]
 ```
+## 33. Compress File
+- We have to come up with a compression strategy for text files that store our system’s information. Here is our strategy: whenever we see a word in a file composed as a concatenation of other smaller words in the same file, we will encode it with the smaller words’ IDs. For example, if we have the words `n, cat, cats, dog, and catsndog` in a text file. The word catsndog is the concatenation of the words n, cats, and dog, so we can assign it an ID. This way, instead of storing the entire `catsndog` word as is, we are storing an ID that takes much less space.
+
+We’ll be provided a list of strings representing all the words from a text file. Our task will be to identify and isolate all the concatenated words.
+
+- We’ll traverse the list of strings, and for each string, we’ll check every single combination. For example, some combinations of the word catsndog are `(c, atsndog), (ca, tsndog), (cat, sndog), (cats, ndog)`, etc. For each combination, we get two words. We can call the first word as prefix and the second word as suffix. Now, for a combination to be considered a concatenated word, both the prefix and suffix should be present in our list of strings. We’ll first perform the check for prefix because there is no need to check the suffix if the prefix is not present, and we can move to the next combination.
+
+If the prefix word is present in our list of strings, then we move to check the suffix word. If the suffix word is also present, we have found the concatenated word. Otherwise, there can be two possibilities:
+
+1. The suffix word is a concatenation of two or more words. We will recursively call the same function on the suffix word to generate more (prefix, suffix) pairs until a suffix that is present in our list of strings is found.
+
+2. There is no such suffix word present in our list of strings, and our current combination is not a concatenated word.
+
+When we break down the first suffix word, it breaks that word down to the last letter to check it in our list of strings. After this, we move to the next combination. This breakdown and search process occurs in DFS fashion which helps us form a tree-like structure for all words.
+
+Now, for a single string, we generate multiple combinations, and for each of those combinations, we might recursively generate all consecutive sequences of the words. There will likely be an overlap in which we’ll compute the validity of a word multiple times, and this will increase our time complexity. For example, for the combination (c, atsndog), at some point, we will have to check the validity of the suffix word combination (a, tsndog). Now, when we get a combination (ca, tsndog) from a different iteration, we will again check the word tsndog when it has already been checked. The easiest way to counter this extra computation time is to use a cache. This way, if we encounter the same word again, instead of calling an expensive DFS function, we can simply return its value from the cache. This technique is also known as memoization.
+
+Let’s see how we might implement this functionality:
+
+1. Initialize the list of strings to a set data structure for O(1)O(1) lookups. Additionally, initialize a HashMap to be used as a cache.
+
+2. Traverse the list of strings provided as input and call the DFS on each word.
+
+3. In the DFS function, compute the prefix and suffix words.
+
+4. If the prefix is found in our set, then search for suffix. If the suffix word is not found, then recursively call DFS on the suffix word.
+
+5. If a word’s result is not calculated, we compute it during the above steps and cache (or memoize) it.
+
+Otherwise, we get the result from the cache directly.
+
+```py
+def identify_concatenations(words):
+    # Set for O(1) lookups
+    word_set = set(words)
+    
+    def dfs(word, cache):
+        # If result for current word already calculated then
+        # return from cache
+        if word in cache:
+            return cache[word]
+        # Traverse over the word to generate all combinations    
+        for i in range(1, len(word)):
+            # Divide the word into prefix and suffix
+            prefix = word[:i]
+            suffix = word[i:]
+            
+            if prefix in word_set:
+                if suffix in word_set or dfs(suffix, cache):
+                    cache[word] = True
+                    return True
+        cache[word] = False
+        return False
+    
+    res = []
+    cache = {}
+    # Process for each word
+    for word in words:
+        if dfs(word, cache):
+            res.append(word)
+    return res
+
+# Driver code
+
+file_words = ["n", "cat", "cats", "dog", "catsndog"]
+print("The following words will be compressed:", identify_concatenations(file_words))
+```
