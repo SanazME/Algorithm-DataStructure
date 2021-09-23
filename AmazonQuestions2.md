@@ -238,3 +238,39 @@ def identify_concatenations(words):
 file_words = ["n", "cat", "cats", "dog", "catsndog"]
 print("The following words will be compressed:", identify_concatenations(file_words))
 ```
+## 34. Sequence construction
+- https://leetcode.com/problems/sequence-reconstruction/
+- Answer: https://leetcode.com/problems/sequence-reconstruction/discuss/92574/Very-short-solution-with-explanation
+
+```py
+def sequence_reconstruction(org, seqs):
+  if len(seqs) == 0 or len(org) == 0:
+    return False
+
+  orgLen = len(org)
+  idx = [0 for _ in range(orgLen+1)]
+  pair = [False for _ in range(orgLen)]
+  
+  for i in range(orgLen):
+    idx[org[i]] = i
+
+  for seq in seqs:
+    for i in range(len(seq)):
+      if seq[i] > orgLen or seq[i] < 0:
+        return False
+
+      if i > 0 and idx[seq[i-1]] >= idx[seq[i]]:
+        return False
+
+      if i > 0 and idx[seq[i-1]] + 1 == idx[seq[i]]:
+        pair[idx[seq[i-1]]] = True
+
+  for i in range(len(pair) - 1):
+    ele = pair[i]
+    if not ele:
+      return False
+
+  return True
+
+
+```
