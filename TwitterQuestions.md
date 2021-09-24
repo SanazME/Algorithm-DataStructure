@@ -513,3 +513,34 @@ def maximalSquare(self, matrix):
     
     
 ## Find elements in a pair list which also contain the reverse pair?
+
+    
+## Twitter Stickers 
+- We have a bunch of stickers which say "twitter" and we decide to cut these up into their separate letters to make new words. So, for example, one sticker would give us the letters "T", "W", "I", "T", "T", "E", "R", which we could rearrange into other word[s] (like "write", "wit", "twit", etc)
+
+Challenge:
+Write a function that takes as its input an arbitrary string and as output, returns the number of intact “twitter” stickers we would need to cut up to recreate that string.
+
+Example: twitter_stickers(“write wit twit”) would return "3", since we would need to cut up 3 stickers to provide enough letters to write “write wit twit”
+```py
+import collections
+def twitter_stickers(s):
+    stickerHash = collections.Counter('twitter')
+    wordFreq = collections.Counter("".join(s.split(' ')))
+    print('wordFreq: ', wordFreq)
+    
+    maxCount = 0
+    for key in wordFreq:
+        if key not in stickerHash:
+            return 0
+        maxCount = max(wordFreq[key] - stickerHash[key], maxCount)
+        
+    return maxCount + 1
+    
+    
+    
+# print(twitter_stickers("write wit twit"))
+# print(twitter_stickers("twitter"))
+# print(twitter_stickers("rty"))
+# print(twitter_stickers("ttttww"))
+```
