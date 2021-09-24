@@ -544,3 +544,52 @@ def twitter_stickers(s):
 # print(twitter_stickers("rty"))
 # print(twitter_stickers("ttttww"))
 ```
+## Add Likes
+- For the first feature of the Twitter application, we are creating an API that calculates the total number of likes on a person’s Tweets. For this purpose, your team member has already extracted the data and stored it in a simple text file for you. You have to create a module that takes two numbers at a time and returns the sum of the numbers. The inputs were extracted from a text file, so they are in the form of strings. The limitation of the API is that we want all of the values to remain strings. We cannot even convert the string to numbers temporarily.
+
+For example, let’s say you are given the strings "1545" and "67" as input. Your module should not convert these into integers while computing the sum and return "1612".
+
+**Time complexity**: `O(max(N, M))`
+**Space complexity**: `O(max(N, M))`
+    
+```py
+ def add_likes(like1, like2):
+    
+    # if one of like strings is empty
+    if not (like1 and like2):
+        return like1 if like1 else like2
+    
+    n1, n2 = len(like1), len(like2)
+    p1, p2 = n1 - 1, n2 - 1
+    
+    res = ''
+    carry = 0
+    
+    while p1 >= 0 or p2 >= 0:
+        
+        if p1 >= 0:
+            num1 = ord(like1[p1]) - ord('0')
+        else:
+            num1 = 0
+            
+        if p2 >= 0:
+            num2 = ord(like2[p2]) - ord('0')
+        else:
+            num2 = 0
+        
+        sumTwo = num1 + num2 + carry
+        res = str(sumTwo % 10) + res
+        carry = (sumTwo // 10)
+        print(res, carry)
+        
+        p1 -= 1
+        p2 -= 1
+        
+    if carry > 0:
+        res = str(carry) + res
+        
+    return res
+        
+     
+print(add_likes("1545", "67"))   
+```
