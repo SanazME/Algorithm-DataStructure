@@ -276,7 +276,66 @@ def sequence_reconstruction(org, seqs):
 ```
 ## 35. Identify Peak Interaction Times
 - https://www.educative.io/courses/decode-coding-interview-python/mEKX514XyKp
-- My solution:
+- To solve this problem, we can start by calculating the sum of n intervals for each index, where n = hours. We can store these sums in an array called sums. Then, all that’s left will be to find the lexicographically smallest tuple of indices [a, b, c] that maximizes sums[a] + sums[b] + sums[c].
+
+Let’s take a look at the algorithm to find the solution:
+
+First, we need to calculate the sums at each index and store them in the array called sums. We can calculate sums using a sliding window.
+
+When the sums are calculated, we need to find the [a, b, c] indices. We know that we can assume some constraints for the lexicographically smallest trio of indices.
+
+If we consider b to be fixed, a should be in between 0 and b - n. Similarly, c should be between b + n and sums.length -1. We can deduce these constraints considering we want non-overlapping intervals. We can now find these indices using dynamic programming.
+
+We will create two arrays, left and right. These arrays will store the maximum starting index from the left and right, respectively. The left[i] will contain the first occurrence of the largest value of W[a] on the interval a \in [0, i]a∈[0,i]. Similarly, the right[i] will be the same but on the interval a \in [i, \text{len}(sums) - 1]a∈[i,len(sums)−1].
+
+Finally, for each value of b, we will check whether the corresponding left and right values are in the above-mentioned constraints or not. Out of all the trios that fulfill the constraints, we will choose the one that produces the maximum sums[a] + sums[b] + sums[c].
+
+```py
+
+def three_subarray_max_sum(numbers, k):
+    sums = []
+    curr_sum = 0
+    # sum of k-element subarrays
+    for i, ele in enumerate(numbers):
+        curr_sum += ele
+
+        if i >= k:
+            curr_sum -= numbers[i - k]
+
+        if i >= k - 1:
+            sums.append(curr_sum)
+
+    # Max sum indices from left
+    left = [0 for _ in range(len(sums))]
+    best = 0
+
+    for i in range(len(sums)):
+        if sums[i] > sums[best]:
+            best = i
+        left[i] = best
+
+    # Max sum indices from right
+    right = [0 for _ in range(len(sums))]
+    best = len(sums) - 1
+
+    for i in range(len(sums) - 1, -1, -1):
+        if sums[i] > sums[best]:
+            best = i
+        right[i] = best
+
+    re = []
+
+    for mid in range(k, len(sums) - k):
+        l = left[mid - k]
+        r = right[mid + k]
+
+        if len(re) == 0 or (sums[l] + sums[mid] + sums[r] > sums[re[0]] + sums[re[1]] + sums[re[2]]):
+            re = [l, mid, r]
+
+    return re
+```
+
+- My solution (not working with lexigraphically smallest one):
 ```py
 from queue import PriorityQueue
 
