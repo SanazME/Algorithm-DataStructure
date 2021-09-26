@@ -309,3 +309,68 @@ def peak_interaction_times(interaction, hours):
     
 print(peak_interaction_times([0,2,1,3,1,7,11,5,5], 2))
 ```
+
+- **To get a agg sum of elements over intervals of hours:**
+```py
+interactions = [0,2,1,3,1,7,11,5,5]
+hours = 2
+sums = []
+curr_sum = 0
+
+for i, ele in enumerate(interactions):
+    curr_sum += x
+    
+    if i >= hours:
+        curr_sum  -= interactions[i - hours]
+    
+    if i >= hours - 1:
+        sums.append(curr_sum)
+```
+
+## Split Users into Two Groups
+- https://www.educative.io/courses/decode-coding-interview-python/BngpZMyrVjY
+- In this feature, the company has decided that they want to show people “follow” recommendations. For this purpose, we have been given the “following” relationship information for a group of users in the form of a graph. We want to see if these people can be split into two groups such that no one in the group follows or is followed-by anyone in the same group. We will then recommend people from the same group to each other.
+
+The “following” relationship graph is given in the form of an undirected graph. So, if UserA follows UserB, or the other way around, it does not matter. This graph will be given to you as an input in the form of a 2D array called graph. In this array, each graph[i] will contain a list of indices, j, for which the edge between nodes i and j exists. Each node in the graph will represent a person and will be denoted by an integer ID from 0 to graph.length-1.
+
+For example, the graph can be [[3], [2, 4], [1], [0, 4], [1, 3]].
+
+- **Bigraph or Bipartite graph**
+- To check if a graph is bipartite, we will color a node blue if it is part of the first set; otherwise, we will color it red. We can color the graph greedily if and only if it is bipartite. In a bipartite graph, all of a blue node’s neighbors must be red, and all of a red node’s neighbors must be blue.
+- The complete algorithm is given below:
+
+We’ll keep an array or HashMap to store each node’s color as color[node]. The possible values for colors can be 0, 1, or uncolored (-1 or null).
+
+We will search each node in the graph to ensure disconnected nodes are also visited. For each uncolored node, we’ll start the coloring process by doing DFS on that node.
+
+To perform DFS, we will first check if the nodes connected to the current node are colored or not. If a node is colored, we will check if the color is the same color as the current node. If the colors are the same, we return false.
+
+If the node is not colored, we will color it and call DFS on that node recursively. If the recursive call returns false, the current DFS should also return false because coloring will not be possible.
+
+If everything goes well and colors are assigned successfully, we will return true at the end.
+
+
+```py
+def is_split_possible(graph):
+    color = {}
+    def dfs(pos):
+        for i in graph[pos]:
+            if i in color:
+                if color[i] == color[pos]:
+                    return False
+            else:
+                color[i] = 1 - color[pos]
+                if not dfs(i):
+                    return False
+        return True
+    for i in range(len(graph)):
+        if i not in color:
+            color[i] = 0
+            if not dfs(i):
+                return False
+    return True
+
+# Driver code
+graph = [[3], [2, 4], [1], [0, 4], [1, 3]]
+print(is_split_possible(graph))
+```
