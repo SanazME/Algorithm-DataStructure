@@ -374,3 +374,46 @@ def is_split_possible(graph):
 graph = [[3], [2, 4], [1], [0, 4], [1, 3]]
 print(is_split_possible(graph))
 ```
+## 37. Add Binary numbers
+- https://www.educative.io/courses/decode-coding-interview-python/R8kr2ZzZ2zK
+```py
+def add_binary(a, b):
+    if not(a and b):
+        return a or b
+    
+    carry = 0
+    res = ''
+    res = []
+    
+    na, nb = len(a), len(b)
+    pa, pb = na - 1, nb - 1
+    
+    for i in range(max(na, nb) - 1, -1, -1):
+        if pa >= 0:
+            numa = ord(a[pa]) - ord('0')
+            pa -= 1
+        else:
+            numa = 0
+            
+        if pb >= 0:
+            numb = ord(b[pb]) - ord('0')
+            pb -= 1
+        else:
+            numb = 0
+            
+        sumTwo = numa + numb + carry
+        carry = sumTwo // 2
+        res = str(sumTwo%2) + res
+        res.append(sumTwo % 2)
+        
+    if carry == 1:
+        res = str(carry) + res
+        res.append(carry)
+        
+    return res
+    return '.join([str(x) for x in res[::-1]
+     
+    
+print(add_binary("10", "10111101"))
+````
+
