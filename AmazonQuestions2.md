@@ -274,3 +274,38 @@ def sequence_reconstruction(org, seqs):
 
 
 ```
+## 35. Identify Peak Interaction Times
+- https://www.educative.io/courses/decode-coding-interview-python/mEKX514XyKp
+- My solution:
+```py
+from queue import PriorityQueue
+
+def peak_interaction_times(interaction, hours):
+    groups = 3
+    result = []
+    if len(interaction) < hours * groups:
+        return []
+    
+    i = 0
+    q = PriorityQueue()
+    
+    while i + hours <= len(interaction):
+        sumTwo = sum(interaction[i:i+hours])
+        q.put((-sumTwo, (i, i + hours - 1)))
+        i += 1
+      
+    visited = set()
+    while groups > 0:
+        _, (start, end) = q.get()
+        # print(ele)
+        if start in visited or end in visited: continue
+            
+        visited.update([start, end])
+        result.append(start)
+        groups -= 1
+    
+    result.sort()
+    return result
+    
+print(peak_interaction_times([0,2,1,3,1,7,11,5,5], 2))
+```
