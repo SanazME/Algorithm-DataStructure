@@ -576,6 +576,12 @@ print(auto.autoComplete("#"))
    
 ```
 - Other implementation that uses `dfs` helper function to get all possible words that match the input:
+- **Time complexiy**:
+    - `constructor`: The time complexity is `O(n×l)`, where n records of average length l are traversed to create the trie.
+    - `autoComplete()`: The time complexity is `O(q + m + [l×log(l)])`, where q is the length of the query string at that moment and m is the number of nodes in the trie. The factor l×log(l) indicates the time taken to sort the list of queries to obtain the top three ranking queries.
+- **Space complexity**:
+    - constructor: The space complexity is `O(n×l)`, where nn records of average length ll are stored in the trie.
+    - autoComplete(): The space complexity is `O(n×l)`, where nn records of average length ll are stored in the list to return at the end.
 ```py
 class Node(object):
     def __init__(self):
