@@ -475,4 +475,166 @@ def add_binary(a, b):
     
 print(add_binary("10", "10111101"))
 ````
+## 38. Design Search Autocomplete System
+- https://www.educative.io/courses/decode-coding-interview-python/7npPkxyOD7r
+- The second feature we want to implement is the auto-complete query. This is the feature that prompts the search engine to give you some suggestions to complete your query when you start typing something in the search bar. These suggestions are given based on common queries that users have searched already that match the prefix you have typed. Moreover, these suggestions are ranked based on how popular each query is.
 
+Assume the search engine has the following history of queries: ["beautiful", "best quotes", "best friend", "best birthday wishes", "instagram", "internet"]. Additionally, you have access to the number of times each query was searched. The following list shows the number each query string occurred, respectively: [30, 14, 21, 10, 10, 15]. Given these parameters, we want to implement an autoComplete() function that takes in an incomplete query a user is typing and recommends the top three queries that match the prefix and are most popular.
+
+The system should consider the inputs of the autoComplete() function as a continuous stream. For example, if the autoComplete("be") is called, and then the autoComplete("st") is called, the complete input at that moment will be "best". The input stream will end when a specific delimiter is passed. In our case, the delimiter is "#", and, autoComplete("#") will be called. This marks the end of the query string. At this point, your system should store this input string in the record, or if it already exists, it should increase its number of instances.
+
+Suppose, the current user has typed "be" in the search bar; this will be the input for the autoComplete() function, meaning autoComplete("be") will be called. It will return ['beautiful', 'best friend', 'best quotes'] because these queries match the prefix and are the most popular. The order of queries in the output list is determined by popularity. Then, the user adds "st" to the query, making the string "best", and the autoComplete("st") will be called. Now, the output should be ['best friend', 'best quotes', 'best birthday wishes']. Lastly, the user finishes the query, so the autoComplete("#") will be called. It will output [] and "best" will be added in the record to be used in future suggestions.
+
+- Solution:
+- To design this system, we will again use the trie data structure. Instead of simply storing the words in the prefix tree, as we did in the WordDictionary, we will now store the query strings. The `AutocompleteSystem` class will act as a trie that keeps a record of the previous queries and assigns them a rank based on their number of occurrences.
+
+We will implement the AutocompleteSystem class as follows:
+
+- `Constructor`: In the constructor, we will feed the historical data into the system and create a trie out of it. We will initialize the root node of trie and call the `addRecord()` function to add all the records.
+
+- `addRecord()` function: This function inserts records in the trie by creating new nodes. Its functionality is similar to the `insertWord()` function that we discussed in Feature #1: Store and Fetch Words. Each node of the trie will have:
+
+    - A `children` dictionary
+    - A Boolean called `isEnd` to set the end of the query sentence
+    - A new variable called `data` that is optional, but we can use it **to store the whole query sentence in the last character of the sentence**. This will increase space complexity but can make computation easier.
+    - A `rank` variable to store the number of occurrences
+In the code below, you will notice that we are storing the rank as a negative value. There is a valid reason for doing this unintuitive step. Later, you will see that we will be using the `sorted()` method to obtain the top three results, and this negative rank will play a significant role. This will be explained in more detail in the explanation for the `autoComplete()` function.
+
+- `search()` function: This function checks to see if the first character exists in its children beginning with the root node. If it exists, we move on to the node with the first character and check its children for the next character. If the node corresponding to a character is not found, we return []. If the search string is found, the dfs() helper function is called on the node with the last character of the input query.
+
+- `dfs()` function: This function is the **helper function that returns all the possible queries in the record that match the input**. First, it will check if the node has isEnd set to True; if it does, the node’s rank and data will be appended as a tuple in an output list ret. Then, DFS exploration will be performed on all children nodes. All the possible queries will be added in ret and returned at the end.
+
+- `autoComplete()` function: This function checks if the input string is not the end of string delimiter "#". If it is not the end of the input string, we append the value to the keyword member variable. Then, we call the `search()` function, which returns the list of tuples as discussed above. On the other hand, if the input string is the end of the input, we add the value present in keyword to the trie by calling `addRecord()`. Next, the value of the keyword variable is reset to an empty string. Before returning, you can see that we do some computation on the result list. The list that we received from the search() function was a list of tuples with rank and sentence as elements. We will sort the array in ascending order using the sorted() function and fetch the first three elements of the sorted list. From this list of three tuples, we will create a list containing only the second element of each tuple, meaning only the sentences. Finally, we return it. If we had used the actual positive value for rank, we would have needed to sort ascending for sentence and descending for rank. So, by making rank negative, we can easily sort the array in ascending using the default configuration in the sorted() function.
+
+- My implementation with having a list of top 3 words for each node. It requires sorting N log N at each node:
+```py
+class TrieNode():
+    def __init__(self):
+        self.children = {}
+        self.endOfWord = False
+        self.suggestions = []
+        self.rank = 0
+        
+class AutoCompleteSystem():
+    def __init__(self, sentences, times):
+        self.root = TrieNode()
+        self.keyword = ''
+        
+        for i, sentence in enumerate(sentences):
+            self.addRecord(sentence, times[i])
+        
+    def addRecord(self, sentence, hot):
+        curr = self.root
+        
+        for char in sentence:
+            if char not in curr.children:
+                curr.children[char] = TrieNode()
+            
+            curr = curr.children[char]
+            curr.suggestions.append((-hot, sentence))
+            curr.suggestions.sort(key=lambda x: x[0])
+            
+            if len(curr.suggestions) > 3:
+                curr.suggestions.pop()
+        
+        curr.endOfWord = True
+      
+    
+    def search(self, word):
+        curr = self.root
+        result = []
+        
+        for char in word:
+            if char not in word:
+                return result
+            
+            curr = curr.children.get(char)
+        
+        result.extend(curr.suggestions if curr else [])
+        return result
+                
+        
+    def autoComplete(self, c):
+        results = []
+        if c != '#':
+            self.keyword += c
+            results = self.search(self.keyword)
+        else:
+            self.addRecord(self.keyword, 1)
+            self.keyword = ""
+        # print('result:', results)
+        return [ele[1] for ele in results]
+    
+sentences = ["beautiful", "best quotes", "best friend", "best birthday wishes", "instagram", "internet"]
+times = [30, 14, 21, 10, 10, 15]
+auto = AutoCompleteSystem(sentences, times)
+print(auto.autoComplete("b"))
+print(auto.autoComplete("e"))
+print(auto.autoComplete("s"))
+print(auto.autoComplete("t"))
+print(auto.autoComplete("#"))
+   
+```
+- Other implementation that uses `dfs` helper function to get all possible words that match the input:
+```py
+class Node(object):
+    def __init__(self):
+        self.children = {}
+        self.isEnd = False
+        self.data = None
+        self.rank = 0
+        
+class AutocompleteSystem(object):
+    def __init__(self, sentences, times):
+        self.root = Node()
+        self.keyword = ""
+        for i, sentence in enumerate(sentences):
+            self.addRecord(sentence, times[i])
+
+    def addRecord(self, sentence, hot):
+        p = self.root
+        for c in sentence:
+            if c not in p.children:
+                p.children[c] = Node()
+            p = p.children[c]
+        p.isEnd = True
+        p.data = sentence
+        p.rank -= hot
+    
+    def dfs(self, node):
+        ret = []
+        if node.isEnd:
+            ret.append((node.rank, node.data))
+        for child in node.children:
+            ret.extend(self.dfs(node.children[child]))
+        return ret
+        
+    def search(self, sentence):
+        p = self.root
+        for c in sentence:
+            if c not in p.children:
+                return []
+            p = p.children[c]
+        # print(self.dfs(p))
+        return self.dfs(p)
+    
+    def autoComplete(self, c):
+        results = []
+        if c != "#":
+            self.keyword += c
+            results = self.search(self.keyword)
+        else:
+            self.addRecord(self.keyword, 1)
+            self.keyword = ""
+        return [item[1] for item in sorted(results)[:3]]
+
+# Driver code
+sentences = ["beautiful", "best quotes", "best friend", "best birthday wishes", "instagram", "internet"]
+times = [30, 14, 21, 10, 10, 15]
+auto = AutocompleteSystem(sentences, times)
+print(auto.autoComplete("b"))
+print(auto.autoComplete("e"))
+print(auto.autoComplete("s"))
+print(auto.autoComplete("t"))
+print(auto.autoComplete("#"))
+```
