@@ -644,3 +644,38 @@ print(auto.autoComplete("s"))
 print(auto.autoComplete("t"))
 print(auto.autoComplete("#"))
 ```
+## 39. Word Break
+- https://www.educative.io/courses/decode-coding-interview-python/JP2ZPmoLrKo
+- You are given a non-empty string s and a list of strings called subs. The subs list will contain a unique set of strings. Your job is to determine if s can be broken down into a space-separated sequence of one or more strings from the subs list. A single string from subs can be reused multiple times in the breakdown of s.
+
+Input#
+The first input will be a non-empty string called s, and the second input will be a list string called subs. The following is an example input:
+
+magically
+["ag", "al", "icl", "mag", "magic", "ly", "lly"]
+
+```py
+def string_break(s, subs):
+    # write your code here
+                    
+    subSet = set(subs)
+
+    def dfs(s, cache):
+        if s in cache:
+            return cache[s]
+
+        for i in range(len(s)):
+            prefix = s[:i]
+            suffix = s[i:]
+
+            if prefix in subSet:
+                if suffix in subSet or dfs(suffix, cache):
+                    cache[s] = True
+                    return True
+        cache[s] = False
+        return False
+
+
+    cache = {}
+    return dfs(s, cache)
+```
