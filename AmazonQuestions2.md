@@ -679,3 +679,46 @@ def string_break(s, subs):
     cache = {}
     return dfs(s, cache)
 ```
+## 40. Possible queries after adding white spaces
+- https://www.educative.io/courses/decode-coding-interview-python/RLMDYggjEnR
+- **Time complexity**: The time complexity is O(n^2 + 2^n + l) where n is the length of query and l is the length of the list containing words of the dictionary.
+
+- **Space complexity**: The space complexity is O((n * 2^n) + l), where n is the length of the query and l is the length of the list containing the dictionary’s words.
+```py
+def break_query(query, dict):
+    """
+    :type query: str
+    :type dict: List[str]
+    :rtype: List[str]
+    """
+    return helper(query, set(dict), {})
+    
+def helper(query, dict, result):
+    if not query: 
+        return []
+    
+    if query in result: 
+        return result[query]
+    
+    res = []
+    for word in dict:
+        if not query.startswith(word):
+            continue
+        if len(word) == len(query):
+            res.append(word)
+        else:
+            resultOfTheRest = helper(query[len(word):], dict, result)
+            for item in resultOfTheRest:
+                item = word + ' ' + item
+                res.append(item)
+    result[query] = res
+    return res
+
+query = "vegancookbook"
+dict = ["an", "book", "car", "cat", "cook", "cookbook", "crash", 
+        "cream", "high", "highway", "i", "ice", "icecream", "low", 
+        "scream", "veg", "vegan", "way"]
+print(break_query(query, dict))
+query = "highwaycarcrash"
+print(break_query(query, dict))
+```
