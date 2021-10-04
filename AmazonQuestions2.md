@@ -802,3 +802,62 @@ def threeSum(nums):
 print(threeSum([0,0,0]))
 print(threeSum([-1,0,1,2,-1,-4]))
 ```
+## 42. Copy List with Random Pointer
+- https://leetcode.com/problems/copy-list-with-random-pointer/
+- To make a deep copy of the list, we will iterate over the original list and create new nodes via the related pointer or the next pointer. We can also use a Hashtable/dictionary to track whether the copy of a particular node is already present or not.
+
+The complete algorithm is as follows:
+
+We will traverse the linked list starting at the `head`.
+
+We will use a dictionary/Hashtable to keep track of `visited` nodes.
+
+We will make a copy of the current node and store the old node as the key and the new node as the value in `visited`.
+
+If the `related` pointer of the current node, ii, points to the node jj and a clone of jj already exists in `visited`, we will use the cloned node as a reference.
+
+Otherwise, if the `related` pointer of the current node, ii, points to the node jj, which has not been created yet, we will create a new node that corresponds to jj and add it to `visited`.
+
+If the `next` pointer of the current node, ii, points to the node jj and a clone of jj already exists in visited, we will use the cloned node as a reference.
+
+Else, if the `next` pointer of the current node, ii, points to the node jj, which has not been created yet, we will create a new node corresponding to jj and add it to the visited dictionary.
+
+```py
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+
+class Solution:
+    def copyRandomList(self, head: 'Node') -> 'Node':
+        if head == None:
+            return None
+        
+        def getClonedNode(node):
+            if node:
+                if node in visited:
+                    return visited[node]
+                else:
+                    visited[node] = Node(node.val, None, None)
+                    return visited[node]
+                
+            return None
+        
+        visited = {}
+        curr = head
+        newNode = Node(curr.val, None, None)
+        visited[curr] = newNode
+        
+        while curr:
+            newNode.next = getClonedNode(curr.next)
+            newNode.random = getClonedNode(curr.random)
+            
+            newNode = newNode.next
+            curr = curr.next
+            
+        return visited[head]
+```
