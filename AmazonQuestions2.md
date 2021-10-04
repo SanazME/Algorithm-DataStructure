@@ -861,3 +861,55 @@ class Solution:
             
         return visited[head]
 ```
+- another solution which give `O(1)` space complexity so we don't have to construct a hashTable to keep track of mapping betweent the old and new nodes is to intervene new nodes within old nodes.
+- Instead of a separate dictionary to keep the old node --> new node mapping, we can tweak the original linked list and keep every cloned node next to its original node. This interleaving of old and new nodes allows us to solve this problem without any extra space. Lets look at how the algorithm works.
+    1. Traverse the original list and clone the nodes as you go and place the cloned copy next to its original node. This new linked list is essentially a interweaving of original and cloned nodes.
+    2. As you can see we just use the value of original node to create the cloned copy. The next pointer is used to create the weaving. Note that this operation ends up modifying the original linked list.
+    3. Iterate the list having both the new and old nodes intertwined with each other and use the original nodes' random pointers to assign references to random pointers for cloned nodes. For eg. If B has a random pointer to A, this means B' has a random pointer to A'.
+    4. Now that the random pointers are assigned to the correct node, the next pointers need to be correctly assigned to unweave the current linked list and get back the original list and the cloned list.
+```py
+class Solution(object):
+    def copyRandomList(self, head):
+        """
+        :type head: Node
+        :rtype: Node
+        """
+        if not head:
+            return head
+
+        # Creating a new weaved list of original and copied nodes.
+        ptr = head
+        while ptr:
+
+            # Cloned node
+            new_node = Node(ptr.val, None, None)
+
+            # Inserting the cloned node just next to the original node.
+            # If A->B->C is the original linked list,
+            # Linked list after weaving cloned nodes would be A->A'->B->B'->C->C'
+            new_node.next = ptr.next
+            ptr.next = new_node
+            ptr = new_node.next
+
+        ptr = head
+
+        # Now link the random pointers of the new nodes created.
+        # Iterate the newly created list and use the original nodes random pointers,
+        # to assign references to random pointers for cloned nodes.
+        while ptr:
+            ptr.next.random = ptr.random.next if ptr.random else None
+            ptr = ptr.next.next
+
+        # Unweave the linked list to get back the original linked list and the cloned list.
+        # i.e. A->A'->B->B'->C->C' would be broken to A->B->C and A'->B'->C'
+        ptr_old_list = head # A->B->C
+        ptr_new_list = head.next # A'->B'->C'
+        head_new = head.next
+        while ptr_old_list:
+            ptr_old_list.next = ptr_old_list.next.next
+            ptr_new_list.next = ptr_new_list.next.next if ptr_new_list.next else None
+            ptr_old_list = ptr_old_list.next
+            ptr_new_list = ptr_new_list.next
+        return head_new
+```
+
