@@ -914,6 +914,7 @@ class Solution(object):
 ```
 ## 43. Find the fist and last occurance of a number in a sorted array
 - we use binary search twice to find the start and end of that occurance. For the end, we're coming from left and so first update the `left` var. For start, we're coming from right and so update `right` first.
+- **Time Complexity**: `O(log n)`
 
 ```py
 def findRange(numbers, target):
