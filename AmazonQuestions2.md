@@ -965,3 +965,40 @@ def findEnd(numbers, target):
     else:
         return -1
     ```
+## 44. Products Frequently Viewed Together
+- https://www.educative.io/courses/decode-coding-interview-python/YM946D429oA
+- also similar to find all anagrams in here: https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions.md#21-find-all-anagrams-in-a-string
+
+```py
+import collections
+
+def findSimilarity(products, candidates):
+    if len(products) < len(candidates):
+        return []
+    
+    candidateCount = collections.Counter(candidates)
+    productCount = collections.Counter()
+    
+    output = []
+    
+    for i, num in enumerate(products):
+        
+        productCount[num] += 1
+        
+        if i >= len(candidates):
+            # remove the first element from set
+            productCount[products[i-len(candidates)]] -= 1
+            
+            if productCount[products[i-len(candidates)]] == 0:
+                del productCount[products[i-len(candidates)]]
+        
+        if i >= len(candidates) - 1:
+            # compare two sets or lists
+            if productCount == candidateCount:
+                output.append(i - len(candidates) + 1)
+                
+    return output
+
+
+print(findSimilarity([3, 2, 1, 5, 2, 1, 2, 1, 3, 4], [1,2,3]))                
+```
