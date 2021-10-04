@@ -722,3 +722,83 @@ print(break_query(query, dict))
 query = "highwaycarcrash"
 print(break_query(query, dict))
 ```
+## 41. Three Sums
+- https://www.educative.io/courses/decode-coding-interview-python/R8q3n51LLjV
+- https://leetcode.com/problems/3sum/
+
+- **solution 1**:
+    - it includes sorting the list and then ignoring the duplicate ones and also go till the element becomes positive, because if the ele1 is > 0 then in a sorted array all the other twos will be also postive and so we won't find a zero sum.
+
+-**solution 2**: we don't need to sort the list. Let's start with sorted version and once the interviewer asked for non-sorting version, we can use this veraion.
+- What if you cannot modify the input array, and you want to avoid copying it due to memory constraints?
+
+- We can adapt the hashset approach above to work for an unsorted array. We can put a combination of three values into a hashset to avoid duplicates. Values in a combination should be ordered (e.g. ascending). Otherwise, we can have results with the same values in the different positions.
+
+**Algorithm**
+
+The algorithm is similar to the hashset approach above. We just need to add few optimizations so that it works efficiently for repeated values:
+
+1. Use another hashset dups to skip duplicates in the outer loop.
+    - Without this optimization, the submission will time out for the test case with 3,000 zeroes. This case is handled naturally when the array is sorted.
+
+2. Instead of re-populating a hashset every time in the inner loop, we can use a hashmap and populate it once. Values in the hashmap will indicate whether we have encountered that element in the current iteration. When we process nums[j] in the inner loop, we set its hashmap value to i. This indicates that we can now use nums[j] as a complement for nums[i].
+
+```py
+def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        res = []
+
+        if len(nums) < 3:
+            return []
+
+        def twoSums(nums, i):
+            seen = set()
+            j = i + 1
+
+            while j < len(nums):
+                complement = -nums[i] - nums[j]
+
+                if complement in seen:
+                    res.append([nums[i], nums[j], complement])
+                    while j+1 < len(nums) and nums[j] == nums[j+1]:
+                        j += 1
+
+                seen.add(nums[j])
+                j += 1
+
+        for i, num1 in enumerate(nums):
+            if num1 > 0: 
+                break
+            if i == 0 or nums[i-1] != nums[i]:
+                twoSums(nums, i)
+
+        return res
+```
+```py
+def threeSum(nums):
+    """
+    :type nums: List[int]
+    :rtype: List[List[int]]
+    """
+    if len(nums) < 3:
+        return []
+    
+    dup = set()
+    res = set()
+    seen = {}
+    
+    for i, num1 in enumerate(nums):
+        if num1 not in dup:
+            dup.add(num1)
+            for j, num2 in enumerate(nums[i+1:]):
+                complement = - num1 - num2
+                if complement in seen and seen[complement] == i:
+                    res.add(tuple(sorted((num1, num2, complement))))
+                seen[num2] = i
+    return res
+        
+    
+    
+print(threeSum([0,0,0]))
+print(threeSum([-1,0,1,2,-1,-4]))
+```
