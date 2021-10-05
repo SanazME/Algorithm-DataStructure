@@ -1002,3 +1002,31 @@ def findSimilarity(products, candidates):
 
 print(findSimilarity([3, 2, 1, 5, 2, 1, 2, 1, 3, 4], [1,2,3]))                
 ```
+## 44. Maximum Units on a Truck
+- https://leetcode.com/problems/maximum-units-on-a-truck/
+
+```py
+from queue import PriorityQueue
+class Solution:
+    def maximumUnits(self, boxTypes: List[List[int]], truckSize: int) -> int:
+        q = PriorityQueue()
+        
+        for ele in boxTypes:
+            box, unit = ele[0], ele[1]
+            
+            q.put((-unit, box))
+            
+        boxCount, unitCount = 0, 0
+     
+        while (not q.empty()):
+            unit, box = q.get()
+            boxCount = min(truckSize, box)
+            unitCount += boxCount * -unit
+            
+            truckSize -= boxCount
+            if truckSize == 0:
+                break
+                
+        return unitCount
+
+```
