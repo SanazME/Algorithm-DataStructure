@@ -1030,3 +1030,63 @@ class Solution:
         return unitCount
 
 ```
+## 46. Merge Recommendations
+- https://www.educative.io/courses/decode-coding-interview-python/B10JG6jJQkX
+- Accounts Merge
+- This feature can be mapped to a graph problem. We draw an edge between two emails, in case they occur in the same account. From here, the problem comes down to finding the connected components of this graph.
+
+The complete algorithm is as follows:
+
+    - First, we will build an undirected graph by creating an edge from the first email to all the other emails in the same account. Each email is treated as a node and an adjacency graph will be made.
+    - Additionally, we’ll remember a map from emails to names on the side.
+    - Now, we will use a depth-first search starting with the first email.
+    - We will find all the nodes/emails that can be reached from the current email and denote it as a connected component. Then, we will add the respective name and this component, in sorted order, to the final answer.
+    - We will keep track of the visited nodes. If a visited node is found, this means that it was already a part of a previous component, so we can skip it.
+
+```py
+import collections
+def accountsMerge(accounts):
+    email_to_name = {}
+    graph = collections.defaultdict(set)
+    
+    for account in accounts:
+        name = account[0]
+        emails = account[1:]
+        email1 = emails[0]
+        email_to_name[email1] = name
+        
+        for email in emails[1:]:
+            graph[email1].add(email)
+            graph[email].add(email1)
+            email_to_name[email] = name
+            
+    # DFS
+    visited = set()
+    output = []
+    
+    for email in graph:
+        if email not in visited:
+            visited.add(email)
+            component = []
+            stack = [email]
+            
+            while stack:
+                node = stack.pop()
+                component.append(node)
+                
+                for neighbor in graph[node]:
+                    if neighbor not in visited:
+                        visited.add(neighbor)
+                        stack.append(neighbor)
+            
+            output.append([email_to_name[email]] + component)
+            
+    return output
+            
+# Driver code
+accounts = [["Sarah", "sarah22@email.com", "sarah@gmail.com", "sarahhoward@email.com"],
+            ["Alice", "alicexoxo@email.com", "alicia@email.com", "alicelee@gmail.com"],
+            ["Sarah", "sarah@gmail.com", "sarah10101@gmail.com"],
+            ["Sarah", "sarah10101@gmail.com", "misshoward@gmail.com"]]
+print(accountsMerge(accounts))
+```
