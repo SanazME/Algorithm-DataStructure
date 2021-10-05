@@ -964,7 +964,7 @@ def findEnd(numbers, target):
         return left
     else:
         return -1
-    ```
+```
 ## 44. Products Frequently Viewed Together
 - https://www.educative.io/courses/decode-coding-interview-python/YM946D429oA
 - also similar to find all anagrams in here: https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions.md#21-find-all-anagrams-in-a-string
@@ -1002,7 +1002,7 @@ def findSimilarity(products, candidates):
 
 print(findSimilarity([3, 2, 1, 5, 2, 1, 2, 1, 3, 4], [1,2,3]))                
 ```
-## 44. Maximum Units on a Truck
+## 45. Maximum Units on a Truck
 - https://leetcode.com/problems/maximum-units-on-a-truck/
 
 ```py
