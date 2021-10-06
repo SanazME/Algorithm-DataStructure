@@ -1090,3 +1090,42 @@ accounts = [["Sarah", "sarah22@email.com", "sarah@gmail.com", "sarahhoward@email
             ["Sarah", "sarah10101@gmail.com", "misshoward@gmail.com"]]
 print(accountsMerge(accounts))
 ```
+## 47. Remove negative nodes and their children from a tree
+- Given a tree, remove all nodes and their children that have negative value.
+
+```py
+class Node():
+    def __init__(self, val=0):
+        self.val = val
+        self.children = set()
+        
+def remove_negative_nodes(root):
+    if not root:
+        return None
+        
+    return helper(root, None)
+ 
+def helper(node, parent):
+    if not node:
+        return
+        
+    stack = [(node, parent)]
+    
+    while stack:
+        curr, currParent = stack.pop()
+        if curr.val < 0:
+            if currParent:
+                currParent.children.remove(curr)
+            else:
+                return None
+        else:
+            for child in curr.children:
+                stack.append((child, curr))
+                
+    return node
+```
+    
+ 
+
+
+```
