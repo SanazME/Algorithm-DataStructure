@@ -1125,7 +1125,69 @@ def helper(node, parent):
     return node
 ```
     
- 
-
+## 48. Products in Price Range
+- https://www.educative.io/courses/decode-coding-interview-python/YQWrxNW5Gy2
+- The product data is given to us in the form of a binary search tree, where the values are the prices. You will be given the parameters low and high; these represent the price range the user selected. This range is inclusive. Return all the data between low and high range.
+- **How to create a Binary Search Tree**
+```py
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.leftChild = None
+        self.rightChild = Nonde
+        
+    def insert(self, val):
+        if self is None:
+            self = Node(val)
+            return
+        current = self
+        
+        while current:
+            parent = current
+            if val < current.val:
+                current = current.leftChild
+            else:
+                current = current.rightChild
+                
+        if val < parent.val:
+            parent.leftChild = Node(val)
+        else:
+            parent.rightChild = Node(val)
+                
+```
+```py
+class BinarySearchTree:
+    def __init__(self):
+        self.root = None
+        
+    def insert(self, val):
+        if self.root is None:
+            self.root = Node(val)
+        else:
+            self.root.insert(val)
 
 ```
+```py
+def producyInRange(root, low, high):
+    products = []
+    
+    def preorder(node):
+        if node:
+            if low <= node.val <= high:
+                output.append(node.val)
+            if low <= node.val:
+                preorder(node.leftChild)
+            if node.val <= high:
+                preorder(node.rightChild)
+    
+    
+    preorder(root)
+    return output
+
+```
+
+
+
+
+
+
