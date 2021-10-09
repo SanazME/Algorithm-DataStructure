@@ -33,8 +33,10 @@ from Queue import PriorityQueue
 
 q = PriorityQueue()
 
-q.put((3, 'Read')
-q.put((5, "Write'))
+# i is a counter for when the comparison between values is equal and the data is not comparable so we add i to be compared.
+
+q.put((3, i, 'Read')
+q.put((5, i, "Write'))
 
 OR 
 
@@ -49,32 +51,42 @@ val = q.get()
 val, nn = q.get()
 ```
 ```py
-from Queue import PriorityQueue
+from queue import PriorityQueue
 
 def mergeKLists(self, lists):
       """
       :type lists: List[ListNode]
       :rtype: ListNode
       """
-      q = PriorityQueue()
+      	if not lists:
+        	return []
+    
+	n = len(lists)
 
-      for l in lists:
-          if l:
-              q.put((l.val, l))
+	if n == 1:
+	return lists[0]
 
-      dummy = head = ListNode(1000)       
+	curr = head = Node(0)
+	q = PriorityQueue()
+	i = 0
 
-      while not q.empty():
-          val, node = q.get()
-          head.next = ListNode(val)
-          head = head.next
+	for node in lists:
+	if node:
+	    i += 1
+	    q.put((node.val, i, node))
 
-          node = node.next
+	while not q.empty():
+	i += 1
+	node = q.get()[2]
+	curr.next = node
 
-          if node:
-              q.put((node.val, node))
+	node = node.next
+	curr = curr.next
 
-      return dummy.next
+	if node:
+	    q.put((node.val, i, node))
+
+	return head.next
 
 ```
 
