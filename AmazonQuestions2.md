@@ -166,6 +166,7 @@ processes = 7
 arr = [[4,6],[5,6], [1,4], [2,1], [3,2], [5,4], [5,0], [3,5], [3,0]]
 ```
 ## 33. Compress File
+- https://www.educative.io/courses/decode-coding-interview-python/NEOlg0Y5wND
 - We have to come up with a compression strategy for text files that store our system’s information. Here is our strategy: whenever we see a word in a file composed as a concatenation of other smaller words in the same file, we will encode it with the smaller words’ IDs. For example, if we have the words `n, cat, cats, dog, and catsndog` in a text file. The word catsndog is the concatenation of the words n, cats, and dog, so we can assign it an ID. This way, instead of storing the entire `catsndog` word as is, we are storing an ID that takes much less space.
 
 We’ll be provided a list of strings representing all the words from a text file. Our task will be to identify and isolate all the concatenated words.
