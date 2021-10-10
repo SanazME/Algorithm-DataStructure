@@ -1012,23 +1012,23 @@ class Solution:
     def maximumUnits(self, boxTypes: List[List[int]], truckSize: int) -> int:
         q = PriorityQueue()
         
-        for ele in boxTypes:
-            box, unit = ele[0], ele[1]
+        for item in boxTypes:
+            count, weight = item[0], item[1]
+            q.put((-weight, count))
             
-            q.put((-unit, box))
+        remaining = truckSize
+        totalWeight = 0
+        
+        while not q.empty():
+            weight, count = q.get()
+            soFar = min(remaining, count)
+            totalWeight += soFar * -weight
+            remaining -= soFar
             
-        boxCount, unitCount = 0, 0
-     
-        while (not q.empty()):
-            unit, box = q.get()
-            boxCount = min(truckSize, box)
-            unitCount += boxCount * -unit
+            if remaining == 0:
+                return totalWeight
             
-            truckSize -= boxCount
-            if truckSize == 0:
-                break
-                
-        return unitCount
+        return totalWeight
 
 ```
 ## 46. Merge Recommendations
