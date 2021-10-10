@@ -1186,7 +1186,11 @@ def producyInRange(root, low, high):
 
 ```
 
+## 49 Subarray Product Less than K
+- https://leetcode.com/problems/subarray-product-less-than-k/
 
+## 50 Find Pivot Index
+- https://leetcode.com/problems/find-pivot-index/
 
 
 
