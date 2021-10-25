@@ -1193,6 +1193,49 @@ def producyInRange(root, low, high):
 ## 50 Find Pivot Index
 - https://leetcode.com/problems/find-pivot-index/
 
+## 51. Group anagrams
+- First, we need to figure out a way to individually group all the character combinations of each title. Suppose the content library contains the following titles: "duel", "dule", "speed", "spede", "deul", "cars". How would you efficiently implement a functionality so that if a user misspells speed as spede, they are shown the correct title?
 
+We want to split the list of titles into sets of words so that all words in a set are anagrams. In the above list, there are three sets: {"duel", "dule", "deul"}, {"speed", "spede"}, and {"cars"}. Search results should comprise all members of the set that the search string is found in. We should pre-compute these sets instead of forming them when the user searches a title.
 
+- **Solution**:
+1. For each title, compute a 26-element vector. Each element in this vector represents the frequency of an English letter in the corresponding title. This frequency count will be represented as a tuple. For example, abbccc will be represented as (1, 2, 3, 0, 0, ..., 0). This mapping will generate identical vectors for strings that are anagrams.
 
+2. Use this vector as a key to insert the titles into a Hash Map. All anagrams will be mapped to the same entry in this Hash Map. When a user searches a word, compute the 26-element English letter frequency vector based on the word. Search in the Hash Map using this vector and return all the map entries.
+
+3. Store the list of the calculated character counts in the same Hash Map as a key and assign the respective set of anagrams as its value.
+
+4. Return the values of the Hash Map, since each value will be an individual set.
+
+`{ (2, 1, 1, 0, ..., 0) : [abac, aabc, baca, caab]}`
+
+**Time complexity**:
+- `O(n X k)` where `n` is the size of the list of strings and `k` is the maximum lenght that a single string can have.
+**Space complexity**:`O(n X k)`
+
+```py
+def group_titles(titles):
+    result = []
+    if not titles:
+        return result
+    
+    hashTable = {}
+    
+    for title in titles:
+        vec = [0 for _ in range(26)]
+        
+        for char in title:
+            idx = ord(char) - ord('a')
+            vec[idx] += 1
+        
+        key = tuple(vec)
+        if key in hashTable:
+            hashTable[key].append(title)
+        else:
+            hashTable[key] = [title]
+        
+    print(hashTable)
+    
+titles = ["duel","dule","speed","spede","deul","cars"]  
+print(group_titles(titles))
+```
