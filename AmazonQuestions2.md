@@ -1215,10 +1215,6 @@ We want to split the list of titles into sets of words so that all words in a se
 
 ```py
 def group_titles(titles):
-    result = []
-    if not titles:
-        return result
-    
     hashTable = {}
     
     for title in titles:
