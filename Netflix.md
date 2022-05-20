@@ -175,4 +175,110 @@ class MedianFinder:
 # obj.addNum(num)
 # param_2 = obj.findMedian()
 ```
+- Time complexity: `O(logn)`
+  - Inserting number to heap: `O(log n)`
+  - Finding median from heap: `O(1)`
+- Space complexity: `O(n)`
 
+
+## Feature # 4: For efficiently distributing content to different geographic regions and for program recommendation to viewers, we want to determine titles that are gaining or losing popularity scores.
+- We’ll be provided with a list of integers representing the popularity scores of a movie collected over a number of weeks. We need to identify only those titles that are either increasing or decreasing in popularity, so we can separate them from the fluctuating ones for better analysis.
+
+- https://leetcode.com/problems/monotonic-array/
+
+```py
+def isMonotonic(self, nums: List[int]) -> bool:
+        increase = decrease = True
+        
+        for i in range(len(nums) - 1):
+            if nums[i] > nums[i + 1]:
+                increase = False
+            if nums[i] < nums[i + 1]:
+                decrease = False
+                
+        return increase or decrease
+```
+
+## Feature # 5: For the client application, we want to implement a cache with a replacement strategy that replaces the least recently watched title.
+- You need to come up with a data structure for this feature. Let’s break it down. If we think it through, we realize the following: i) This data structure should maintain titles in order of time since last access; ii) If the data structure is at its capacity, an insertion should replace the least recently accessed item.
+
+**Solution:** 
+(https://leetcode.com/problems/lru-cache/discuss/45911/Java-Hashtable-%2B-Double-linked-list-(with-a-touch-of-pseudo-nodes))
+- The problem can be solved with a hashtable that keeps track of the keys and its values in the double linked list. One interesting property about double linked list is that the node can remove itself without other reference. In addition, it takes constant time to add and remove nodes from the head or tail.
+
+- One particularity about the double linked list that I implemented is that I create a pseudo head and tail to mark the boundary, so that we don't need to check the NULL node during the update. This makes the code more concise and clean, and also it is good for the performance.
+- https://leetcode.com/problems/lru-cache/
+
+```py
+class DbNode:
+    def __init__(self, key=0, val=0):
+        self.key = key
+        self.val = val
+        self.next = None
+        self.prev = None
+
+
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self._size = 0
+        self._hashTable = {}
+        #DB linked list
+        self._head = self._tail = DbNode(0)
+        self._head.next = self._tail
+        self._tail.prev = self._head
+        
+
+    def get(self, key: int) -> int:
+        if key in self._hashTable:
+            node = self._hashTable[key]
+            self._removeNode(node)
+            self._moveNodeStart(node)
+            
+            return node.val
+        return -1
+        
+
+    def put(self, key: int, val: int) -> None:
+        if key in self._hashTable:
+            node = self._hashTable[key]
+            self._removeNode(node)
+            self._moveNodeStart(node)
+            
+            # update value
+            node.val = val
+            
+        else:
+            
+            if self._size >= self.capacity:
+                LRUNode = self._tail.prev
+                self._removeNode(LRUNode)
+                self._size -= 1 
+                del self._hashTable[LRUNode.key]
+               
+            # add new node
+            newNode = DbNode(key, val)
+            self._moveNodeStart(newNode)
+            self._hashTable[key] = newNode
+            self._size += 1
+        
+    
+    def _moveNodeStart(self, node):
+        node.next = self._head.next
+        self._head.next = node
+        node.next.prev = node
+        node.prev = self._head
+        
+    def _removeNode(self, node):
+        node.next.prev = node.prev
+        node.prev.next = node.next
+
+        
+
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
+```
