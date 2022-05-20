@@ -371,6 +371,7 @@ for ele in cc:
 ```
 
 25. **PriorityQueue**
+- It is a Heap data structure
 - `from Queue import PriorityQueu`
 - The lowest valued entries are retrieved first. A typical pattern for entries is a tuple in the form: `(priority_number, data)`:
 ```py
@@ -398,6 +399,20 @@ q.empty() # check if it's empty
 val = q.get()
 val, nn = q.get()
 ```
+
+26. **Heap**
+- Heap is a binray tree with 2 characteristics:
+    1. Heaps must be Complete binary trees
+    2. The nodes must be ordered according to the Heap order property. Two heap order properties are as follows:
+        - **Max Heap**: root node has the max value (parent node >= children node) 
+        - **Min Heap**: root has the min value (parent node <= children node)
+```py
+from heapq import *
+
+heappush(arr, val)
+heappop(arr)
+```
+
 
 ####################################################################################
 - In dividing a even or odd array into two partitions and later on calculate the median. We put the partition line in a place where the left side partition would always have one more element than the right side so the median was calculated:
