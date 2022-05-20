@@ -114,6 +114,9 @@ del hasMap[1] # delete an element
 if 2 not in hashMap: # check the existence of a key
 
 for key in hashMap:
+for key in hashMap.keys():
+for val in hashMap.values():
+for key, val in hashMap.items():
 
 hashMap.keys() # get all keys
 
