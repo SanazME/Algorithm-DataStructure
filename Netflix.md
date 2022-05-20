@@ -282,3 +282,10 @@ class LRUCache:
 # param_1 = obj.get(key)
 # obj.put(key,value)
 ```
+
+- Time complexity: `O(1)`
+  - Get hashMap: O(1)
+  - Set hashMap: O(1)
+  - Insertion and deletion of Doubly-linked list: O(1)
+  
+- Space complexity: `O(n)`, n is the size of cache.
