@@ -124,3 +124,55 @@ class Solution:
 - Space complexity : 
   - `O(n)` Creating a new linked list costs `O(n)` space.
   - `O(k)` The code above present applies in-place method which cost `O(1)` space. And the priority queue **(often implemented with heaps)** costs `O(k)` space (it's far less than `N` in most situations).
+
+
+## Feature # 3: As part of a demographic study, we are interested in the median age of our viewers. We want to implement a functionality whereby the median age can be updated efficiently whenever a new user signs up for Netflix.
+- We will have a stream of data and we need to output median in real-time as data is added.
+- https://leetcode.com/problems/find-median-from-data-stream/
+
+**Solution:** We will assume that `x` is the median age of a user in a list. Half of the ages in the list will be smaller than (or equal to) `x`, and the other half will be greater than (or equal to) `x`. We can divide the list into two halves: one half to store the smaller numbers (say `smallList`), and one half to store the larger numbers (say `largeList`). The median of all ages will either be the largest number in the `smallList` or the smallest number in the `largeList`. If the total number of elements is even, we know that the median will be the average of these two numbers. The best data structure for finding the smallest or largest number among a list of numbers is a **Heap**: https://www.educative.io/edpresso/what-is-a-heap
+
+Here is how we will implement this feature:
+
+1. First, we will store the first half of the numbers (`smallList`) in a Max Heap. We use a Max Heap because we want to know the largest number in the first half of the list.
+
+2. Then, we will store the second half of the numbers (`largeList`) in a Min Heap, because we want to know the smallest number in the second half of the list.
+
+3. We can calculate the median of the current list of numbers using the top element of the two heaps.
+
+```py
+from heapq import *
+
+class MedianFinder:
+
+    def __init__(self):
+        self.maxHeap = []
+        self.minHeap = []
+        
+
+    def addNum(self, num: int) -> None:
+        if not self.maxHeap or -self.maxHeap[0] >= num:
+            heappush(self.maxHeap, -num)
+        else:
+            heappush(self.minHeap, num)
+            
+        # making sure the lenght of two arrays are either equal or maxHeap has only one element more
+        if len(self.maxHeap) > len(self.minHeap) + 1:
+            heappush(self.minHeap, -heappop(self.maxHeap))
+        elif len(self.maxHeap) < len(self.minHeap):
+            heappush(self.maxHeap, -heappop(self.minHeap))
+        
+
+    def findMedian(self) -> float:
+        if len(self.maxHeap) == len(self.minHeap):
+            return (-self.maxHeap[0] + self.minHeap[0]) / 2.0
+        
+        return - self.maxHeap[0] / 1.0
+
+
+# Your MedianFinder object will be instantiated and called as such:
+# obj = MedianFinder()
+# obj.addNum(num)
+# param_2 = obj.findMedian()
+```
+
