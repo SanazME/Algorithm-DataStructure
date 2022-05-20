@@ -369,6 +369,36 @@ for ele in cc:
 ('C', 'A')
 ('C', 'B')
 ```
+
+25. **PriorityQueue**
+- `from Queue import PriorityQueu`
+- The lowest valued entries are retrieved first. A typical pattern for entries is a tuple in the form: `(priority_number, data)`:
+```py
+from Queue import PriorityQueue
+
+q = PriorityQueue()
+
+""" 
+i is a counter for when the comparison between values is equal and the data is not
+comparable so we add i to be compared.
+"""
+
+q.put((3, i, 'Read')
+q.put((5, i, "Write'))
+
+OR 
+
+q.put(4)
+############
+
+q.empty() # check if it's empty
+
+############
+
+val = q.get()
+val, nn = q.get()
+```
+
 ####################################################################################
 - In dividing a even or odd array into two partitions and later on calculate the median. We put the partition line in a place where the left side partition would always have one more element than the right side so the median was calculated:
     - if the array has even number of elements: median = (left of partition + partition line) / 2
