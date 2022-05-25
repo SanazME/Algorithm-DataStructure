@@ -289,3 +289,161 @@ class LRUCache:
   - Insertion and deletion of Doubly-linked list: O(1)
   
 - Space complexity: `O(n)`, n is the size of cache.
+
+
+## Feature #6: Fetch Most Frequently Watched Titles
+- https://leetcode.com/problems/lfu-cache/
+- We need:
+  1. hash table with key=key and value=linked list node to retrieve node O(1)
+  2. hash table with key=freq and value= a linked list of nodes with that frequency
+  3. min_freq to keep the min_freq value across all nodes
+
+- when we add a new node: add it to the head and set min_freq=1
+- when we visit an exisitng node or update an existing node: remove node from old linked list frequncy and add it to the new one with new freq + 1
+- if the old linked list is now zero size and the old freq was min_freq, we increment min_freq by 1.
+
+```py
+import collections
+
+class DBLNode:
+    def __init__(self, key, val):
+        self.val = val
+        self.key = key
+        self.freq = 1
+        self.next = None
+        self.prev = None
+        
+class DLinkedList:
+    """
+    An implementation of Doubly-Linked list
+    
+    two APIs provided:
+    
+    1. append(node): append the node to the head of the linked list
+    
+    2. pop(node = None): remove the node. If None is provided, remove
+                        one from the tail which is the least recently used
+    """
+    def __init__(self):
+        self.head = self.tail = DBLNode(0, 0)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        self._size = 0
+        
+    def __len__(self):
+        return self._size
+    
+    def append(self, node):
+        node.next = self.head.next
+        self.head.next = node
+        node.next.prev = node
+        node.prev = self.head
+        
+        self._size += 1
+        
+    def pop(self, node=None):
+        if self._size == 0:
+            return 
+        
+        if not node:
+            node = self.tail.prev
+        
+        node.prev.next = node.next
+        node.next.prev = node.prev
+        
+        self._size -= 1
+        
+        return node
+
+class LFUCache:
+
+    def __init__(self, capacity: int):
+        """
+        3 Things to maintain:
+        
+        1. a dict (self._hashNode) for the reference of all nodes given key
+        That is O(1) time to retrieve node given a key.
+        
+        2. a dict (self._hashFreq) where key is the frequency and value if a doubly linked list
+        
+        3. The min frequency through all nodes, we can maintain it O(1) time, 
+        taking advantage of the fact that the frequency can only increment by 1, Use the 
+        following two rules:
+        
+            Rule 1: Whenever we see the size of the DLinkedList of current min frequency is 0,
+            the min frequency must increment by 1
+            
+            Rule 2: Whenevr put in a new (key, value), the min frequency must be 1 (the new node)
+        """
+        
+        self.capacity = capacity
+        self._size = 0
+        
+        self._hashNode = dict()
+        self._hashFreq = collections.defaultdict(DLinkedList)
+        self._minFreq = 0
+        
+        
+    def get(self, key: int) -> int:
+        if key not in self._hashNode:
+            return -1
+        
+        node = self._hashNode[key]
+        self._update(node)
+        
+        return node.val
+        
+
+    def put(self, key: int, value: int) -> None:
+        
+        if self.capacity == 0:
+            return
+        
+        if key in self._hashNode:
+            node = self._hashNode[key]
+       
+            self._update(node)
+            node.val = value
+        
+        else:
+            if self._size == self.capacity:
+                node = self._hashFreq[self._minFreq].pop()
+
+                del self._hashNode[node.key]
+                self._size -= 1
+                
+            
+            node = DBLNode(key, value)
+            self._hashNode[key] = node
+            self._hashFreq[1].append(node)
+            self._minFreq = 1
+            self._size += 1
+
+    
+    def _update(self, node):
+        """
+        for the existing node, we need to update the frequency of the node in the DLinked list
+        1. pop the node from old DLinkedList (with freq f)
+        2. append the node to new DLinkedList (with freq f+1)
+        3. if old DLinked list has size 0 and self._minFreq is f, update self._minFreq to f+1
+        """
+        freq = node.freq
+        
+        
+        self._hashFreq[freq].pop(node)
+        
+        if self._minFreq == freq and not self._hashFreq[freq]:
+            self._minFreq += 1
+        
+        node.freq += 1
+        self._hashFreq[node.freq].append(node)
+
+
+# Your LFUCache object will be instantiated and called as such:
+# obj = LFUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
+```
+
+- Time complexity: O(1) for all get, put, append and pop in linked list
+- Space complexity: `O(n)` n: capacity of cache
