@@ -447,3 +447,81 @@ class LFUCache:
 
 - Time complexity: O(1) for all get, put, append and pop in linked list
 - Space complexity: `O(n)` n: capacity of cache
+
+## Feature # 7: During a user session, a user often “shops” around for a program to watch. During this session, we want to let them move back and forth in the history of programs they’ve just browsed. As a developer, you can smell a stack, right? But, we also want the user to be able to directly jump to the top-ranked program from the one’s they’ve browsed.
+- In this feature, the user will be able to randomly browse through movie titles and read their summaries and reviews. We want to enable a Back button so the user can return to the previous title in the viewing history. We also want the user to immediately get the title with the highest viewer rating from their viewing history. We want to implement both of these operations in constant time to provide a good user experience.
+- We’ll be provided with a sequential input of ratings to simulate the user viewing them one by one. For simplicity, we’ll assume that the movie ratings are all unique.
+- https://leetcode.com/problems/min-stack/
+
+- To enable a Back button, we need to store the user’s viewing history in some data structure. Pressing the Back button fetches the last viewed item. This indicates a last in first out (LIFO) structure, which is characteristic of a stack. In a stack, push and pop operations can be easily implemented in O(1)
+O(1)
+. However, the stack doesn’t allow random access to its elements, let alone access to the element with the maximum rating. We will need to create a stack-like data structure that offers a getMax operation, in addition to push and pop, that all run in O(1)
+O(1)
+.
+
+The implementation of such a data structure can be realized with the help of two stacks: `max_stack` and `main_stack`. The `main_stack` holds the actual stack with all the elements, and `max_stack` is a stack whose top always contains the current maximum value in the stack.
+
+How does it do this? The answer is in the implementation of the push function. Whenever push is called, `main_stack` simply inserts it at the top. However, `max_stack` checks the value being pushed. If `max_stack` is empty, this value is pushed into it and becomes the current maximum. If `max_stack` already has elements in it, the value is compared with the top element in this stack. The element is pushed into `max_stack` if it is greater than the top element else, the top element is pushed again.
+
+The `pop()` function simply pops off the top element from `main_stack` and `max_stack`.
+
+Due to all these safeguards, the `max_rating` function only needs to return the value at the top of `max_stack`.
+
+```py
+class Stack:
+    def __init__(self):
+        self._stack = []
+        
+    def push(self, val):
+        self._stack.append(val)
+        
+        
+    def pop(self):
+        if self.isEmpty():
+            return None
+        
+        return self._stack.pop()
+        
+        
+    def top(self):
+        if self.isEmpty():
+            return None
+        
+        return self._stack[-1]
+        
+    def isEmpty(self):
+        return len(self._stack) == 0
+    
+    def size(self):
+        return len(self._stack)
+
+class MinStack:
+
+    def __init__(self):
+        self._mainStack = Stack()
+        self._minStack = Stack()
+        
+
+    def push(self, val: int) -> None:
+        self._mainStack.push(val)
+        
+        if self._minStack.isEmpty() or self._minStack.top() > val:
+            self._minStack.push(val)
+        else:
+            self._minStack.push(self._minStack.top())
+        
+
+    def pop(self) -> None:
+        self._mainStack.pop()
+        self._minStack.pop()
+        
+
+    def top(self) -> int:
+        return self._mainStack.top()
+        
+
+    def getMin(self) -> int:
+        if self._minStack.isEmpty():
+            return None
+        
+        return self._minStack.top()```
