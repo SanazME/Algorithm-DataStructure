@@ -524,4 +524,48 @@ class MinStack:
         if self._minStack.isEmpty():
             return None
         
-        return self._minStack.top()```
+        return self._minStack.top()
+```
+
+## Feature # 8: As you beta tested feature #7, a user complained that the next and previous functionality isn’t working correctly. Using their session history, we want to check if our implementation is correct or indeed buggy.
+- We’ll receive two lists of push and pop operations. These lists will contain the ID’s of the pages that were browsed. We want to verify whether our implementation of the max stack is behaving correctly or not. To do this, we can check if the sequence of push operations and the sequence of pop operations have been interleaved and performed on a valid stack that was initially empty.
+- https://leetcode.com/problems/validate-stack-sequences/
+
+We only have the push and pop operations and not the timestamps for when they were performed. Since the user did not browse any title more than once and the Back button is disabled at the end. This means that every ID that was pushed to the stack must have been popped once.
+
+After every push operation, we immediately try to pop. If the session is fine, all pushed elements will get popped at one point.
+
+Here is how the implementation will take place:
+
+1. Declare an empty stack.
+
+2. Remove the element from the front of the pushed list and push it onto the stack.
+
+3. If the element at the top of the stack is the same as the item at the front of the popped list, pop the element from the stack and remove it from the popped list.
+
+4. If the stack is empty by the end, return True.
+
+Otherwise, return False.
+
+```py
+class Solution:
+    def validateStackSequences(self, pushed: List[int], popped: List[int]) -> bool:
+        
+        if len(pushed) != len(popped):
+            return False
+        
+        stack = []
+        j = 0
+        
+        for ele in pushed:
+            stack.append(ele)
+            
+            while stack and popped[j] == stack[-1]:
+                stack.pop()
+                j += 1
+            
+            
+        return len(stack) == 0
+```
+- Time complexity: `O(n)` n: the size of the pushed or popped stack. because n elements will be pushed, and n elements will get popped.
+- Space complexity: `O(n)`. In the worst case, all n elements will be pushed into the stack, so the space complexity will be O(n).
