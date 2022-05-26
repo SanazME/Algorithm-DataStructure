@@ -569,3 +569,80 @@ class Solution:
 ```
 - Time complexity: `O(n)` n: the size of the pushed or popped stack. because n elements will be pushed, and n elements will get popped.
 - Space complexity: `O(n)`. In the worst case, all n elements will be pushed into the stack, so the space complexity will be O(n).
+
+
+## Feature # 9: Created all the possible viewing orders of movies appearing in a specific sequence of genre.
+- Suppose we have n different movie genres like Action, Comedy, Family, Horror, and so on. In each genre, we have 0 to k movies. We need to screen several movies of different genres in a specific sequence. For example, in the morning, may want to feature a Family program, followed by a Comedy. Late at night, we may want to show Horror movies followed by Action movies. At prime time, we may want to use some other sequence.
+- If we have the movies given in the example above and the input to our algorithm is ["Family", "Action"], then it should return the following list containing all of the possible combinations of a Family movie followed by an Action movie, chosen from the available data. We add a semicolon (;) just to separate the movie names.
+```py
+["Frozen;Iron Man;","Frozen;Wonder Woman;","Frozen;Avengers;","Kung fu Panda;Iron Man;","Kung fu Panda;
+Wonder Woman;","Kung fu Panda;Avengers;","Ice Age;Iron Man;","Ice Age;Wonder Woman;","Ice Age;Avengers;"]
+```
+- https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+
+
+To solve this problem, we can use a backtracking algorithm template to generate all of the possible combinations correctly.
+
+Let’s break down this problem into four parts.
+
+- If the input has only one genre, return all the movies in that genre—for example, `["Action"]`. This example is trivial where all of the corresponding movies will be returned, for example, `["Iron Man", "Wonder Woman", "Avengers"]`.
+
+- We already know how to solve the one-genre problem. To solve the two-genre problem, such as `["Action, Family"]`, we can pick the one-genre solutions for the Action genre and then append the solutions for the one-genre problem of the Family genre. For example, start with `"Iron Man"` and then append all the solutions for the one-genre problem of the Family genre, resulting in `[[Iron Man, Frozen],[Iron Man, Kung Fu Panda],[Iron Man, Ice Age]]`. Then, we can switch to the other solutions for the one-genre problem of the `Action` genre and repeat.
+
+After making the above-stated observations, our algorithm will look like this:
+
+- We return an empty array if the input is an empty string.
+
+- We initialize a data structure (for example, a dictionary) that maps the genres to their movies. For example, we map `"Action"` to `"Iron Man"`, `"Wonder Woman"`, and `"Avengers"`.
+
+- We initialize a backtracking function and utilize it to generate all possible combinations.
+
+- Two primary parameters will be passed to the function: the `path` of the current combination of movies and the `index` of the given genre array.
+
+- If our current combination of movies is the same length as the input, then we have an answer. Therefore, add it to our answer and backtrack.
+
+- Otherwise, we get all the movies that correspond with the current genre we are looking at: `genre[index]`.
+
+- We then loop through these movies. We add each movie to our current path and call backtrack again, but move on to the next genre by incrementing the index by 1. We make sure to remove the movie from the path once we are finished with it.
+
+```py
+def movie_combinations(categories):
+    if len(categories) == 0:
+        return []
+    
+    movies = {
+        "Family": ["Frozen", "Kung fu Panda", "Ice Age"],
+        "Action": ["Iron Man", "Wonder Woman", "Avengers"],
+        "Fantasy": ["Jumangi", "Lion King", "Tarzan"],
+        "Comedy": ["Coco", "The Croods", "Vivi", "Pets"],
+        "Horror": ["Oculus", "Sinister", "Insidious", "Annebelle"],
+    }
+    
+    def backtrack(index, path):
+        """
+        path: ['Frozen;', 'Iron Man;']
+        categories: ["Action", "Family"]
+        """
+        if len(path) == len(categories):
+            print(path)
+            combinations.append("".join(path))
+            return
+        
+        possibleMovies = movies[categories[index]]
+        
+        if possibleMovies:
+            for movie in possibleMovies:
+                path.append(movie + ";")
+                backtrack(index + 1, path)
+                path.pop()
+            
+    combinations = []
+    backtrack(0, [])
+    return combinations
+    
+# Example 2
+categories = ["Family", "Action"]
+combinations = []
+print("Output 2:")
+print(movie_combinations(categories))
+```
