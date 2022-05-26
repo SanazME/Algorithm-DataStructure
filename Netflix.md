@@ -646,3 +646,6 @@ combinations = []
 print("Output 2:")
 print(movie_combinations(categories))
 ```
+- Time Complexity: `O(k^n * n)` Here `n` is the number of genres and `k` refers to the maximum-value length in the dictionary, not the length of the input. The worst-case is when the input only consists of the `Comedy` and `Horror genres`. In this case, we have to visit `k` additional paths for each extra genre. To create a combination, each combination will cost up to `n`. We can generalize this problem to a scenario where genres correspond with up to m movies. In this case, the time complexity will be O(m^n * n).
+- Space Complexity: `O(k*n)`: where n is the total number of genres and k is the number of movies in each genre. The algorithm takes n space, because of the recursive call. In the worst case, we will be n levels deep in the call stack. The dictionary takes O(k) space because there are at most k movies of n
+different genres.
