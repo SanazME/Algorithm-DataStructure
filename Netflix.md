@@ -797,4 +797,45 @@ print("Output: Medians =", output2)
   - it takes `O(k) + O(n) ~ O(n)` linear space
   - the heaps collectively require `O(k)` space. The hash table needs `O(n - k)` space.
 
+## Feature # 11: A set of movies needs to be presented in different orders to a different set of users. We want to generate all the possible permutations of movies in a given marathon.
+- https://leetcode.com/problems/permutations/
+
+Backtracking is an algorithm for finding all solutions by exploring all potential candidates. If the solution candidate turns to be not a solution (or at least not the last one), backtracking algorithm discards it by making some changes on the previous step, i.e. backtracks and then try again.
+
+Here is a backtrack function which takes the index of the first integer to consider as an argument `backtrack(first)`.
+
+- If the first integer to consider has index n that means that the current permutation is done.
+- Iterate over the integers from index `first` to index `n - 1`.
+  - Place `i-t`h integer first in the permutation, i.e. `swap(nums[first], nums[i])`.
+  - Proceed to create all permutations which starts from `i-th` integer : `backtrack(first + 1)`.
+  - Now backtrack, i.e. `swap(nums[first], nums[i])` back.
+
+```py
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        
+        def backtrack(first):
+            if first == n:
+                output.append(nums[:])
+                
+            for i in range(first, n):
+                # place ith integer first
+                # in the current permutation
+                nums[first], nums[i] = nums[i], nums[first]
+                
+                #use next integers to complete the permutations
+                backtrack(first + 1)
+                
+                #backtrack
+                nums[first], nums[i] = nums[i], nums[first]
+            
+        n = len(nums)
+        output = []
+        backtrack(0)
+        
+        return output
+```
+- Time complexity: `O(n!)` OR `k-permutation_of_n, or partial permutation`: `P(N,k) = N!/(N-k)! = N(N-1)...(N-k+1)` and `N! <= P(N, k) <= N * N!`
+  - For the complexity, I think you can explain in this way: in the first level of the tree, you have N options and for each of the option, you have N-1 option, and for each of these N-1 options, you have another N-2 options, so putting them together you would end up N*(N-1)*(N-2).... = N!
+- Space complexity: `O(n)` the maximum stack depth is `n`, the height of any branch from the root to any leaf.
 
