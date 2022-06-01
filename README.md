@@ -406,6 +406,7 @@ val, nn = q.get()
     2. The nodes must be ordered according to the Heap order property. Two heap order properties are as follows:
         - **Max Heap**: root node has the max value (parent node >= children node) 
         - **Min Heap**: root has the min value (parent node <= children node)
+    3. In python we only have min Heap (smallest number at the top of the heap).
 ```py
 from heapq import *
 
