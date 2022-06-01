@@ -410,8 +410,12 @@ val, nn = q.get()
 ```py
 from heapq import *
 
+ll = [1,2,3]
+heapify(ll) # to transform a populated list into a heap
+
 heappush(arr, val)
 heappop(arr)
+
 ```
 
 
