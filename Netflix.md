@@ -649,3 +649,152 @@ print(movie_combinations(categories))
 - Time Complexity: `O(k^n * n)` Here `n` is the number of genres and `k` refers to the maximum-value length in the dictionary, not the length of the input. The worst-case is when the input only consists of the `Comedy` and `Horror genres`. In this case, we have to visit `k` additional paths for each extra genre. To create a combination, each combination will cost up to `n`. We can generalize this problem to a scenario where genres correspond with up to m movies. In this case, the time complexity will be O(m^n * n).
 - Space Complexity: `O(k*n)`: where n is the total number of genres and k is the number of movies in each genre. The algorithm takes n space, because of the recursive call. In the worst case, we will be n levels deep in the call stack. The dictionary takes O(k) space because there are at most k movies of n
 different genres.
+
+## Feature #10: Calculate Median of Buffering Events
+- https://leetcode.com/problems/sliding-window-median/
+
+- To solve this problem we use the same idea as used in **## Feature 3. Find Median Age**. The only additional requirement is removing the outgoing elements from the window. Assume that we are using two heaps as mentioned in the Find Median Age problem, but only the tops of heaps are accessible. Deleting elements that are not on the top of the heap is an **O(log n)** operation. We need to find an efficient way to remove elements that are moving out of the window.
+
+If the two heaps are balanced, only the top is needed to find the medians. Keeping the heaps balanced will allow us to keep invalidated elements in the heap without interfering with the results.
+
+**Note: Here, balancing the heaps doesn’t mean balancing the actual sizes of heaps. Balancing heaps refers to the count of valid elements, as we are only concerned with valid elements.**
+
+To do this, we can use the lazy removal technique, i.e., utilizing a dictionary to keep track of invalidated elements, and once they reach heap tops, remove them from the heaps.
+
+The most challenging part here is to keep the heap balanced while keeping the invalidated elements. We can move the invalidated elements from one heap to the heap that contains invalidated elements.
+
+**Algorithm**
+For this problem, we need to find the median in a sliding window of size `k`. First, we will store the first half of the numbers in a Max Heap (`small_list`). We use a Max Heap because we want to know the largest number in the first half of the list. Then, we will transfer the top `k / 2` elements from Max Heap (`small_list`) to the Min Heap (`large_list`) because we want to know the smallest number in the second half of the list.
+
+In the case of an odd-sized window, the top of the Max Heap contains the median. Otherwise, the median is the arithmetic mean of the tops of the two heaps. As the window slides, one new number will enter the window and one number will leave the window. If the incoming number is smaller than the current top of the Max Heap, it must be inserted in the Max Heap. This is because it belongs to the smaller half (by sorted order) of the numbers in the sliding window. Otherwise, it needs to be inserted in the Min Heap. We use the variable named `balance` to check if ceil(`k/2`) members belonging to the sliding window are present in the Max Heap. If not, we transfer the top element from the Max Heap to the Min Heap. The second highest element then springs to the top of the max heap.
+
+Similarly, if more than floor(`k/2`) elements end up in the Min Heap, then we restore the balance by popping the smallest element from the Min Heap and adding it to the Max Heap. This way, the top of the Max Heap always has the median (in case of odd valued `k`). We don’t immediately remove outgoing elements from either heap. Instead, we use a hash table (`hash_map`) to keep tabs on values that are no longer in the sliding window. If such values don’t end up on top of the heaps, they don’t interfere with correct median calculation. If such values do end up on top of the heap, we lazily remove them.
+
+```py
+from heapq import heappop, heappush, heapify
+
+def median_bufering_events(nums, k):
+    # Will store the medians
+    medians = []
+
+    # Hash-map will keep track of invalid numbers
+    hash_map = {}
+
+    #max heap
+    small_list = []
+    heapify(small_list)
+
+    #min heap
+    large_list = []
+    heapify(large_list)
+
+    # Index of current incoming element being processed
+    i = 0
+
+    # Initialize the small_list heap
+    # Muliplying each elemnt by -1 to implement max heap.
+    for i in range(0,k):
+        heappush(small_list, -1 * nums[i])
+
+    i+=1 
+    # Initialize the large_list heap 
+    for j in range(0,k//2):
+        element = heappop(small_list)
+        heappush(large_list, -1 * element)
+
+    # Start an infinite loop
+    while True:
+        if (k&1) == 1:
+            medians.append(float(small_list[0] * -1))
+            
+        else:
+            temp = (float(small_list[0]* -1) + float(large_list[0])) * 0.5
+            medians.append(temp)
+            
+        # Break the loop if all of the elements are processed
+        if i >= len(nums):
+            break
+      
+        # Outgoing element
+        out_num = nums[i - k]
+
+        # Incoming element
+        in_num = nums[i]
+        i+=1
+        
+        # Balance factor
+        balance = 0
+
+        # Number `out_num` exits window
+        if out_num <= (small_list[0] * -1):
+          balance -= 1
+        else:
+          balance += 1
+
+        # If the outgoing element is not present in the hash-map 
+        # store the `out_num` in the hash-map with value 1,
+        # otherwise increment the count of `out_num` in the hash-map.
+
+        if out_num in hash_map:
+          hash_map[out_num] = hash_map[out_num] + 1
+        else:
+          hash_map[out_num] = 1
+
+        # number `in_num` enters window
+        if small_list and in_num <= (small_list[0] * -1):
+          balance+=1
+          heappush(small_list, in_num * -1)
+        else:
+          balance-=1
+          heappush(large_list, in_num)
+  
+        # Re-balance small_list
+        if balance < 0:
+          heappush(small_list, (-1 * large_list[0]))
+          heappop(large_list)
+          balance +=1
+
+        # Re-balance large_list
+        if balance > 0:
+          heappush(large_list, (-1 * small_list[0]))
+          heappop(small_list)
+          balance +=1
+
+        # Remove invalid numbers that should be discarded from small_list heap tops
+        while (small_list[0] * -1) in hash_map and (hash_map[(small_list[0] * -1)] > 0):
+            hash_map[small_list[0] * -1] = hash_map[small_list[0] * -1 ] - 1
+            heappop(small_list)
+
+        # Remove invalid numbers that should be discarded from large_list heap tops
+        while large_list and large_list[0]  in hash_map and (hash_map[large_list[0]] > 0):
+            hash_map[large_list[0]] = hash_map[large_list[0]] - 1
+            heappop(large_list)
+      
+    # Return medians
+    return medians
+
+print("Example - 1")
+arr = [1,3,-1,-3,5,3,6,7]
+k = 3
+print("Input: array =", arr,  ", k = " , k)
+output = median_bufering_events(arr, k)
+print("Output: Medians =" ,output)
+
+print("Example - 2")
+arr2 = [1,2]
+k = 1
+print("Input: array =" ,arr2 , ", k = " , k)
+output2 = median_bufering_events(arr2, k)
+print("Output: Medians =", output2)
+```
+
+- **Time complexity: `O(n logk)` **
+    - Either or sometimes both of the heaps get every elements inserted into it at least once. Hence, the `O(log k)` insertions are repeated for each of the `n` values.
+    - From the top of the heaps, `O(n - k)` removals (the number of sliding windows instances) take place. Each of those takes `O(log k)`
+    - Hash table operations are take `O(1)`
+    
+- **Space complexity: `O(n)`**
+  - it takes `O(k) + O(n) ~ O(n)` linear space
+  - the heaps collectively require `O(k)` space. The hash table needs `O(n - k)` space.
+
+
