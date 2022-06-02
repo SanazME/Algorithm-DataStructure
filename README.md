@@ -198,6 +198,10 @@ for ele in sorted(freq, key=freq.get, reverse=True):
 arr = collections.Counter([3,1,3,6]) # Counter({3: 2, 1: 1, 6: 1})
 ```
 
+17.3. for `Counter` we can either use a list or a string, both are the same:
+    - `collections.Counter("apple")`
+    - `collections.Counter(list("apple"))`
+
 18. `ord()` method converts a character into its Unicode code value. 
     - Try to avoid using `int` and use `ord` in problems when we convert a string to integer because `int` conversion increases time significantly. To convert a string to a integer:
     ```py
