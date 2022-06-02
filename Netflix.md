@@ -839,3 +839,44 @@ class Solution:
   - For the complexity, I think you can explain in this way: in the first level of the tree, you have N options and for each of the option, you have N-1 option, and for each of these N-1 options, you have another N-2 options, so putting them together you would end up N*(N-1)*(N-2).... = N!
 - Space complexity: `O(n)` the maximum stack depth is `n`, the height of any branch from the root to any leaf.
 
+## Feature #12: Maintain Continue Watching Bar
+- https://leetcode.com/problems/maximum-frequency-stack/
+
+solution:
+As we care about the frequency of the show, let’s save the number of occurrences for each show in a map named `frequency`.
+
+To pop the element with the maximum frequency we must keep track of the current maximum frequency element in the stack. We can use a variable named `max_frequency` to perform this task.
+
+Let’s save the elements for each frequency in a map named `group`, in which we can save multiple elements for each frequency. The map, for each frequency, will store an array that will work as a stack to push or pop an element.
+
+In the case, where multiple elements have the same frequencies, we can use `group` to pop the most recent element — the top of the stack.
+
+```py
+
+from collections import Counter
+from collections import defaultdict
+
+class FreqStack(object):
+
+    def __init__(self):
+        self.freq = Counter()
+        self.group = defaultdict(list)
+        self.maxfreq = 0
+
+    def push(self, x):
+        f = self.freq[x] + 1
+        self.freq[x] = f
+        if f > self.maxfreq:
+            self.maxfreq = f
+        self.group[f].append(x)
+
+    def pop(self):
+        x = self.group[self.maxfreq].pop()
+        self.freq[x] -= 1
+        if not self.group[self.maxfreq]:
+            self.maxfreq -= 1
+
+        return x
+```
+- Time complexity: `O(1)` for both push and pop
+- Space complexity: `O(n)`
