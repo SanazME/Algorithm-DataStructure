@@ -24,6 +24,7 @@ So in this specific example (Q: points in the queue, .: not processed, X: proces
 
 ## Feature #2: Copy Connections
 - https://leetcode.com/problems/number-of-provinces/
+- https://leetcode.com/problems/clone-graph/
 
 **Problem**: As the user’s name can be the same, so every user on Facebook gets assigned a unique id. Each Facebook user’s connections are represented and stored in a graph-like structure. We will first have to make an exact copy of this structure before storing it on Instagram’s servers.
 
@@ -66,7 +67,7 @@ def dfs(root, visited):
 
 **Time complexity, space complexity: O(N)**
 
-### Number of Provinces
+### 2.1 Number of Provinces
 - https://leetcode.com/problems/number-of-provinces/
 **Solutions:**
 
@@ -128,3 +129,72 @@ class Solution:
         return count
 ```
 
+### 2.2 Clone Graph
+- https://leetcode.com/problems/clone-graph/
+
+**Solution**:
+The basic intuition for this problem is to just copy as we go. We need to understand that we are dealing with a graph and this means a node could have any number of neighbors. This is why neighbors is a list. What is also crucial to understand is that we don't want to get stuck in a cycle while we are traversing the graph. According to the problem statement, any given undirected edge could be represented as two directional edges. So, if there is an undirected edge between node A and node B, the graph representation for it would have a directed edge from A to B and another from B to A. After all, an undirected graph is a set of nodes that are connected together, where all the edges are bidirectional.
+
+To avoid getting stuck in a loop we would need some way to keep track of the nodes which have already been copied. By doing this we don't end up traversing them again
+
+**DFS Algorithm**
+1. Start traversing the graph from the given node.
+2. We would take a hash map to store the reference of the copy of all the nodes that have already been visited and cloned. The key for the hash map would be the node of the original graph and corresponding value would be the corresponding cloned node of the cloned graph. If the node already exists in the `visited` we return corresponding stored reference of the cloned node.
+3. If we don't find the node in the visited hash map, we create a copy of it and put it in the hash map. Note, how it's important to create a copy of the node and add to the hash map before entering recursion.
+```py
+   clone_node = Node(node.val, [])
+   visited[node] = clone_node
+```
+
+In the absence of such an ordering, we would be caught in the recursion because on encountering the node again in somewhere down the recursion again, we will be traversing it again thus getting into cycles.
+
+4. Now make the recursive call for the neighbors of the node. Pay attention to how many recursion calls we will be making for any given node. **For a given node the number of recursive calls would be equal to the number of its neighbors**. Each recursive call made would return the clone of a neighbor. We will prepare the list of these clones returned and put into neighbors of clone `node` which we had created earlier. This way we will have cloned the given `node` and it's `neighbors`.
+
+```py
+"""
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val, neighbors):
+        self.val = val
+        self.neighbors = neighbors
+"""
+class Solution(object):
+
+    def __init__(self):
+        # Dictionary to save the visited node and it's respective clone
+        # as key and value respectively. This helps to avoid cycles.
+        self.visited = {}
+
+    def cloneGraph(self, node):
+        """
+        :type node: Node
+        :rtype: Node
+        """
+        if not node:
+            return node
+
+        # If the node was already visited before.
+        # Return the clone from the visited dictionary.
+        if node in self.visited:
+            return self.visited[node]
+
+        # Create a clone for the given node.
+        # Note that we don't have cloned neighbors as of now, hence [].
+        clone_node = Node(node.val, [])
+
+        # The key is original node and value being the clone node.
+        self.visited[node] = clone_node
+
+        # Iterate through the neighbors to generate their clones
+        # and prepare a list of cloned neighbors to be added to the cloned node.
+        if node.neighbors:
+            clone_node.neighbors = [self.cloneGraph(n) for n in node.neighbors]
+
+        return clone_node
+```
+
+- Time Complexity: O(N + M), where N is a number of nodes (vertices) and M is a number of edges.
+- Space Complexity: O(N). This space is occupied by the visited hash map and in addition to that, space would also be occupied by the recursion stack since we are adopting a recursive approach here. The space occupied by the recursion stack would be equal to O(H) where H is the height of the graph. Overall, the space complexity would be O(N).
+
+**BFS Algorithm**
+- We could agree DFS is a good enough solution for this problem. However, if the recursion stack is what we are worried about then DFS is not our best bet. Sure, we can write an iterative version of depth first search by using our own stack. However, we also have the BFS way of doing iterative traversal of the graph and we'll be exploring that solution as well.
