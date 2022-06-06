@@ -435,6 +435,21 @@ def dfs(node, grid, visited):
 
 ```
 
+- Time complexity:
+  - DFS, BFS: `O(N*M)` N: rows, M; columns
+- Space complexity: 
+  - DFS: O(N*M)
+  - BFS: O(min(N,M))
+    - https://imgur.com/gallery/M58OKvB
+    - Think about an example where dif(M, N) is big like 3x1000 grid. And the worst case is when we start from the middle of the grid.
+Imagine how the processed points form a shape in the grid. It will be like a diamond and at some point, it will reach the longer edge of the grid. The possible shape at time t would be:
+```sh
+  ......QXXXQ.........
+  .....QXXXXXQ........
+  ......QXXXQ.........
+```
+So in this specific example (Q: points in the queue, .: not processed, X: processed) the number of the items in the queue is proportional with 3 because the smallest side limits the expanding.
+
 ## 6. Trapping Rain water
 https://leetcode.com/problems/trapping-rain-water/
 - If find the absolute max in the array, then we know that all the heights on the left side of that max wall will trap water based on a localMax on their left side (coming from left to right). and all the height on the right side of the abs wall, will trap water based on the local max height coming from right to left.
