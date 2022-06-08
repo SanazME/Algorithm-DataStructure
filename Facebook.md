@@ -237,4 +237,67 @@ class Solution(object):
 - Space Complexity: O(N). This space is occupied by the visited hash map and in addition to that, space would also be occupied by the recursion stack since we are adopting a recursive approach here. The space occupied by the recursion stack would be equal to O(H) where H is the height of the graph. Overall, the space complexity would be O(N).
 
 **BFS Algorithm**
+**Instead of stack in DFS, we use queue in BFS**
 - We could agree DFS is a good enough solution for this problem. However, if the recursion stack is what we are worried about then DFS is not our best bet. Sure, we can write an iterative version of depth first search by using our own stack. However, we also have the BFS way of doing iterative traversal of the graph and we'll be exploring that solution as well.
+
+The difference is only in the traversal of DFS and BFS. As the name says it all, DFS explores the depths of the graph first and BFS explores the breadth. Based on the kind of graph we are expecting we can chose one over the other. We would need the visited hash map in both the approaches to avoid cycles.
+
+**Algorithm**
+1. We will use a hash map to store the reference of the copy of all the nodes that have already been visited and copied. The key for the hash map would be the node of the original graph and corresponding value would be the corresponding cloned node of the cloned graph. The visited is used to prevent cycles and get the cloned copy of a node.
+2. Add the first node to the queue. Clone the first node and add it to visited hash map.
+3. Do the BFS traversal:
+  - pop a node from the fron of the queue
+  - visit all the neightbors of this node
+  - if any of the neighbors was already visited then it must be present in the visited dictionary. Get the clone of this neighbor form visited in that case.
+  - Otherwise, create a clone and store in the visited.
+  - Add the clones of the neighbors to the corresponding list of the clone node.
+
+```py
+"""
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val, neighbors):
+        self.val = val
+        self.neighbors = neighbors
+"""
+from collections import deque
+class Solution(object):
+
+    def cloneGraph(self, node):
+        """
+        :type node: Node
+        :rtype: Node
+        """
+
+        if not node:
+            return node
+
+        # Dictionary to save the visited node and it's respective clone
+        # as key and value respectively. This helps to avoid cycles.
+        visited = {}
+
+        # Put the first node in the queue
+        queue = deque([node])
+        # Clone the node and put it in the visited dictionary.
+        visited[node] = Node(node.val, [])
+
+        # Start BFS traversal
+        while queue:
+            # Pop a node say "n" from the from the front of the queue.
+            n = queue.popleft()
+            # Iterate through all the neighbors of the node
+            for neighbor in n.neighbors:
+                if neighbor not in visited:
+                    # Clone the neighbor and put in the visited, if not present already
+                    visited[neighbor] = Node(neighbor.val, [])
+                    # Add the newly encountered node to the queue.
+                    queue.append(neighbor)
+                # Add the clone of the neighbor to the neighbors of the clone node "n".
+                visited[n].neighbors.append(visited[neighbor])
+
+        # Return the clone of the node from visited.
+        return visited[node]
+```
+- Time Complexity: O(N + M), where N is a number of nodes (vertices) and M is a number of edges.
+- Space Complexity: O(N). This space is occupied by the visited hash map and in addition to that, space would also be occupied by the queue since we are adopting the BFS approach here. The space occupied by the queue would be equal to O(W) where W is the width of the graph. Overall, the space complexity would be O(N).
+
