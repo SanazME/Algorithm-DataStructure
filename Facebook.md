@@ -301,3 +301,35 @@ class Solution(object):
 - Time Complexity: O(N + M), where N is a number of nodes (vertices) and M is a number of edges.
 - Space Complexity: O(N). This space is occupied by the visited hash map and in addition to that, space would also be occupied by the queue since we are adopting the BFS approach here. The space occupied by the queue would be equal to O(W) where W is the width of the graph. Overall, the space complexity would be O(N).
 
+## Feature #3: Find Story ID
+- https://leetcode.com/problems/search-in-rotated-sorted-array/
+We’ll have an array containing the story id’s. Some of the stories will be watched and will be at the end of the array, and some will be unwatched and will be at the start of the array. If a user clicks a story, we need to search for its id in the array and return the index of that id.
+
+- Binary search
+- **Time complexity**: `O(log N)`
+- **Space complexity**: `O(1)`
+
+```py
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        start, end = 0, len(nums) - 1
+        
+        while start <= end:
+            mid = (start + end) // 2
+            
+            if nums[mid] == target:
+                return mid
+            
+            elif nums[mid] >= nums[start]:
+                if target >= nums[start] and target < nums[mid]:
+                    end = mid - 1
+                else:
+                    start = mid + 1
+            else:
+                if target > nums[mid] and target <= nums[end]:
+                    start = mid + 1
+                else:
+                    end = mid -1
+                    
+        return -1
+```
