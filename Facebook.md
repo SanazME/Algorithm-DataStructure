@@ -71,6 +71,8 @@ def dfs(root, visited):
 - https://leetcode.com/problems/number-of-provinces/
 **Solutions:**
 
+**Note**: this is slightly different than number of islands problem because the grid here is always N*N (as opposed to N*M) and also the diagoanl line is always 1 because each city is connected to itself and also is it mirrored across the diagonal line because if a is connected to b then b is connected to a (undirectional graph).
+
 **1. DFS**
 The given matrix can be viewed as the Adjacency Matrix of a graph. By viewing the matrix in such a manner, our problem reduces to the problem of finding the number of connected components in an undirected graph. In this graph, the node numbers represent the indices in the matrix M and an edge exists between the nodes numbered ii and jj, if there is a 1 at the corresponding M[i][j].
 
@@ -115,14 +117,16 @@ class Solution:
         
         for i in range(row):
             if i not in visited:
+                ## can move to bfs function:
                 queue.append(i)
                 while queue:
                     curr = queue.popleft()
+                    if curr in visited: continue
                     visited.add(curr)
                     for j in range(row):
                         if isConnected[curr][j] == 1 and j not in visited:
                             queue.append(j)
-                
+                ######
                 
                 count += 1
                     
