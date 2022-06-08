@@ -64,6 +64,42 @@ def dfs(root, visited):
             new_node.friends += [x]
     return new_node
 ```
+OR define a separate dfs function:
+
+```py
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val = 0, neighbors = None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+"""
+
+class Solution:
+    def cloneGraph(self, node: 'Node') -> 'Node':
+        visited = {}
+        
+        if not node:
+            return node
+        
+        return self.dfs(node, visited)
+    
+    
+    def dfs(self, node, visited):
+        if not node:
+            return node
+        
+        if node in visited:
+            return visited[node]
+        
+        clone = Node(node.val, [])
+        visited[node] = clone
+        
+        if node.neighbors:
+            clone.neighbors = [self.dfs(n, visited) for n in node.neighbors]
+            
+        return clone
+```
 
 **Time complexity, space complexity: O(N)**
 
