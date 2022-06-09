@@ -333,3 +333,61 @@ class Solution:
                     
         return -1
 ```
+## Feature #5: Flag Words
+- https://leetcode.com/problems/expressive-words/
+
+**Solution**
+Since we have to observe letters of two strings at a time, we can follow a two-pointer approach to solve this problem.
+Here is how we will implement this feature:
+1. Initialize two pointers, i and j, to start traversing from S and W, respectively.
+2. Check if letters currently pointed to by i and j of both words are equal. Otherwise, return False.
+3.For each equal letter found:
+4.Get the length of the repeating sequences of the equal letter found in both words.
+5.The length of the repeating sequence of W letters should be less than or equal to the length of the repeating sequence of S letters.
+6.The length of the repeating sequence of S letters should be greater than or equal to 3.
+7.If any of the conditions mentioned in step 3 fails, return False.
+8.If the ends of both strings are reached, return True.
+
+```py
+def flag_words(s, w):
+    
+    if not s or not w:
+        return False
+
+    i, j = 0, 0
+    while i < len(s) and j < len(w):
+        if s[i] != w[j]:
+            return False
+        else:
+            len1 = repeated_letter(s,i)
+            len2 = repeated_letter(w,j)
+            
+            print("char: ", s[i])
+            print("len1: ", len1, "len2: ", len2)
+            
+            if (len1 >= 3 and len1 < len2) or (len1 < 3 and len1 != len2):
+                return False
+            i += len1
+            j += len2
+            
+    return (i == len(s)) and (j == len(w))
+
+def repeated_letter(s, i):
+        tmp = i
+        while tmp < len(s) and s[tmp] == s[i]:
+            tmp += 1
+
+        return tmp - i
+
+S = "mooooronnnn" # modified word
+W = "moron" # original word
+
+if flag_words(S, W):
+    print("Word Flagged")
+    print("The word", '"' + S + '"', "is a possible morph of", '"' + W + '"')
+else:
+    print("Word Safe")
+```
+
+- Time complexity: `O(max(n,m))`
+- Space complexity: `O(1)`
