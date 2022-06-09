@@ -391,3 +391,42 @@ else:
 
 - Time complexity: `O(max(n,m))`
 - Space complexity: `O(1)`
+
+```py
+class Solution:
+    def expressiveWords(self, s: str, words: List[str]) -> int:
+        if not s or not words:
+            return False
+        
+        def repeated_count(s, i):
+            tmp = i
+            while tmp < len(s) and s[tmp] == s[i]:
+                tmp += 1
+            
+            return tmp - i
+        
+        
+        count = 0
+        for w in words:
+            i, j = 0, 0
+            
+            while i < len(s) and j < len(w):
+                if s[i] == w[j]:
+                    
+                    len1 = repeated_count(s, i)
+                    len2 = repeated_count(w, j)
+                    
+                    if (len1 >= 3 and len1 < len2) or (len1 < 3 and len1 != len2):
+                        break
+                    else:
+                        i += len1
+                        j += len2
+                    
+                else:
+                    break
+                    
+            if i == len(s) and j == len(w):
+                count += 1
+                    
+        return count
+```
