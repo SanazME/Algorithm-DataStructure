@@ -1,4 +1,7 @@
 ## Binary Search
+
+### Powerful Ultimate Binary Search Template: https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems
+
 - **3 parts of a Binary Search**:
 Binary Search is generally composed of 3 main sections:
 
