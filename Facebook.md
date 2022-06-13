@@ -477,3 +477,13 @@ class Solution:
 ```
 - Time complexity: `O(N*M)` : N the length of strings and K the max lenght of a string.
 - Space complexity: `O(N*M)` : We need to store all the strings plus their Hash values in hashMap.
+
+## Feature #7: Divide Posts
+- https://leetcode.com/problems/divide-chocolate/solution/
+- https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems
+
+- Several users made a number of Facebook posts every day last month. We have stored the number of daily posts in a list. We want to mine these posts for information. We have k worker nodes to process the data. For optimally exploiting the temporal relationship between the posts, each worker node must process posts from one or more consecutive days. There will be a master node among our k worker nodes. This node will be in charge of distributing posts to other nodes, as well as mining the posts itself. Given an allocation of tasks to workers and the master node, the master node should get the smallest task. To efficiently utilize our resources, we want an allocation of tasks that maximizes the task allocation to the master node, so we have optimal utilization of worker nodes processing power. There can be a lot of posts a day, so input posts for each day would be in thousands.
+
+We’ll be provided with a list of integers representing the daily number of posts on several consecutive days. Additionally, we’ll have the number of worker nodes, and our task will be to determine the maximum total posts that can be assigned to the master node.
+
+?????
