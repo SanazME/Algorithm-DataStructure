@@ -71,6 +71,14 @@ d = defaultdict(int)
 for k in s:
     d[k] += 1
 ```
+
+3.1. Another way to create a dictionary instead of using `defaultdict` or just `{}` is to use `dic.get(ele, defaultVal)`:
+```py
+dic = {}
+for ele in list_a:
+    dic[ele] = dic.get(ele, 0) + 1
+```
+
 4. To round toward zero in integers (positive or negative):
 ```py
 return a//b if a*b>0 else (a+(-a%b))//b
