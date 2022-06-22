@@ -576,4 +576,65 @@ def minWindow(self, s, t):
 - **Space complexity**: `O(|S| + |T|)`. ∣S∣ when the window size is equal to the entire string S. ∣T∣ when TT has all unique characters.
 - **Space complexity**: `O()`
 
+## Feature #9 Recreating the Decision Tree
+- https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+- Facebook uses a recommendation system to recommend ads to its users. This recommendation system recommends ads on the basis of the results obtained from this decision tree. Facebook wants to implement this recommendation system for Instagram users as well. For this purpose, Facebook wants to replicate the decision tree from a Facebook server to an Instagram server.
+
+The **decision tree** used in Facebook’s recommendation server is serialized in the form of its inorder and preorder traversals as strings. Using these traversals, we need to create a decision tree for Instagram’s recommendation system.
+
+Solution: The two key observations are:
+
+1. Preorder traversal follows `Root -> Left -> Right`, therefore, given the preorder array preorder, we have easy access to the root which is preorder[0].
+
+2. Inorder traversal follows `Left -> Root -> Right`, therefore if we know the position of Root, we can recursively split the entire array into two subtrees.
+
+Now the idea should be clear enough. We will design a recursion function: it will set the first element of preorder as the root, and then construct the entire tree. To find the left and right subtrees, it will look for the root in inorder, so that everything on the left should be the left subtree, and everything on the right should be the right subtree. Both subtrees can be constructed by making another recursion call.
+
+```py
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def buildTree(self, preorder, inorder):
+        """
+        :type preorder: List[int]
+        :type inorder: List[int]
+        :rtype: TreeNode
+        """
+        value_to_index = dict()
+        for i, val in enumerate(inorder):
+            value_to_index[val] = i
+            
+        return self.helper(preorder, inorder, value_to_index, 0, len(inorder)-1, 0, len(preorder)-1)
+            
+        
+        
+    def helper(self, preorder, inorder, value_to_index, in_start, in_end, pre_start, pre_end):
+        
+        
+        if (pre_start <= pre_end) and (in_start <= in_end):
+            root = TreeNode(preorder[pre_start])
+            indx = value_to_index[root.val]
+            left_tree_del = indx - in_start
+            
+            root.left = self.helper(preorder, inorder, value_to_index, in_start, indx - 1, pre_start + 1, pre_start + indx - in_start)
+            root.right = self.helper(preorder, inorder, value_to_index, indx + 1, in_end, pre_start + indx - in_start + 1 , pre_end)
+        
+            return root
+        else:
+            return None
+```
+- **Time complexity: `O(N)`**
+  - Building the hashmap takes O(N) time, as there are N nodes to add, and adding items to a hashmap has a cost of O(1), so we get `N⋅O(1)=O(N)`.
+
+  - Building the tree also takes O(N) time. The recursive helper method has a cost of O(1) for each call **(it has no loops)**, and it is called once for each of the N nodes, giving a total of O(N).
+
+  - Taking both into consideration, the time complexity is O(N).
+  
+- **Space complexity: `O(N)`**
+Building the hashmap and storing the entire tree each requires O(N) memory. The size of the **implicit system stack used by recursion calls depends on the height of the tree**, which is O(N) in the **worst case and O(logN) on average**. Taking both into consideration, the space complexity is O(N).
 
