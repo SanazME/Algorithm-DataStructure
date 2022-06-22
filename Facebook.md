@@ -638,3 +638,46 @@ class Solution(object):
 - **Space complexity: `O(N)`**
 Building the hashmap and storing the entire tree each requires O(N) memory. The size of the **implicit system stack used by recursion calls depends on the height of the tree**, which is O(N) in the **worst case and O(logN) on average**. Taking both into consideration, the space complexity is O(N).
 
+## Feature 10.
+- https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+```py
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def buildTree(self, inorder, postorder):
+        """
+        :type inorder: List[int]
+        :type postorder: List[int]
+        :rtype: TreeNode
+        """
+        value_to_index = dict()
+        for i, val in enumerate(inorder):
+            value_to_index[val] = i
+        print(value_to_index)
+    
+        return self.helper(inorder, postorder, value_to_index, 0, len(inorder)-1, 0, len(postorder)-1)
+        
+        
+    def helper(self, inorder, postorder, value_to_index, in_start, in_end, post_start, post_end):
+        
+        root = TreeNode(postorder[post_end])
+       
+        if in_start <= in_end: 
+            indx = value_to_index[root.val]
+            left_indx_delta = indx - in_start
+            
+
+            root.left = self.helper(inorder, postorder, value_to_index, in_start, indx - 1, post_start, post_start + left_indx_delta - 1)
+
+            root.right = self.helper(inorder, postorder, value_to_index, indx + 1, in_end, post_start + left_indx_delta, post_end - 1)
+        else:
+            return None
+        
+        return root
+```
+        
+        
