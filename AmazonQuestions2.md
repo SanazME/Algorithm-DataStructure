@@ -546,7 +546,7 @@ class AutoCompleteSystem():
         result = []
         
         for char in word:
-            if char not in word:
+            if char not in curr.children:
                 return result
             
             curr = curr.children.get(char)
