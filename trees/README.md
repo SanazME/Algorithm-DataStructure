@@ -443,10 +443,23 @@ class Trie(object):
             if char not in current.children.keys():
                 return False
             current = current.children[char]
-        if current.endOfWord:
-            return True
-        else:
-            return False
+        return current.endOfWord
+        
+    def startsWith(self, prefix):
+        """
+        Returns if there is any word in the trie that starts with the given prefix.
+        :type prefix: str
+        :rtype: bool
+        """
+        curr = self.root
+        
+        for char in prefix:
+            if char not in curr.children.keys():
+                return False
+            
+            curr = curr.children[char]
+            
+        return True
         
     # search recursive
     def searchRecursive(self, word):
