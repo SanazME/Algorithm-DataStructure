@@ -1,10 +1,10 @@
-# Feature #1: Design a system that can store and fetch words efficiently. This can be used to store web pages to make searching easier.
+## Feature #1: Design a system that can store and fetch words efficiently. This can be used to store web pages to make searching easier.
 - https://leetcode.com/problems/implement-trie-prefix-tree/
 - Trie: https://github.com/SanazME/Algorithm-DataStructure/blob/master/trees/README.md#trie
 - Time complexity: `O(L)` for insertion and search
 - Space complexity: `O(L)` for insertion but `O(1)` for search
 
-# Feature #2: Design Search Autocomplete System
+## Feature #2: Design Search Autocomplete System
 - https://leetcode.com/problems/design-search-autocomplete-system/
 - The following solution is slightly different than the solution further below. In here, we also have to sort based on ASCII-code and the difference bw this and the further down solution is that here:
   - we just add words to suggestions list. The words can be repeated (we don't use `set` here to get unique words) 
@@ -212,3 +212,34 @@ class WordDictionary:
   - Search a word: `O(M)` for a well-defined words without dots. The worst case: `O(N * 26^M)` where N is the number of keys (number of nodes in trie) and M is the word length. We need to search `O(26^M)` at each node.
 - Space complexity: 
   - Add a word: `O(M)`. In the worst case newly inserted key doesn't share a prefix with the keys already inserted in the trie. We have to add M new nodes.
+
+
+## Feature #3: Add White Spaces to Create Words
+- https://leetcode.com/problems/word-break/
+- https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions2.md#39-word-break
+- The above solution does to work for simple case of `"a", ["a"]`. We need to DP and set the first index of dp to True because "" is a valid string.
+- The intuition behind this approach is that the given problem (s) can be divided into subproblems s1 and s2. If these subproblems individually satisfy the required conditions, the complete problem, s also satisfies the same. e.g. "catsanddog" can be split into two substrings "catsand", "dog". The subproblem "catsand" can be further divided into "cats","and", which individually are a part of the dictionary making "catsand" satisfy the condition. Going further backwards, "catsand", "dog" also satisfy the required criteria individually leading to the complete string "catsanddog" also to satisfy the criteria.
+
+Now, we'll move onto the process of `dp` array formation. We make use of `dp` array of size `n+1`, where `n` is the length of the given string. We also use two index pointers i and j, where i refers to the length of the substring `s′` considered currently starting from the beginning, and j refers to the index partitioning the current substring `s′` into smaller substrings `s′(0,j)` and `s′(j+1,i)`.
+
+To fill in the `dp` array, we initialize the element `dp[0]` as true, since the null string is always present in the dictionary, and the rest of the elements of `dp` as false. We consider substrings of all possible lengths starting from the beginning by making use of index i. For every such substring, we partition the string into two further substrings `s1'` and `s2'` in all possible ways using the index j (Note that the i now refers to the ending index of `s2'`. Now, to fill in the entry `dp[i]`, we check if the `dp[j]` contains `true`, i.e. if the substring `s1'` fulfills the required criteria. If so, we further check if `s2'` is present in the dictionary. If both the strings fulfill the criteria, we make `dp[i]` as `true`, otherwise as `false`.
+
+```py
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        wordSet = set(wordDict)
+        cache = {}
+        
+        dp = [False for _ in range(len(s) + 1)]
+        dp[0] = True
+        
+        for i in range(1, len(s) + 1):
+            for j in range(i):
+                if dp[j] and s[j:i] in wordSet:
+                    dp[i] = True
+                    break
+        return dp[-1]
+```
+
+- Time complexity: `O(n^3)` There are two nested loops and substring computation at each iteration. 
+- Space complexity: `O(n)`. Length of p array is n+1.
