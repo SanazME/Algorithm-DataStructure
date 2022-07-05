@@ -163,3 +163,52 @@ class AutocompleteSystem(object):
             self.add(self.searchTerm, 1)
             self.searchTerm =""
 ```
+
+- https://leetcode.com/problems/design-add-and-search-words-data-structure/
+```py
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.endOfWord = False
+
+class WordDictionary:
+
+    def __init__(self):
+        self.root = TrieNode()
+
+    def addWord(self, word: str) -> None:
+        curr = self.root
+        
+        for char in word:
+            if char not in curr.children:
+                curr.children[char] = TrieNode()
+
+            curr = curr.children[char]
+            
+        curr.endOfWord = True
+        
+
+    def search(self, word: str) -> bool:
+        curr = self.root
+        return self._search(word, curr)
+        
+        
+    def _search(self, word, curr):
+        
+        for i, char in enumerate(word):
+            if char not in curr.children:
+                if char == '.':
+                    for x in curr.children:
+                        if self._search(word[i + 1:], curr.children[x]):
+                            return True
+                return False
+            else:
+                curr = curr.children[char]
+                
+        return curr.endOfWord
+```
+- Time complexity:
+  - Add a word: `O(M)` where M is the key length. At each step, we either examine or create a node in the trie. That makes only M operations
+  - Search a word: `O(M)` for a well-defined words without dots. The worst case: `O(N * 26^M)` where N is the number of keys (number of nodes in trie) and M is the word length. We need to search `O(26^M)` at each node.
+- Space complexity: 
+  - Add a word: `O(M)`. In the worst case newly inserted key doesn't share a prefix with the keys already inserted in the trie. We have to add M new nodes.
