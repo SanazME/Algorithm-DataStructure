@@ -243,3 +243,73 @@ class Solution:
 
 - Time complexity: `O(n^3)` There are two nested loops and substring computation at each iteration. 
 - Space complexity: `O(n)`. Length of p array is n+1.
+
+## Feature #4: Suggest Possible Queries After Adding White Spaces
+- https://leetcode.com/problems/word-break-ii/
+- The solutions for this problem go by many names, such as Dynamic Programming, recursion with memoization, DFS, and backtracking etc. They all capture certain traits of the solutions.
+
+In essence, all these solutions can all be categorized as variants of Dynamic Programming (DP), as we will discuss in this article.
+
+As a reminder, with DP, we break the original problem down to several sub-problems recursively until the sub-problems are small enough to be solved directly. Then we combine the results of sub-problems to obtain the final solution for the original problem.
+
+As one can see, the DP solutions are also the embodiment of the divide-and-conquer principle.
+
+To come up a DP solution, the essential step is to represent the solution of the original problem with the results of its sub-problems. In general, there are two approaches to implement a DP solution, namely Top-Down and Bottom-Up. We would explain in detail how to apply these two approaches to this problem in the following sections.The solutions for this problem go by many names, such as Dynamic Programming, recursion with memoization, DFS, and backtracking etc. They all capture certain traits of the solutions.
+
+In essence, all these solutions can all be categorized as variants of Dynamic Programming (DP), as we will discuss in this article.
+
+As a reminder, with DP, we break the original problem down to several sub-problems recursively until the sub-problems are small enough to be solved directly. Then we combine the results of sub-problems to obtain the final solution for the original problem.
+
+As one can see, the DP solutions are also the embodiment of the divide-and-conquer principle.
+
+To come up a DP solution, the essential step is to represent the solution of the original problem with the results of its sub-problems. In general, there are two approaches to implement a DP solution, namely Top-Down and Bottom-Up. We would explain in detail how to apply these two approaches to this problem in the following sections.
+
+**Approach 1: Top-Down Dynamic Programming**
+
+**Algorithm**
+
+Following the above intuition, it seems intuitive to implement the solution with recursion.
+
+We define a recursive function called _wordBreak_topdown(s) which generates the results for the input string. Here are a few steps to implement our recursive function.
+
+- First of all, as the base case of the recursion, when the input string is empty, the recursion would terminate. Note that we return a list of empty list as the result, rather than just an empty list.
+
+- As the main body of the function, we run an iteration over all the prefixes of the input string. If the corresponding prefix happens to match a word in the dictionary, we then invoke recursively the function on the postfix.
+
+- At the end of the iteration, we keep the results in the hashmap named memo with each valid postfix string as its key and the list of words that compose the prefix of as the value. For instance, for the postfix dogo, its corresponding entry in the hashmap would be memo["dogo"] = ["do", "go"].
+
+```py
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
+        wordSet = set(wordDict)
+        # table to map a string to its corresponding words break
+        # {string: [['word1', 'word2'...], ['word3', 'word4', ...]]}
+        memo = defaultdict(list) # memo = {}
+
+        #@lru_cache(maxsize=None)    # alternative memoization solution
+        def _wordBreak_topdown(s):
+            """ return list of word lists """
+            if not s:
+                return [[]]  # list of empty list
+
+            if s in memo:
+                # returned the cached solution directly.
+                return memo[s]
+
+	    # memo[s] = []
+            for endIndex in range(1, len(s)+1):
+                word = s[:endIndex]
+                if word in wordSet:
+                    # move forwards to break the postfix into words
+                    for subsentence in _wordBreak_topdown(s[endIndex:]):
+                        memo[s].append([word] + subsentence)
+            return memo[s]
+
+        # break the input string into lists of words list
+        _wordBreak_topdown(s)
+
+        # chain up the lists of words into sentences.
+        return [" ".join(words) for words in memo[s]]
+```
+- Time complexity: `O(N^2 + 2^N + W)` refer to https://leetcode.com/problems/word-break-ii/solution/ for explaination
+- Space complexity: `O(2^N * N + W)`
