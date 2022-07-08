@@ -425,6 +425,10 @@ from heapq import *
 ll = [1,2,3]
 heapify(ll) # to transform a populated list into a heap
 
+ll = [(-freq, val) for key, val in c.items()] # heapify based on -freq value
+heapq.heapify(ll)
+
+
 heappush(arr, val)
 heappop(arr)
 
