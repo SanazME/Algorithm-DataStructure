@@ -402,3 +402,45 @@ class Solution:
 ```
 - Time complexity: `Q(N)`
 - Space complexity: `O(N) or O(1)`
+
+## Feature #6: Reorganizing Search Results
+- https://leetcode.com/problems/reorganize-string/
+
+- The idea is to build a max heap with freq. count
+	a) At each step, we choose the element with highest freq (a, b) where b is the element, to append to result.
+	b) Now that b is chosen. We cant choose b for the next loop. So we dont add b with decremented value count immediately into the heap. Rather we store it in prev_a, prev_b variables.
+	c) Before we update our prev_a, prev_b variables as mentioned in step 2, we know that whatever prev_a, prev_b contains, has become eligible for next loop selection. so we add that back in the heap.
+
+In essence,
+- at each step, we make the currently added one ineligible for next step, by not adding it to the heap
+- at each step, we make the previously added one eligible for next step, by adding it back to the heap
+
+```py
+from collections import Counter
+import heapq
+
+class Solution:
+    def reorganizeString(self, s: str) -> str:
+        result = []
+        c = Counter(s)
+        
+        queue = [(-v, k) for k,v in c.items()]
+        heapq.heapify(queue)
+        
+        prev_freq, prev_val = 0, 0
+        
+        while queue:
+            freq, val = heapq.heappop(queue)
+            result.append(val)
+            freq += 1
+            
+            if prev_freq < 0:
+                heapq.heappush(queue, (prev_freq, prev_val))
+            
+            prev_freq, prev_val = freq, val
+            
+        
+        if len(result) != len(s):
+            return ""
+        return "".join(result)
+```
