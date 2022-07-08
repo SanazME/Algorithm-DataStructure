@@ -312,4 +312,4 @@ class Solution:
         return [" ".join(words) for words in memo[s]]
 ```
 - Time complexity: `O(N^2 + 2^N + W)` refer to https://leetcode.com/problems/word-break-ii/solution/ for explaination
-- Space complexity: `O(2^N * N + W)`
+- Space complexity: `O(2^N * N + W)` (https://salonikaurone.medium.com/leetcode-word-break-ii-explained-d41ecfbe8fc5)
