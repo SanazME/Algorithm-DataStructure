@@ -444,3 +444,47 @@ class Solution:
             return ""
         return "".join(result)
 ```
+## Feature #7: Find Searching Time
+- https://leetcode.com/problems/exclusive-time-of-functions/
+**solution**:
+- we think of returning a list of exclusive time for node. The time is accumulation of calculating the difference between the that node start time and the start of another (or its own) process. we call it `serv_times`
+- NOte that since it is function stack, always the id at the top of the stack needs to be popped first before other processes in the stack can finish. We can not start a new process 1 and then immediately try to pop process 0 which is not at the top of the stack.
+- We can think of saving Id time into a variable called `time`.
+- We start traversing the list, retrieve the ID and before pushing or poping it from `stack`:
+	- if `start`:
+		- if we have the stack with prev element: update `serv_times[stack top]` by adding `(ID time - time)` which `time` is from prev cycle.
+		- push node id to stack
+		- update time with Id time
+	- if `end`:
+		- update `serv_times[stack top]` by adding `(ID time - time + 1)` which `time` is from prev cycle.
+		- pop node id from stack
+		- update time = id time + 1
+
+```py
+class Solution:
+    def exclusiveTime(self, n: int, logs: List[str]) -> List[int]:
+        time = 0 
+        serv_time = [0 for _ in range(n)]
+        stack = []
+        
+        for log in logs:
+            node, process, processTime = log.split(":")
+            
+            if process == "start":
+                if stack:
+                    serv_time[stack[-1]] += int(processTime) - time
+                stack.append(int(node))
+                time = int(processTime)
+            
+                
+            
+            else:
+                serv_time[stack[-1]] += int(processTime) - time + 1
+                stack.pop()
+                time = int(processTime) + 1
+                
+            
+        print(serv_time)
+        return serv_time
+```
+	
