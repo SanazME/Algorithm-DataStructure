@@ -13,3 +13,20 @@ n - 1 = 10110011
 
 n & (n - 1) = 10110100 & 10110011 = 10110000
 ```
+- https://leetcode.com/problems/number-of-1-bits/
+```py
+class Solution:
+    def hammingWeight(self, n: int) -> int:
+        ones = 0
+        
+        while n:
+            n &= n - 1
+            ones += 1
+            
+        return ones
+```
+(XOR) Exclusive Or
+- a ^ a = 0
+- a ^ 0 = a
+- a ^ a ^ b ^ c ^ c = b
+- https://leetcode.com/problems/single-number/
