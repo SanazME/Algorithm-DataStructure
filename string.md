@@ -53,3 +53,34 @@ for char in s:
     - `s.strip()` : returns **a new string** after removing **any leading and trailing whitespaces including tabs (\t)**
     - `s.lstrip()` : returns **a new string** after removing **any leading and trailing whitespaces from the left of the string**
     - `s.rstrip()` : returns **a new string** after removing **any leading and trailing whitespaces from right of the string **
+
+
+- https://leetcode.com/problems/group-anagrams/
+**solution**
+Maintain a map ans : {String -> List} where each key `K` is a sorted string, and each value is the list of strings from the initial input that when sorted, are equal to `K`.
+
+In Java, we will store the key as a string, eg. code. In Python, we will store the key as a hashable tuple, eg. `('c', 'o', 'd', 'e')`.
+
+```py
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        if len(strs) <= 1:
+            return [strs]
+        
+        dic = {}
+        
+        for st in strs:
+            key = tuple(sorted(st))
+            
+            if key in dic:
+                dic[key].append(st)
+            else:
+                dic[key] = [st]
+                
+        re = []
+        
+        for k in dic.keys():
+            re.append(dic[k])
+            
+        return re
+```
