@@ -492,3 +492,38 @@ class Solution:
 - Time complexity: `O(n.2^n)`
 As we can see in the diagram above, this approach does not generate any duplicate subsets. Thus, in the worst case (array consists of nn distinct elements), the total number of recursive function calls will be 2 ^ n. Also, at each function call, a deep copy of the subset currentSubset generated so far is created and added to the subsets list. This will incur an additional O(n)O(n) time (as the maximum number of elements in the currentSubset will be nn). So overall, the time complexity of this approach will be O(n⋅2^n ).
 
+- https://leetcode.com/problems/longest-palindromic-substring/
+```py
+class Solution(object):
+    def __init__(self):
+        self.dic = {}
+    def longestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """           
+        if len(s) <= 1:
+            return s
+    
+        soFar = ''
+        for i, char in enumerate(s):
+            # for odd case: 'aba'
+            tmp = self.helper(s, i, i)
+            if len(tmp) >= len(soFar):
+                soFar = tmp
+
+            # for even case: 'abba'
+            tmp = self.helper(s, i, i+1)
+
+            if len(tmp) >= len(soFar):
+                soFar = tmp
+
+        return soFar
+        
+        
+    def helper(self, s, left, right):
+        while left >= 0 and right < len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return s[left+1:right]
+```
