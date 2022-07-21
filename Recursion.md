@@ -427,3 +427,68 @@ def canPartition(nums):
             
     return arr[target]
 ```
+
+- https://leetcode.com/problems/subsets-ii/
+-
+**BackTracking**
+When designing our recursive function, there are two main points that we need to consider at each function call:
+
+- Whether the element under consideration has duplicates or not.
+- If the element has duplicates, which element among the duplicates should be considered while creating a subset.
+ 
+![image](https://user-images.githubusercontent.com/5471080/180220507-9ed54e3a-b527-43d7-b9aa-487033142ce6.png)
+
+The recursion tree illustrating how distinct subsets are created at each function call.Here the numbers in blue indicate the starting position of the nums array where we should start scanning at that function call.
+
+The above illustration gives us a rough idea about how we get the solution in a backtracking manner. Note that the order of the subsets in the result is the preorder traversal of the recursion tree. All that is left to do is to code the solution.
+
+Start with an empty list and the starting index set to 0. At each function call, add a new subset to the output list of subsets. Scan through all the elements in the nums array from the starting index (written in blue in the above diagram) to the end. Consider one element at a time and decide whether to keep it or not. If we haven't seen the current element before, then add it to the current list and make a recursive function call with the starting index incremented by one. Otherwise, the subset is a duplicate and so we ignore it. Thus, if in a particular function call we scan through k distinct elements, there will be k different branches.
+
+**Algorithm**
+1. First, sort the array in ascending order.
+2. Use a recursive helper function helper to generate all possible subsets. The helper has the following parameters:
+
+  - Output list of subsets (subsets).
+  - Current subset (currentSubset).
+  - nums array.
+  - the index in the nums array from where we should start scanning elements at that function call (index).
+
+3. At each recursive function call:
+
+  - Add the currentSubset to the subsets list.
+  - Iterate over the nums array from index to the array end.
+
+    - If the element is considered for the first time in that function call, add it to the currentSubset list. Make a function call to helper with index = current element position + 1.
+    - Otherwise, the element is a duplicate. So we skip it as it will generate duplicate subsets (refer to the figure above).
+    - While backtracking, remove the last added element from the currentSubset and continue the iteration.
+4. Return `subsets` list.
+
+```py
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        
+        nums.sort()
+        subsets = []
+        
+        def helper(currentSubset, idx):
+            # Add the subset formed so far to the subsets list
+            subsets.append(currentSubset[:]) # it is a shallow copy
+            
+            for i in range(idx, len(nums)):
+                # if the current element is a duplicate, ignore
+                if i != idx and nums[i] == nums[i-1]:
+                    continue
+                    
+                currentSubset.append(nums[i])
+                helper(currentSubset, i + 1)
+                currentSubset.pop()
+            
+        
+        helper([], 0)
+        
+        return subsets
+
+```
+- Time complexity: `O(n.2^n)`
+As we can see in the diagram above, this approach does not generate any duplicate subsets. Thus, in the worst case (array consists of nn distinct elements), the total number of recursive function calls will be 2 ^ n. Also, at each function call, a deep copy of the subset currentSubset generated so far is created and added to the subsets list. This will incur an additional O(n)O(n) time (as the maximum number of elements in the currentSubset will be nn). So overall, the time complexity of this approach will be O(n⋅2^n ).
+
