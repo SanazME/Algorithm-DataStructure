@@ -84,3 +84,32 @@ class Solution:
             
         return re
 ```
+
+- https://leetcode.com/problems/implement-strstr/
+- We iterate through the haystack and needle:
+      1. if we're towards the end of haystack that the we can't iterate through the lenght of needle, go to the next index of haystack
+      2. within inner loop, iterate through needle with fix indx in haystack and compare element by element, if one element was not the same break from inner loop
+      3. before exisitng inner loop, check if we reach the end of needle, meaning we found the match, return the index of haystack
+
+```py
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        if len(needle) == 0:
+            return 0
+        
+        pointer = 0
+        
+        for i in range(len(haystack)):
+            
+            if i + len(needle) > len(haystack):
+                break
+            
+            for j in range(len(needle)):
+                if needle[j] != haystack[i + j]:
+                    break
+                    
+                if j == len(needle) - 1:
+                    return i
+                
+        return -1
+```
