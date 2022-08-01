@@ -151,5 +151,39 @@ class Solution:
         return visited[node]
 ```
 
+#### Problem 2:
+- https://leetcode.com/problems/target-sum/
+- At first I just remember the current index and current target, and for each index, either subtract the nums[i] from S or add it to S. But this got TLE, them I came up with this solution. Just store the intermediate result with (index, s) and this got accepted.
+```py
+class Solution:
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        
+        if nums is None or target is None:
+            return 0
+        
+        def dfs(idx, currTarget):
+            if (idx, currTarget) in cache:
+                return cache[(idx, currTarget)]
+            else:
+                ways = 0
+                if idx == len(nums):
+                    if currTarget == 0:
+                        ways += 1
+                else:
+                    ways = dfs(idx + 1, currTarget - nums[idx]) + dfs(idx + 1, currTarget + nums[idx])
+                    
+            
+                cache[(idx, currTarget)] = ways
+                
+                return cache[(idx, currTarget)]
+        
+        
+        cache = {}
+        return dfs(0, target)
+```
+**Time complexity**:
+the complexity is `O(n * s)`, where n is the length of the input and s the target. The reason is that each entry in our cache table corresponds to each node in the recursion tree of the above algorithm. O(ns) in our case will most likely be less than O(2^n) because usually there are duplicate nodes (duplicate meaning "at the same height of the recursion tree and with the same residual sum"), but there are cases (rare) in which the two are the same, therefore we don't exceed time limit.
+
+
 ## Number of connected components in an Undirected Graph
 - https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph
