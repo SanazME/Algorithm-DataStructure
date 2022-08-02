@@ -50,6 +50,8 @@ class Solution:
         self.dfs(i, j - 1, grid)
         self.dfs(i, j + 1, grid)
 ```
+- **Time complexity**: `O(N * M)` where M is the numner of rows and N is the number of columns.
+- **Space complexity**: `O(N * M)`worst case where all the grid is island (1) where DFS goes M * N deep.
 
 #### Problem 2:
 - https://leetcode.com/problems/clone-graph/
