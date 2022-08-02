@@ -152,6 +152,8 @@ class Solution:
                 
         return visited[node]
 ```
+- **Time complexity**: `O(N + M)` where N is a number of node and M is a number of edges
+- **Space complexity**: `O(N)`. The space occupied by the `visited` hash map **and in addition to that, space would also be occupied by the queue since we are adopting the BFS approach here. The space occupied by the queue would be equal to O(W) where W is the width of the graph. Overall, the space complexity would be O(N).**
 
 #### Problem 2:
 - https://leetcode.com/problems/target-sum/
