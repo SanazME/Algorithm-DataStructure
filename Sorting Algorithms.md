@@ -180,6 +180,25 @@ print(data)
 - Space Complexity	O(1)
 - Stability	No
 
+- for heap sort, we first:
+1. convert array (complete binary tree) to a max heap (the max element will be at the root)
+2. **swap**
+3. **Remove**
+4. **Heapify**
+
+**Build a max heap**
+- To build a max-heap from any tree, we can thus start heapifying each sub-tree from the bottom up and end up with a max-heap after the function is applied to all the elements including the root element.
+
+In the case of a complete tree, the first index of a non-leaf node is given by n/2 - 1. All other nodes after that are leaf-nodes and thus don't need to be heapified.
+
+**Working of Heap Sort**
+Since the tree satisfies Max-Heap property, then the largest item is stored at the root node.
+Swap: Remove the root element and put at the end of the array (nth position) Put the last item of the tree (heap) at the vacant place.
+Remove: Reduce the size of the heap by 1.
+Heapify: Heapify the root element again so that we have the highest element at root.
+The process is repeated until all the items of the list are sorted.
+
+
 ```py
 # Heap Sort in python
 
