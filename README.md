@@ -423,9 +423,9 @@ val, nn = q.get()
 from heapq import *
 
 ll = [1,2,3]
-heapify(ll) # to transform a populated list into a heap
+heapify(ll) # to transform a populated list into a heap in-place
 
-ll = [(-freq, val) for key, val in c.items()] # heapify based on -freq value
+ll = [(-freq, val) for key, val in c.items()] # heapify based on -freq value (min-heap)
 heapq.heapify(ll)
 
 
