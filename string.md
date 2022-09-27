@@ -113,3 +113,50 @@ class Solution:
                 
         return -1
 ```
+## Add Binary
+- https://leetcode.com/problems/add-binary/
+
+```py
+class Solution:
+    def addBinary(self, a: str, b: str) -> str:
+        size_a = len(a)
+        size_b = len(b)
+
+        if size_a == 0:
+            return b
+        if size_b == 0:
+            return a
+
+        maxSize = max(size_a, size_b)
+        a = a.zfill(maxSize)
+        b = b.zfill(maxSize)
+        output = ''
+        carry = 0
+        idx = 0
+
+        for i in range(maxSize - 1, -1, -1):
+            
+            if a[i] == '1' and b[i] == '1':
+                if carry == 0:
+                    output = '0' + output
+                    carry = 1
+                else:
+                    output = '1' + output
+                    carry = 1
+            elif a[i] == '1' or b[i] == '1':
+                if carry == 1:
+                    output = '0' + output
+                else:
+                    output = '1' + output     
+            else:
+                if carry == 1:
+                    output = '1' + output
+                    carry = 0
+                else:
+                    output = '0' + output
+        
+        if carry == 1:
+            output = '1' + output
+
+        return output
+```
