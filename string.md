@@ -87,9 +87,10 @@ class Solution:
 
 - https://leetcode.com/problems/implement-strstr/
 - We iterate through the haystack and needle:
-      1. if we're towards the end of haystack that the we can't iterate through the lenght of needle, go to the next index of haystack
-      2. within inner loop, iterate through needle with fix indx in haystack and compare element by element, if one element was not the same break from inner loop
-      3. before exisitng inner loop, check if we reach the end of needle, meaning we found the match, return the index of haystack
+1. if we're towards the end of haystack that the we can't iterate through the lenght of needle, go to the next index of haystack
+2. within inner loop, iterate through needle with fix indx in haystack and compare element by element, if one element was not the same break from inner loop
+3. before exisitng inner loop, check if we reach the end of needle, meaning we found the match, return the index of haystack
+
 
 ```py
 class Solution:
