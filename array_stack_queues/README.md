@@ -363,3 +363,60 @@ def longestConsecutive(self, nums):
 ```
 ## Heap data structure (min heap, max heap and Priority Queue): https://www.programiz.com/dsa/priority-queue
 - Python heap: `heappush, heappop...` for min heap
+
+## Spiral Array
+- https://leetcode.com/problems/spiral-matrix/
+
+```py
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        rows = len(matrix)
+        cols = len(matrix[0])
+        
+        output = []
+        
+        minRow = minCol = 0
+        maxRow = rows - 1
+        maxCol = cols - 1
+        
+        while len(output) < rows * cols:
+            
+            if minRow <= maxRow and minCol <= maxCol:
+                i = minRow
+                for j in range(minCol, maxCol + 1):
+                    output.append(matrix[i][j])
+                minRow += 1
+
+                # if minRow > maxRow:
+                #     break
+
+            if minRow <= maxRow and minCol <= maxCol:
+                j = maxCol
+                for i in range(minRow, maxRow + 1):
+                    output.append(matrix[i][j])
+                maxCol -= 1
+
+                # if minCol > maxCol:
+                #     break
+
+            if minRow <= maxRow and minCol <= maxCol:
+                i = maxRow
+                for j in range(maxCol, minCol - 1, -1):
+                    output.append(matrix[i][j])
+                maxRow -= 1
+
+                # if minRow > maxRow:
+                #     break
+
+            if minRow <= maxRow and minCol <= maxCol:
+                j = minCol
+                for i in range(maxRow, minRow - 1, -1):
+                    output.append(matrix[i][j])
+                minCol += 1
+
+                # if minCol > maxCol:
+                #     break
+            
+        
+        return output
+```
