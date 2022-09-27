@@ -434,6 +434,13 @@ heappop(arr)
 
 ```
 
+27. `someStr.zfill(width)` returns a copy of the string **left filled with ASCII `0`** digits to make a string of lenght `width`.
+```py
+>>> "42".zfill(5)
+'00042'
+>>> "-42".zfill(5)
+'-0042'
+```
 
 ####################################################################################
 - In dividing a even or odd array into two partitions and later on calculate the median. We put the partition line in a place where the left side partition would always have one more element than the right side so the median was calculated:
