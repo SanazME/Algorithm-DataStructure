@@ -513,6 +513,11 @@ s.insert('lmn')
 print(s.search('lmne'))
             
 ```
+## Find Longest Common Prefix
+- https://leetcode.com/problems/longest-common-prefix/
+
+
+
 ## Binary Tree Height, Depth, node indices based on depth
 
 - **Height** is measured from a leaf node. Height of a node is the number of edges on the longest path from the node to a leaf. A leaf node has a height of 0.
