@@ -420,3 +420,26 @@ class Solution:
         
         return output
 ```
+## Pascal Triangle
+- https://leetcode.com/problems/pascals-triangle/
+
+- our output list will store each row as a sublist
+- the first and last element of each sublist is 1.
+- we then can calculate each element in between based on pervious sublist elements
+```py
+def generate(numRows):
+    triangle = [[1]]
+    
+    if numRows > 1:
+        for row in range(1, numRows):
+            sublist = [0] * (row + 1)
+            sublist[0] = sublist[-1] = 1
+            
+            for k in range(1, row):
+                sublist[k] = triangle[row - 1][k] + triangle[row - 1][k - 1]
+            
+            triangle.append(sublist)
+
+    
+    return triangle
+```
