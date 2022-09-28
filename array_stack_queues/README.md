@@ -443,3 +443,39 @@ def generate(numRows):
     
     return triangle
 ```
+
+## Minimum Size Subarray Sum
+- https://leetcode.com/problems/minimum-size-subarray-sum/
+**Algorithm**
+1. Initialize `left` pointer to 0
+2. Iterate over the array:
+    - Add to the sum
+    - while sum is larger than the target:
+        - update the answer
+        - remove from the sum index....
+```py
+def minSubarray(nums, target):
+    maxVal = max(nums)
+    if maxVal >= target:
+        return 1
+    
+    if len(nums) == 0:
+        return 0
+    
+    left = 0
+    sumSoFar = 0
+    countSoFar = 0
+    minCount = float('Inf')
+    
+    for i in range(len(nums)):
+        sumSoFar += nums[i]
+        while sumSoFar >= target:
+            minCount = min(minCount, i - left + 1)
+            sumSoFar -= nums[left]
+            left += 1
+            
+    if minCount != float('Inf'):
+        return minCount
+    else:
+        return 0
+```
