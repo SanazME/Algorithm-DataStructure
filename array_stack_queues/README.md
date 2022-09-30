@@ -479,3 +479,51 @@ def minSubarray(nums, target):
     else:
         return 0
 ```
+## Rotate Array
+- https://leetcode.com/problems/rotate-array
+
+**Solution 1**:
+with extra space
+```py
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        k = k % len(nums)
+        if k == 0 or len(nums) == 0:
+            return nums
+        
+        output = [0] * len(nums)
+        
+        for i in range(len(nums)):
+            output[(i + k) % len(nums)] = nums[i]
+            
+        nums[:] = output
+```
+
+without extra space and chaning in-place:
+We can directly place every number of the array at its required correct position. But if we do that, we will destroy the original element. Thus, we need to store the number being replaced in a `temp` variable. Then, we can place the replaced number `temp` at its correct position and so on, n times, where n is the length of array. We have chosen nn to be the number of replacements since we have to shift all the elements of the array(which is n).
+But, there could be a problem with this method, if `n % k = 0` where `k = k % n` (since a value of k larger than n eventually leads to a k equivalent to `k % n`). In this case, while picking up numbers to be placed at the correct position, we will eventually reach the number from which we originally started. Thus, in such a case, when we hit the original number's index again, we start the same process with the number following it.
+
+Now let's look at the proof of how the above method works. Suppose, we have n as the number of elements in the array and k is the number of shifts required. Further, assume `n %k = 0`. Now, when we start placing the elements at their correct position, in the first cycle all the numbers with their index i satisfying `i % k = 0` get placed at their required position. This happens because when we jump k steps every time, we will only hit the numbers k steps apart. We start with index `i = 0`, having `i % k = 0`. Thus, we hit all the numbers satisfying the above condition in the first cycle. When we reach back the original index, we have placed `n/k` elements at their correct position, since we hit only that many elements in the first cycle. Now, we increment the index for replacing the numbers. This time, we place other `n/k` elements at their correct position, different from the ones placed correctly in the first cycle, because this time we hit all the numbers satisfy the condition `i % k = 1`. 
+When we hit the starting number again, we increment the index and repeat the same process from `i = 1` for all the indices satisfying `i % k == 1`. This happens till we reach the number with the index `i % k = 0` again, which occurs for `i=k`. We will reach such a number after a total of k cycles. Now, the total count of numbers exclusive numbers placed at their correct position will be `k * n/k = n`. Thus, all the numbers will be placed at their correct position.
+```py
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        n = len(nums)
+        k %= n
+        
+        start = count = 0
+        while count < n:
+            current, prev = start, nums[start]
+            while True:
+                next_idx = (current + k) % n
+                nums[next_idx], prev = prev, nums[next_idx]
+                current = next_idx
+                count += 1
+                
+                if start == current:
+                    break
+            start += 1
+```
