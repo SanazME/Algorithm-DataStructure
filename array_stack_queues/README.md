@@ -527,3 +527,168 @@ class Solution:
                     break
             start += 1
 ```
+
+## Design a circular queue
+- A more efficient way is to use a circular queue. Specifically, we may use a fixed-size array and two pointers to indicate the starting position and the ending position. And the goal is to reuse the wasted storage we mentioned previously.
+- https://leetcode.com/explore/learn/card/queue-stack/228/first-in-first-out-data-structure/1396/
+- Create a circular queue with enQueue, deQueue, Front and Rear methods and any other methods that is needed.
+
+```py
+class MyCircularQueue:
+    def __init__(self, size):
+        self.size = size
+        self.head = -1
+        self.tail = -1
+        self.count = 0
+        self.arr = [None] * self.size
+        
+        
+    def enQueue(self, val):
+        if self.isFull():
+            return False
+        
+        # move tail index one unit forward
+        if self.head == -1:
+            self.head, self.tail = 0, 0
+        
+        else:
+            self.tail = (self.tail + 1) % self.size
+        
+        self.arr[self.tail] = val     
+        self.count += 1
+                
+        return True
+            
+        
+    def deQueue(self):
+        if self.isEmpty():
+            return False
+        
+        
+        self.head = (self.head + 1) % self.size
+        self.count -= 1
+
+        return True
+        
+        
+    
+    def isFull(self):
+        if self.count == self.size:
+            return True
+        return False
+        
+    def isEmpty(self):
+        return self.count == 0
+    
+    def Front(self):
+        if self.isEmpty():
+            return -1
+        return self.arr[self.head]
+        
+    def Rear(self):
+        if self.isEmpty():
+            return -1
+        return self.arr[self.tail]
+```
+
+OR with only one `head` pointer and deducing `tail` index from `head` and `count`:
+```py
+class MyCircularQueue:
+    def __init__(self, k):
+        self.capacity = k
+        self.head = 0
+        self.count = 0
+        self.queue = [None] * self.capacity
+    
+    def enQueue(self, val):
+        if self.isFull():
+            return False
+        
+        # move tail index one unit forward
+        self.queue[(self.head + self.count) % self.capacity] = val
+        self.count += 1
+                
+        return True
+            
+    def deQueue(self):
+        if self.isEmpty():
+            return False
+        
+        self.head = (self.head + 1) % self.capacity
+        self.count -= 1
+
+        return True
+    
+    def isFull(self):
+        return self.count == self.capacity
+            
+    def isEmpty(self):
+        return self.count == 0
+    
+    def Front(self):
+        if self.isEmpty():
+            return -1
+        return self.queue[self.head]
+        
+    def Rear(self):
+        if self.isEmpty():
+            return -1
+        return self.queue[(self.head + self.count - 1) % self.capacity]
+```
+- This solution is not thread safe and there can be a race condition for incrementing the counter among different threads. To implement a safe thread solution, we need to use lock(). For example for enQueue method:
+```py
+from threading import Lock
+
+class MyCircularQueue:
+    def __init__(self, k):
+        self.capacity = k
+        self.head = 0
+        self.count = 0
+        self.queue = [None] * self.capacity
+        self.queueLock = Lock()
+    
+        
+        
+    def enQueue(self, val):
+        
+        with self.queueLock:
+            if self.isFull():
+                return False
+
+            # move tail index one unit forward
+            self.queue[(self.head + self.count) % self.capacity] = val
+            self.count += 1
+                
+        return True
+            
+        
+    def deQueue(self):
+        
+        with self.queueLock:
+            if self.isEmpty():
+                return False
+
+
+            self.head = (self.head + 1) % self.capacity
+            self.count -= 1
+
+        return True
+        
+        
+    
+    def isFull(self):
+        return self.count == self.capacity
+            
+    def isEmpty(self):
+        return self.count == 0
+    
+    def Front(self):
+        if self.isEmpty():
+            return -1
+        return self.queue[self.head]
+        
+    def Rear(self):
+        if self.isEmpty():
+            return -1
+        return self.queue[(self.head + self.count - 1) % self.capacity]
+```
