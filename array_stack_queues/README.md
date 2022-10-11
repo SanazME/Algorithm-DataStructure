@@ -161,6 +161,35 @@ class Solution:
         return -1
  ```
 
+## Perfect Squares
+- https://leetcode.com/problems/perfect-squares/
+- We consider an N-ary tree where each node represents a remainder of the number `n` substracting a combination of square numbers. We can use BFS to find the minimal number of square numbers that add up to our original number. To avoid doing the same calculations for the same value of remainder, we use `visited` set.
+
+```py
+def numSquares(self, n: int) -> int:
+        
+    squareNums = [i*i for i in range(1, int(n**0.5) + 1)]
+    print(squareNums)
+
+    queue = collections.deque([(n, 0)])
+    visited = set()
+
+    while queue:
+        curr, depth = queue.popleft()
+        if curr == 0:
+            return depth
+
+        if curr in visited:
+            continue
+
+        visited.add(curr)
+
+        for perfectNum in squareNums:
+            if curr < perfectNum:
+                break
+            else:
+                queue.append((curr - perfectNum, depth + 1))
+```
 
 # Depth First Search (DFS)
 
