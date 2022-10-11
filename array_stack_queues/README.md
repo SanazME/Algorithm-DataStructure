@@ -121,6 +121,47 @@ def numIslands(grid):
 - https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions.md#5-number-of-islands
 
 
+## Open the lock
+- https://leetcode.com/problems/open-the-lock/
+- We can think of the problem as a shortest path on a graph: there are 10,000 nodes (strings `0000` to '9999`) and there is an edge between two nodes if they differ in one digit, and if both nodes are not in `deadends`.
+
+```py
+import collections
+
+class Solution:
+    def openLock(self, deadends: List[str], target: str) -> int:
+        
+        queue = collections.deque([('0000', 0)])
+        visited = set()
+        dead = set(deadends)
+        
+        def getNeighbors(node):
+            output = []
+            for i, char in enumerate(node):
+                digit = int(char)
+                output.append(node[:i] + str((digit + 1) % 10) + node[i+1:])
+                output.append(node[:i] + str((digit - 1) % 10) + node[i+1:])
+            return output
+        
+        while queue:
+            curr, depth = queue.popleft()
+            
+            if curr == target:
+                return depth
+            
+            if curr in visited or curr in dead:
+                continue
+                
+            visited.add(curr)
+            neighbours = getNeighbors(curr)
+            
+            for neighbor in neighbours:
+                queue.append((neighbor, depth + 1))
+                
+        return -1
+ ```
+
+
 # Depth First Search (DFS)
 
 - We don't know if the found path is the shortest path between two vertices.
