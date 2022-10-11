@@ -43,6 +43,46 @@ if __name__ == '__main__':
     bfs(graph, 0)
 ```
 
+## Walls and Gates
+- https://leetcode.com/problems/walls-and-gates/
+- Instead of searching from an empty room to the gates, we can BFS form all gates at the same time. Since BFS guarantees that we search all rooms of distance `d` before searching rooms of distance `d+1`, the distance to an empty room must be the shortest.
+
+```py
+import collections
+
+class Solution:
+    def wallsAndGates(self, rooms: List[List[int]]) -> None:
+        """
+        Do not return anything, modify rooms in-place instead.
+        """
+        if not rooms:
+            return
+        
+        rows = len(rooms)
+        cols = len(rooms[0])
+        
+        for i in range(rows):
+            for j in range(cols):
+                if rooms[i][j] == 0:
+                    queue = collections.deque([])
+                    visited = set()
+                    queue.append((i+1, j, 1))
+                    queue.append((i-1, j, 1))
+                    queue.append((i, j+1, 1))
+                    queue.append((i, j-1, 1))
+                    
+                    while queue:
+                        x, y, val = queue.popleft()
+                        if x < 0 or x >= rows or y < 0 or y >= cols or (x,y) in visited or rooms[x][y] in [-1, 0]:
+                            continue
+                            
+                        visited.add((x, y))
+                        rooms[x][y] = min(rooms[x][y], val)
+                        queue.append((x + 1, y, val + 1))
+                        queue.append((x - 1, y, val + 1))
+                        queue.append((x, y + 1, val + 1))
+                        queue.append((x, y - 1, val + 1))```
+
 # Depth First Search (DFS)
 
 - We don't know if the found path is the shortest path between two vertices.
