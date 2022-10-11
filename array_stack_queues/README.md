@@ -81,7 +81,45 @@ class Solution:
                         queue.append((x + 1, y, val + 1))
                         queue.append((x - 1, y, val + 1))
                         queue.append((x, y + 1, val + 1))
-                        queue.append((x, y - 1, val + 1))```
+                        queue.append((x, y - 1, val + 1))
+```
+
+## Number of Islands:
+
+- BFS, we search for each island:
+```py
+def numIslands(grid):
+    if not grid:
+        return
+    
+    visited = set()
+    queue = collections.deque([])
+    rows, cols = len(grid), len(grid[0])
+    count = 0
+    
+    
+    for i in range(rows):
+        for j in range(cols):
+            if grid[i][j] == '1' and (i, j) not in visited:
+                count += 1
+                queue.append((i,j))
+                
+                while queue:
+                    x, y = queue.popleft()
+                    if x < 0 or x >= rows or y < 0 or y >= cols or (x,y) in visited or grid[x][y] != '1':
+                        continue
+                        
+                    visited.add((x,y))
+                    queue.append((x + 1, y))
+                    queue.append((x - 1, y))
+                    queue.append((x, y + 1))
+                    queue.append((x, y - 1))
+                
+                
+    return count
+```
+- https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions.md#5-number-of-islands
+
 
 # Depth First Search (DFS)
 
