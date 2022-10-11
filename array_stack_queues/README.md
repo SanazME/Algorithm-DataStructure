@@ -692,3 +692,59 @@ class MyCircularQueue:
             return -1
         return self.queue[(self.head + self.count - 1) % self.capacity]
 ```
+
+## Moving Average from Data stream
+- https://leetcode.com/problems/moving-average-from-data-stream/
+- We can use an array with ever growing in size as the stream of data is coming:
+
+```py
+class MovingAverage:
+
+    def __init__(self, size: int):
+        self.size = size
+        self.count = 0
+        self.arr = []
+        self.start = 0
+        self.sumWindow = 0
+        
+
+    def next(self, val: int) -> float:
+        if self.count < self.size:
+            self.sumWindow += val
+            self.arr.append(val)
+            self.count += 1
+        else:
+            self.arr.append(val)
+            self.sumWindow -= self.arr[self.start]
+            self.sumWindow += val
+            self.start += 1
+
+        return (self.sumWindow * 1.0) / self.count
+```
+- The better approach is to use **circular queue** so that the space complexity is `O(N)` ( size of window) and time complexity is `O(1)`:
+```py
+class MovingAverage:
+
+    def __init__(self, size: int):
+        self.size = size
+        self.count = 0
+        self.queue = [0] * self.size
+        self.head = 0
+        self.sumWindow = 0
+        
+
+    def next(self, val: int) -> float:
+        
+        idx = (self.head + self.count) % self.size
+        
+        if self.count < self.size:
+            self.count += 1
+        else:
+            self.sumWindow -= self.queue[idx]
+            self.head = (self.head + 1) % self.size
+            
+        self.queue[idx] = val
+        self.sumWindow += val
+
+        return (self.sumWindow * 1.0) / self.count
+```
