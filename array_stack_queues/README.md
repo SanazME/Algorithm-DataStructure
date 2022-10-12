@@ -331,6 +331,41 @@ class Solution:
         return output
 ```
 
+## Evaluate Reverse Polish Notation
+- https://leetcode.com/problems/evaluate-reverse-polish-notation/
+```py
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        if not tokens:
+            return
+        
+        stack = []
+        def add(a, b):
+            return a + b
+        
+        def minus(a, b):
+            return a - b
+        
+        def multiply(a, b):
+            return a * b
+        
+        def division(a, b):
+            return int(a / b)
+        
+        operatorsMap = {"+": add, "-": minus, "*": multiply, "/": division}
+        
+        for ele in tokens:
+            
+            if ele in operatorsMap:
+                b, a = stack.pop(), stack.pop()
+                stack.append(operatorsMap[ele](int(a), int(b)))
+                
+            else:
+                stack.append(ele)
+        
+        return stack.pop()
+```
+
 # Depth First Search (DFS)
 
 - We don't know if the found path is the shortest path between two vertices.
