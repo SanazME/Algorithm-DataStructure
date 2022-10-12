@@ -311,6 +311,26 @@ class Solution:
         return len(stack) == 0
 ```
 
+## Daily Temperatures
+- https://leetcode.com/problems/daily-temperatures/
+```py
+class Solution:
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        stack = []
+        output = [0] * len(temperatures)
+
+        for currentDay, currentTemp in enumerate(temperatures):
+
+            while stack and stack[-1][1] < currentTemp:
+                prevDay, _ = stack.pop()
+                output[prevDay] = currentDay - prevDay
+
+
+            stack.append((currentDay, currentTemp))
+
+        return output
+```
+
 # Depth First Search (DFS)
 
 - We don't know if the found path is the shortest path between two vertices.
