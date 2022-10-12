@@ -287,6 +287,30 @@ class MinStack:
         return self._minStack.top()
 ```
 
+## Valid Parantheses
+- https://leetcode.com/problems/valid-parentheses/
+```py
+class Solution:
+    def isValid(self, s: str) -> bool:
+        stack = []
+        hashMap = {")" : "(", "]" : "[", "}":"{"}
+    
+        for char in s:
+            if char in hashMap:
+                if len(stack) == 0:
+                    return False
+
+                ele = stack.pop()
+                if ele != hashMap[char]:
+                    return False
+
+            else:
+                stack.append(char)
+
+
+        return len(stack) == 0
+```
+
 # Depth First Search (DFS)
 
 - We don't know if the found path is the shortest path between two vertices.
