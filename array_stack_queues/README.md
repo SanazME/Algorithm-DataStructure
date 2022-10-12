@@ -408,6 +408,41 @@ graph = {'0': set(['1', '2']),
 dfs(graph, '0')
 ```
 
+## Deep copy of a graph
+- https://github.com/SanazME/Algorithm-DataStructure/blob/master/Graph.md#problem-2
+```py
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val = 0, neighbors = None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+"""
+import collections
+
+class Solution:
+    def cloneGraph(self, node: 'Node') -> 'Node':
+        
+        if node is None:
+            return node
+
+        visited = {}
+        return self.dfs(node, visited)
+
+
+    def dfs(self, node, visited):
+        if node in visited:
+            return visited[node]
+
+
+        copyNode = Node(node.val, [])
+        visited[node] = copyNode
+        for neighbor in node.neighbors:
+            copyNode.neighbors.append(self.dfs(neighbor, visited))
+            
+        return copyNode
+```
+
 # DFS with stack:
 - Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum.
 
