@@ -191,6 +191,102 @@ def numSquares(self, n: int) -> int:
                 queue.append((curr - perfectNum, depth + 1))
 ```
 
+## Min Stack
+- https://leetcode.com/problems/min-stack/
+- Option 1: use a linked list and each node has a min val, we push and pop the head.
+```py
+class Node:
+    def __init__(self, val = None):
+        self.val = val
+        self.next = None
+        self.min = float('Inf')
+
+class MinStack:
+    def __init__(self):
+        self.head = Node()
+        
+    def push(self, val):
+        curr = self.head
+        node = Node(val)
+        node.min = min(curr.min, val)
+        node.next = curr
+        self.head = node
+        
+    def pop(self):
+        curr = self.head
+        nextNode = self.head.next
+        curr.next = None
+        self.head = nextNode
+        
+        
+    def top(self):
+        return self.head.val
+        
+        
+    def getMin(self):
+        return self.head.min
+```
+- or having two stacks (lists) for storing the numbers and the other storing the min value so far:
+```py
+class Stack:
+    def __init__(self):
+        self._stack = []
+        
+    def push(self, val):
+        self._stack.append(val)
+        
+        
+    def pop(self):
+        if self.isEmpty():
+            return None
+        
+        return self._stack.pop()
+        
+        
+    def top(self):
+        if self.isEmpty():
+            return None
+        
+        return self._stack[-1]
+        
+    def isEmpty(self):
+        return len(self._stack) == 0
+    
+    def size(self):
+        return len(self._stack)
+
+class MinStack:
+
+    def __init__(self):
+        self._mainStack = Stack()
+        self._minStack = Stack()
+        
+
+    def push(self, val: int) -> None:
+        self._mainStack.push(val)
+        
+        if self._minStack.isEmpty() or self._minStack.top() > val:
+            self._minStack.push(val)
+        else:
+            self._minStack.push(self._minStack.top())
+        
+
+    def pop(self) -> None:
+        self._mainStack.pop()
+        self._minStack.pop()
+        
+
+    def top(self) -> int:
+        return self._mainStack.top()
+        
+
+    def getMin(self) -> int:
+        if self._minStack.isEmpty():
+            return None
+        
+        return self._minStack.top()
+```
+
 # Depth First Search (DFS)
 
 - We don't know if the found path is the shortest path between two vertices.
