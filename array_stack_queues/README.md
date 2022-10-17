@@ -493,6 +493,53 @@ def inorderTraversal(self, root: TreeNode) -> List[int]:
     return result
 ```
 
+## Decode String
+- https://leetcode.com/problems/decode-string/
+- We can use two stacks to store the freq and the decoded strings. Instead of pushing the decoded string to the stack character by character, we can append all the characters into the string first and then push the entire string into the stack.
+
+Case 1) if the current character is a digit, append it to the number `k`
+Case 2) if the current character is a letter, append it to the `currString`
+Case 3) if the current character is a `[`, push `k` and `currString` into stacks and reset those variables
+Case 4) if the current character is a `]`: We must begin decoding:
+    - We must decode the currentString. Pop `currentK` from the `countStack` and decode the pattern `currentK[currentString]`
+    - As the stringStack contains the previously decoded string, pop the `decodedString` from the `stringStack`. Update the `decodedString = decodedString + currentK[currentString]`
+```py
+class Solution:
+    def decodeString(self, s: str) -> str:
+        numStack = []
+        strStack = []
+        
+        freq = 0
+        currString = ''
+        
+        for char in s:
+            if char.isnumeric():
+                freq = freq * 10 + (ord(char) - ord('0'))
+                
+            elif char.isalpha():
+                currString = currString + char
+                
+            elif char == '[':
+                numStack.append(freq)
+                strStack.append(currString)
+                
+                freq = 0
+                currString = ''
+                
+            else:
+                decodedString = strStack.pop()
+                
+                tmp = ''
+                for _ in range(numStack.pop()):
+                    tmp += currString
+                
+                decodedString += tmp
+                currString = decodedString
+                
+        return currString
+```
+- **Time complexity** `O(maxK * n)`, `maxK`: max value of `k` and `n`:  size of string
+- **Space complexity** `O(l + m)`, `l`: number of letters, `m`: number of digits
 
 # DFS with stack:
 - Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum.
