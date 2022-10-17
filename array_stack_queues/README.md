@@ -447,6 +447,53 @@ class Solution:
 - https://github.com/SanazME/Algorithm-DataStructure/blob/master/Graph.md#problem-2-1
 
 
+## Binary Tree in-order traversal
+- https://leetcode.com/problems/binary-tree-inorder-traversal/
+1. DFS recursive:
+```py
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def inorderTraversal(self, root: TreeNode) -> List[int]:
+        return self.helper(root, result=[])
+    
+    def helper(self, root: TreeNode, result: List[int]) -> List[int]:
+        if root is None:
+            return result
+        
+        self.helper(root.left, result)
+        result.append(root.val)
+        self.helper(root.right, result)
+        
+        return result
+```
+
+2. DFS stack:
+```py
+def inorderTraversal(self, root: TreeNode) -> List[int]:
+    result=[]
+    stack = [(root, False)]
+
+    while stack:
+        curNode, visited = stack.pop()
+
+        if curNode:
+            if visited:
+                result.append(curNode.val)
+            else:
+                stack.append((curNode.right, False))
+                stack.append((curNode, True))
+                stack.append((curNode.left, False))
+
+    return result
+```
+
+
 # DFS with stack:
 - Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum.
 
