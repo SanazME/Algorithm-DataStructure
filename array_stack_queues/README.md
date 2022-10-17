@@ -541,6 +541,33 @@ class Solution:
 - **Time complexity** `O(maxK * n)`, `maxK`: max value of `k` and `n`:  size of string
 - **Space complexity** `O(l + m)`, `l`: number of letters, `m`: number of digits
 
+## Flood fill
+- https://leetcode.com/problems/flood-fill/
+
+```py
+class Solution:
+    def floodFill(self, image: List[List[int]], sr: int, sc: int, color: int) -> List[List[int]]:
+        
+        
+        
+        def dfs(i, j, origColor, visited):
+            if i < 0 or i >= len(image) or j < 0 or j >= len(image[0]) or image[i][j] not in [origColor] or (i,j) in visited:
+                return
+            
+            
+            visited.add((i,j))
+            image[i][j] = color
+            dfs(i + 1, j, origColor, visited)
+            dfs(i - 1, j, origColor, visited)
+            dfs(i, j + 1, origColor, visited)
+            dfs(i, j - 1, origColor, visited)
+        
+        
+        dfs(sr, sc, image[sr][sc], set())
+        
+        return image```
+
+
 # DFS with stack:
 - Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum.
 
