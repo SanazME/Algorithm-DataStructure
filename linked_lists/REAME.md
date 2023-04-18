@@ -158,6 +158,39 @@ class MyLinkedList(object):
   2. If there is a cycle, the fast pointer needs M times to catch up the slower pointer, where M is the length of the cycle in the list.
 Obviously, M <= N. So we will run the loop up to N times. And for each loop, we only need constant time. So, the time complexity of this algorithm is O(N) in total.
 
+### Given `head` of a linked list, determine if the linked list has a cycle in it
+
+```py
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        if head is None:
+            return False
+
+        slow = head
+        fast = head
+
+        while fast != None and fast.next != None:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+
+        return False
+```
+- `Time complexity`: We break down the movement of the slow pointer into two steps, the non-cyclic part and the cyclic part:
+
+1. The slow pointer takes "non-cyclic length" steps to enter the cycle. At this point, the fast pointer has already reached the cycle. 
+`Number of iterations = non-cyclic length = N`
+
+2. Both pointers are now in the cycle. Consider two runners running in a cycle - the fast runner moves 2 steps while the slow runner moves 1 steps at a time. Since the speed difference is 1, it takes distance between the 2 runners difference of speed\dfrac{\text{distance between the 2 runners}}{\text{difference of speed}} 
+difference of speed
+distance between the 2 runners
+​
+  loops for the fast runner to catch up with the slow runner. As the distance is at most "cyclic length K" and the speed difference is 1, we conclude that
+`Number of iterations=almost "cyclic length K".
+
+Therefore, the worst case time complexity is O(N+K)O(N+K)O(N+K), which is O(n)O(n)O(n).
+
 ### Find the middle of a linked-list
 - to find the middle of a linked list for problems like palindrome, we can use a fast and slow pointers where the fast pointer moves two times faster than the slow pointer. When the fast pointer reaches the end of the list, the slow pointer will be at the middle of the list.
 
