@@ -834,6 +834,33 @@ class Solution(object):
 
 ```
 
+### Dynamic Programming
+- The idea here is the same as before except that instead of following a recursive approach, we will be sticking with a tabular approach. The recursive approach may run into trouble when the recursion stack grows too large. It may also run into trouble because, for each recursive call, the compiler must do additional work to maintain the call stack (function variables, etc.) which results in unwanted overhead. The dynamic programming approach is simply a tabular formulation of the ideas presented above.
+
+The cache we had before will still exist in this approach but instead of calling it a cache, we will refer to it as our dynamic programming table. Every DP solution has a table that we populate starting with the base case or the simplest of cases for which we already know the answer. E.g. for our problem, we know that in the absence of houses, the robber will make 0 profit. Similarly, if there is just one house left to rob, the robber will rob that house, and that will be the maximum profit.
+
+We start by populating the dynamic programming table with these initial values and then build the table in a bottom-up fashion which is the essence of this solution. Let's look at the algorithm to formalize this idea.
+
+**Algorithm**
+1. We define a table which we will use to store the results of our sub-problems. Let's call this table `maxRobbedAmount` where `maxRobbedAmount[i]` is the same value that would be returned by recurse(i) in the previous solution.
+2. We set `maxRobbedAmount[N]` to 0 since this means the robber doesn't have any houses left to rob, thus zero profit. Additionally, we set `maxRobbedAmount[N - 1]` to `nums[N - 1]` because in this case, there is only one house to rob which is the last house. Robbing it will yield the maximum profit.
+3. Note that this is the same as the recursive formulation in the previous solution. **The only difference is that we have already calculated the solutions to the sub-problems and we simply reuse the solutions in O(1) time when calculating the solution to the main problem.**
+```py
+def rob(self, nums):
+        maxRobbedAmount = [None] * (len(nums) + 1)
+        maxRobbedAmount[len(nums)] = 0
+        maxRobbedAmount[len(nums) - 1] = nums[-1]
+
+        for i in range(len(nums) - 2, -1, -1):
+            maxRobbedAmount[i] = max(maxRobbedAmount[i + 1], maxRobbedAmount[i + 2] + nums[i])
+
+        return maxRobbedAmount[0]
+
+```
+**- Time complexity: O(N) since we have a loop and we simply use pre-calculated valuesfrom our table
+**- Space Complexity: O(N) which is occupied by the cache maxRobbedAmount also by the recursion stack.**
+
+
 ## 15. Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts
 - https://leetcode.com/problems/maximum-area-of-a-piece-of-cake-after-horizontal-and-vertical-cuts/
 - Time complexity: `O(N log N + M logM)` where N and M are the size of vertical and horizontal cuts arrays.
