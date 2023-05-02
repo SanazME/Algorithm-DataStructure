@@ -54,3 +54,66 @@ print("The recommended content will be for ages under: " + str(medianAge.find_me
 medianAge.insert_age(25)
 print("The recommended content will be for ages under: " + str(medianAge.find_median()))
 ```
+
+## 53 Happy Number
+- https://leetcode.com/problems/happy-number/description/
+- Based on our exploration so far, we'd expect continually following links to end in one of three ways.
+
+It eventually gets to 111.
+It eventually gets stuck in a cycle.
+It keeps going higher and higher, up towards infinity.
+That 3rd option sounds really annoying to detect and handle. How would we even know that it is going to continue going up, rather than eventually going back down, possibly to 1?1?1? Luckily, it turns out we don't need to worry about it. Think carefully about what the largest next number we could get for each number of digits is.
+
+Digits	Largest	Next
+1	9	81
+2	99	162
+3	999	243
+4	9999	324
+13	9999999999999	1053
+
+For a number with 333 digits, it's impossible for it to ever go larger than 243243243. This means it will have to either get stuck in a cycle below 243243243 or go down to 111. Numbers with 444 or more digits will always lose a digit at each step until they are down to 333 digits. So we know that at worst, the algorithm might cycle around all the numbers under 243243243 and then go back to one it's already been to (a cycle) or go to 111. But it won't go on indefinitely, allowing us to rule out the 3rd option.
+
+Algorithm
+
+There are 2 parts to the algorithm we'll need to design and code.
+
+Given a number nnn, what is its next number?
+Follow a chain of numbers and detect if we've entered a cycle.
+Part 1 can be done by using the division and modulus operators to repeatedly take digits off the number until none remain, and then squaring each removed digit and adding them together. Have a careful look at the code for this, "picking digits off one-by-one" is a useful technique you'll use for solving a lot of different problems.
+
+Part 2 can be done using a HashSet. Each time we generate the next number in the chain, we check if it's already in our HashSet.
+
+If it is not in the HashSet, we should add it.
+If it is in the HashSet, that means we're in a cycle and so should return false.
+The reason we use a HashSet and not a Vector, List, or Array is because we're repeatedly checking whether or not numbers are in it. Checking if a number is in a HashSet takes O(1)O(1)O(1) time, whereas for the other data structures it takes O(n)O(n)O(n) time. Choosing the correct data structures is an essential part of solving these problems.
+
+```py
+class Solution:
+    def isHappy(self, n: int) -> bool:
+        mem = set()
+        
+        def getNextNumber(num):
+            total_sum = 0
+            while num > 0:
+                total_sum += (num % 10) ** 2
+                num = num // 10
+
+            return total_sum
+
+
+        while n != 1 and n not in mem:
+            mem.add(n)
+            n = getNextNumber(n)
+            
+        return n == 1
+```
+
+- **Time complexity O(log n)**
+  - In `getNextNumber` function, in while loop, we go down the number of digits in the number : `O(log n)` and operation in each step is constant.
+  - In the main while loop, We determined above that once a number is below 243, it is impossible for it to go back up above 243. Therefore, based on our very shallow analysis we know for sure that once a number is below 243, it is impossible for it to take more than another 243 steps to terminate. Each of these numbers has at most 3 digits. With a little more analysis, we could replace the 243 with the length of the longest number chain below 243, however because the constant doesn't matter anyway, we won't worry about it.
+
+For an n above 243, we need to consider the cost of each number in the chain that is above 243. With a little math, we can show that in the worst case, these costs will be `O(log⁡n)+O(log⁡log⁡n)+O(log⁡log⁡log⁡n)...` Luckily for us, the O(log⁡n)O(\log n)O(logn) is the dominating part, and the others are all tiny in comparison (collectively, they add up to less than log⁡n)\log n)logn), so we can ignore them.
+
+- **Space complexity O(log n)**
+
+Think about what would happen if you had a number with 1 million digits in it. The first step of the algorithm would process those million digits, and then the next value would be, at most (pretend all the digits are 9), be 81∗1,000,000=81,000,00081 * 1,000,000 = 81,000,00081∗1,000,000=81,000,000. In just one step, we've gone from a million digits, down to just 8. The largest possible 8 digit number we could get is 99,9999,99999,9999,99999,9999,999, which then goes down to 81∗8=64881 * 8 = 64881∗8=648. And then from here, the cost will be the same as if we'd started with a 3 digit number. Starting with 2 million digits (a massively larger number than one with a 1 million digits) would only take roughly twice as long, as again, the dominant part is summing the squares of the 2 million digits, and the rest is tiny in comparison.
