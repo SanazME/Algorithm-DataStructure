@@ -1231,3 +1231,60 @@ class MovingAverage:
 
         return (self.sumWindow * 1.0) / self.count
 ```
+
+## 1. Subtree of Another Tree
+- https://leetcode.com/problems/subtree-of-another-tree/description/
+
+### Solution 1: DFS
+- Let's consider the most naive approach first. We can traverse the tree rooted at root (using Depth First Search) and for each node in the tree, check if the "tree rooted at that node" is identical to the "tree rooted at subRoot". If we find such a node, we can return true. If traversing the entire tree rooted at root doesn't yield any such node, we can return false.
+
+Since we have to check for identicality, again and again, we can write a function isIdentical which takes two roots of two trees and returns true if the trees are identical and false otherwise.
+
+Checking the identicality of two trees is a classical task. We can use the same approach as the one in Same Tree Problem. We can traverse both trees simultaneously and
+
+   - if any of the two nodes being checked is null, then for trees to be identical, both the nodes should be null. Otherwise, the trees are not identical.
+   - if both nodes are non-empty. Then for the tree to be identical, ensure that:
+        - values of the nodes are the same
+        - left subtrees are identical
+        - right subtrees are identical
+
+```py
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def isSubtree(self, root, subRoot):
+        """
+        :type root: TreeNode
+        :type subRoot: TreeNode
+        :rtype: bool
+        """
+        
+        if self.isIdentical(root, subRoot): return True
+
+        if root == None:
+            return False
+
+        return self.isSubtree(root.left, subRoot) or self.isSubtree(root.right, subRoot)
+
+        
+    def isIdentical(self, subtree1, subtree2):
+        if subtree1 == None or subtree2 == None:
+            return subtree1 == subtree2 == None
+
+        return (subtree1.val == subtree2.val and 
+        self.isIdentical(subtree1.left, subtree2.left) and
+        self.isIdentical(subtree1.right, subtree2.right))
+```
+
+**Time complexity**:
+- `O(M * N)`. For every `N` node in the tree, we check if the tree rooted at node is identical to subRoot. This check takes `O(M)` time, where `M` is the number of nodes in subRoot. Hence, the overall time complexity is `O(M * N)`.
+
+**Space complexity**
+- There will be at most `N` recursive call to dfs ( or isSubtree). Now, each of these calls will have `M` recursive calls to isIdentical. Before calling isIdentical, our call stack has at most `O(N)` elements and might increase to `O(N + M)` during the call. After calling isIdentical, it will be back to at most `O(N)` since all elements made by isIdentical are popped out. Hence, the maximum number of elements in the call stack will be `M+N`.
+
+### Solution 2: Hash Table
+
