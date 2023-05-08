@@ -138,3 +138,39 @@ class Solution:
             
         return True
 ```
+
+## 55. Reverse Words in a String III
+- https://leetcode.com/problems/reverse-words-in-a-string-iii/description/
+
+```py
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        count = 0
+        final = ""
+
+        while count < len(s):
+            wordIdx = count
+            word = ""
+ 
+            while wordIdx < len(s) and s[wordIdx] != " ":
+                word += s[wordIdx]
+                wordIdx += 1
+            
+            final += self.reverseWord(word)
+            count = wordIdx + 1
+
+        return final.rstrip()
+
+    
+    def reverseWord(self, word):
+        print(word)
+        if word == "":
+            return ""
+        
+        word_list = list(word)
+        word_list = word_list[::-1]
+        reversedWord = ''.join(word_list)
+
+        return reversedWord + " "
+
+```
