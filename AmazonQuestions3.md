@@ -195,3 +195,33 @@ class Solution:
 
         return False
 ```
+
+## 57. Non decreasing array
+- https://leetcode.com/problems/non-decreasing-array/description/
+
+- To check the violation, we need to figure out which element to change and so we need to look back at two elements before
+```py
+class Solution(object):
+    def checkPossibility(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        # greedy, find nums[i-1] > nums[i], increase a counter and either change nums[i-1] or nums[i]
+        # if i <= 1 => change nums[i-1]
+        # if i > 1 and nums[i-2] <= nums[i] => change nums[i-1]
+        # else change nums[i]
+        count = 0
+        
+        for i in range(1, len(nums)):
+            if nums[i-1] > nums[i]:
+                count += 1
+                if count > 1: return False
+                
+                if i <= 1 or nums[i-2] <= nums[i]:
+                    nums[i-1] = nums[i]
+                else:
+                    nums[i] = nums[i-1]
+                    
+        return True
+```
