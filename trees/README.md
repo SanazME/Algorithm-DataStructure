@@ -572,3 +572,78 @@ def buildHeap(arr):
    for i in range(lastNonLeafNode, -1, -1):
        heapify(arr, size, i)
 ```
+
+## 1. Merge Two Binary Trees
+### Recursive approach
+- We can traverse both the given trees in a preorder fashion. At every step, we check if the current node exists(isn't null) for both the trees. If so, we add the values in the current nodes of both the trees and update the value in the current node of the first tree to reflect this sum obtained. At every step, we also call the original function mergeTrees() with the left children and then with the right children of the current nodes of the two trees. If at any step, one of these children happens to be null, we return the child of the other tree(representing the corresponding child subtree) to be added as a child subtree to the calling parent node in the first tree. At the end, the first tree will represent the required resultant merged binary tree.
+```py
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def mergeTrees(self, node1: Optional[TreeNode], node2: Optional[TreeNode]) -> Optional[TreeNode]:
+        if node1 is None:
+            return node2
+        
+        if node2 is None:
+            return node1
+
+        node1.left = self.mergeTrees(node1.left, node2.left)
+        node1.right = self.mergeTrees(node1.right, node2.right)
+
+        node1.val += node2.val
+        
+        return node1
+```
+**Time complexity**
+- `O(m)`A total of mmm nodes need to be traversed. Here, `m` represents the minimum number of nodes from the two given trees.
+
+**Space complexity**
+- `O(m)` The depth of the recursion tree can go upto `m` in the case of a **skewed tree**. **In average case, depth will be `O(logm)`.**
+
+### Iterative approach
+- We use stack : we again traverse the two trees, but this time we make use of a stackstackstack to do so instead of making use of recursion. Each entry in the stackstackstack strores data in the form `[node_{tree1}, node_{tree2}]`.
+
+We start off by pushing the root nodes of both the trees onto the `stack`. Then, at every step, we remove a node pair from the top of the stack. For every node pair removed, we add the values corresponding to the two nodes and update the value of the corresponding node in the first tree. Then, if the left child of the first tree exists, we push the left child(pair) of both the trees onto the stack. If the left child of the first tree doesn't exist, we append the left child(subtree) of the second tree to the current node of the first tree. We do the same for the right child pair as well.
+
+```py
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def mergeTrees(self, node1: Optional[TreeNode], node2: Optional[TreeNode]) -> Optional[TreeNode]:
+
+        stack = []
+        if node1 is None:
+            return node2
+
+        stack.append((node1, node2))
+
+        while stack:
+            node = stack.pop()
+
+            if node[0] is None or node[1] is None:
+                continue
+            
+
+            node[0].val += node[1].val
+
+            if node[0].left is None:
+                node[0].left = node[1].left
+            else:
+                stack.append((node[0].left, node[1].left))
+
+            if node[0].right is None:
+                node[0].right = node[1].right
+            else:
+                stack.append((node[0].right, node[1].right))
+
+
+        return node1
+```
