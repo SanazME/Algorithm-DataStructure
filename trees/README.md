@@ -647,3 +647,36 @@ class Solution:
 
         return node1
 ```
+## 2. Trim a Binary Search Tree
+- https://leetcode.com/problems/trim-a-binary-search-tree/description/
+- when `node.val < low` we trim the whole left subtree (children) and when `node.val > high` we trim the whole right subtree.
+```py
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def trimBST(self, root: Optional[TreeNode], low: int, high: int) -> Optional[TreeNode]:
+
+        def trim(node):
+            if not node:
+                return None
+            elif node.val > high:
+                return trim(node.left)
+            elif node.val < low:
+                return trim(node.right)
+            else:
+                node.left = trim(node.left)
+                node.right = trim(node.right)
+                return node
+
+        return trim(root)
+```
+
+**Time Complexity**
+- `O(N)`: where `N` is the total number of nodes in the given tree. We visit each node at most once.
+- 
+**Space Complexity**
+- `O(N)`: Even though we don't explicitly use any additional memory, the call stack of our recursion could be as large as the number of nodes in the worst case.
