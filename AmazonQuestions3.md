@@ -225,3 +225,24 @@ class Solution(object):
                     
         return True
 ```
+
+## 58. Longest Continuous Increasing Subsequence
+- https://leetcode.com/problems/longest-continuous-increasing-subsequence/description/
+- use sliding window
+```py
+class Solution:
+    def findLengthOfLCIS(self, nums: List[int]) -> int:
+        left, right = 0, 1
+        i = 0
+        count = 1
+        
+        if len(nums) == 1:
+            return 1
+
+        for i in range(len(nums)):
+            if i > 0 and nums[i - 1] >= nums[i]:
+                left = i
+            count = max(count, i - left + 1)
+        
+        return count
+```
