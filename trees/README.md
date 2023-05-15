@@ -680,3 +680,61 @@ class Solution:
 - 
 **Space Complexity**
 - `O(N)`: Even though we don't explicitly use any additional memory, the call stack of our recursion could be as large as the number of nodes in the worst case.
+
+
+## 3. Preorder tranversal in N-ary tree
+- https://leetcode.com/problems/n-ary-tree-preorder-traversal/editorial/
+
+**Recursive solution**
+```py
+"""
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val=None, children=None):
+        self.val = val
+        self.children = children
+"""
+import collections
+class Solution(object):
+
+    def preorder(self, root):
+        """
+        :type root: Node
+        :rtype: List[int]
+        """
+        return self.helper([root], result=[])
+        
+   def helper(self, node, result):
+        size = len(node)
+        
+        for i in range(size):
+            if node[i] == None:
+                return result
+        
+            result.append(node[i].val)
+            self.helper(node[i].children, result)
+        return result
+```
+
+**Iterative solution**
+```py
+class Solution(object):
+
+    def preorder(self, root):
+        """
+        :type root: Node
+        :rtype: List[int]
+        """
+        if root is None:
+            return []
+
+        stack, result = [root], []
+
+        while stack:
+            node = stack.pop()
+            result.append(node.val)
+            if node.children:
+                stack.extend(node.children[::-1])
+        
+        return result
+```
