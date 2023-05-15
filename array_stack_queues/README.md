@@ -844,7 +844,9 @@ def longestConsecutive(self, nums):
                 result = max(result, y - x)
         return result
 ```
-## Heap data structure (min heap, max heap and Priority Queue): https://www.programiz.com/dsa/priority-queue
+## Heap data structure (min heap, max heap and Priority Queue): 
+- https://www.youtube.com/watch?v=HqPJF2L5h9U
+- https://www.programiz.com/dsa/priority-queue
 - Python heap: `heappush, heappop...` for min heap
 
 ## Spiral Array
@@ -1368,3 +1370,39 @@ We are traversing the tree rooted at root in `O(N)` time. We are also traversing
 We are using memo to store the hash pair of each node in the tree rooted at root. Hence, for this, we need `O(N)` space.
 Moreover, since we are using recursion, the space required for the recursion stack will be `O(N)` for `hashSubtreeAtNode(root, true)` and `O(M)` for `hashSubtreeAtNode(subRoot, false)`.
 Hence, overall space complexity is` O(M+N)`.
+
+## 2. Kth Largest Element in a Stream
+- https://leetcode.com/problems/kth-largest-element-in-a-stream/description/
+```py
+from heapq import *
+
+class KthLargest:
+    def __init__(self, k: int, nums: List[int]):
+        self.k = k
+        self.heap = nums
+        heapq.heapify(self.heap)
+        
+        while len(self.heap) > k:
+            heapq.heappop(self.heap)
+
+    def add(self, val: int) -> int:
+        heapq.heappush(self.heap, val)
+        if len(self.heap) > self.k:
+            heapq.heappop(self.heap)
+        return self.heap[0]
+```
+
+**Time Complexity**
+Given `N` as the length of nums and `M` as the number of calls to add(),
+- https://www.youtube.com/watch?v=HqPJF2L5h9U
+
+**Time complexity**: 1O(N⋅log⁡(N)+M⋅log⁡(k))`
+
+The time complexity is split into two parts. 
+- First, the constructor needs to turn nums into a heap of size `k`. **In Python, `heapq.heapify()` can turn nums into a heap in `O(N)` time**. Then, we need to remove from the heap until there are only `k` elements in it, which means removing `N - k` elements. Since k can be, say 1, in terms of big O this is `N` operations, with each operation costing `log⁡(N)`. Therefore, the constructor costs `O(N+N⋅log⁡(N))=O(N⋅log⁡(N))`.
+    - Push into a heap (sift down):  `O(log N)`, sift down: height of the heap (complete binary tree) which is `log N`
+    - Pop (and sift up): `O(log N)`, sift up: height of the heap (complete binary tree) which is `log N`
+
+- Next, every call to add() involves adding an element to heap and potentially removing an element from heap. Since our heap is of size k, every call to add() at worst costs O(2∗log⁡(k))=O(log⁡(k))O(2 * \log(k)) = O(\log(k))O(2∗log(k))=O(log(k)). That means M calls to add() costs `O(M⋅log⁡(k))`.
+
+**Space complexity:** `O(N)`
