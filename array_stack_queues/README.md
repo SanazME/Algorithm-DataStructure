@@ -1406,3 +1406,31 @@ The time complexity is split into two parts.
 - Next, every call to add() involves adding an element to heap and potentially removing an element from heap. Since our heap is of size k, every call to add() at worst costs O(2∗log⁡(k))=O(log⁡(k))O(2 * \log(k)) = O(\log(k))O(2∗log(k))=O(log(k)). That means M calls to add() costs `O(M⋅log⁡(k))`.
 
 **Space complexity:** `O(N)`
+
+
+## 3. Design a HashSet
+- https://leetcode.com/problems/design-hashset/
+
+**hash function:** the goal of the hash function is to assign an address to store a given value. Ideally, each unique value should have a unique hash value.
+
+**collision handling:** since the nature of a hash function is to map a value from a space A into a corresponding value in a smaller space B, it could happen that multiple values from space A might be mapped to the same value in space B. This is what we call collision. Therefore, it is indispensable for us to have a strategy to handle the collision.
+
+Overall, there are several strategies to resolve the collisions:
+- **Separate Chaining:** for values with the same hash key, we keep them in a bucket, and each bucket is independent of each other.
+
+- **Open Addressing:** whenever there is a collision, we keep on probing on the main space with certain strategy until a free slot is found.
+
+- **2-Choice Hashing:** we use two hash functions rather than one, and we pick the generated address with fewer collision
+
+we focus on the strategy of **separate chaining**. Here is how it works overall.
+
+- Essentially, the primary storage underneath a HashSet is a continuous memory as Array. Each element in this array corresponds to a bucket that stores the actual values.
+
+- Given a value, first we generate a key for the value via the hash function. The generated key serves as the index to locate the bucket.
+
+- Once the bucket is located, we then perform the desired operations on the bucket, such as add, remove and contains.
+
+### Approach 1: LinkedList as Bucket
+The common choice of hash function is the `modulo` operator, i.e. `hash=value mod  base`. Here, the `base` of modulo operation would determine the number of buckets that we would have at the end in the HashSet. it is generally advisable to use a prime number as the base of modulo, e.g. `769`, in order to reduce the potential collisions.
+
+[](705_linked_list.png)
