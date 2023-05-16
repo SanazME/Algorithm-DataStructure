@@ -1433,4 +1433,118 @@ we focus on the strategy of **separate chaining**. Here is how it works overall.
 ### Approach 1: LinkedList as Bucket
 The common choice of hash function is the `modulo` operator, i.e. `hash=value mod  base`. Here, the `base` of modulo operation would determine the number of buckets that we would have at the end in the HashSet. it is generally advisable to use a prime number as the base of modulo, e.g. `769`, in order to reduce the potential collisions.
 
-[](705_linked_list.png)
+![linked list](705_linked_list.png "Linked List Buckets")
+
+As to the design of bucket, again there are several options. One could simply use another Array as bucket to store all the values. However, one drawback with the Array data structure is that it would take `O(N)` time complexity to remove or insert an element, rather than the desired `O(1)`.
+
+Since for any update operation, we would need to scan the entire bucket first to avoid any duplicate, a better choice for the implementation of bucket would be the LinkedList, which has a **constant time complexity for the insertion as well as deletion, once we locate the position to update.**
+
+```py
+
+class MyHashSet(object):
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.keyRange = 769
+        self.bucketArray = [Bucket() for i in range(self.keyRange)]
+
+    def _hash(self, key):
+        return key % self.keyRange
+
+    def add(self, key):
+        """
+        :type key: int
+        :rtype: None
+        """
+        bucketIndex = self._hash(key)
+        self.bucketArray[bucketIndex].insert(key)
+
+    def remove(self, key):
+        """
+        :type key: int
+        :rtype: None
+        """
+        bucketIndex = self._hash(key)
+        self.bucketArray[bucketIndex].delete(key)
+
+    def contains(self, key):
+        """
+        Returns true if this set contains the specified element
+        :type key: int
+        :rtype: bool
+        """
+        bucketIndex = self._hash(key)
+        return self.bucketArray[bucketIndex].exists(key)
+
+
+class Node:
+    def __init__(self, value, nextNode=None):
+        self.value = value
+        self.next = nextNode
+
+class Bucket:
+    def __init__(self):
+        # a pseudo head
+        self.head = Node(0)
+
+    def insert(self, newValue):
+        # if not existed, add the new element to the head.
+        if not self.exists(newValue):
+            newNode = Node(newValue, self.head.next)
+            # set the new head.
+            self.head.next = newNode
+
+    def delete(self, value):
+        prev = self.head
+        curr = self.head.next
+        while curr is not None:
+            if curr.value == value:
+                # remove the current node
+                prev.next = curr.next
+                return
+            prev = curr
+            curr = curr.next
+
+    def exists(self, value):
+        curr = self.head.next
+        while curr is not None:
+            if curr.value == value:
+                # value existed already, do nothing
+                return True
+            curr = curr.next
+        return False
+
+
+# Your MyHashSet object will be instantiated and called as such:
+# obj = MyHashSet()
+# obj.add(key)
+# obj.remove(key)
+# param_3 = obj.contains(key)
+```
+
+**Time Complexity**
+- `O(N/K)` where `N` is the number of all possible values and `K` is the number of predefined buckets which 769
+    - assuming that the values are evenly distributed, we could consider the average size of a bucket is `N/K`
+    - Since for each operation, in the worst case, we would need to scan the entire bucket, the time complexity is `O(N/K)`
+
+**Space Complexity**
+- `O(K + M)` where `K` is the number of predefined buckets and `M` is the number of unique values that have been inserted into the HashSet.
+
+### Approach 2: Binary Search Tree
+In the above approach, one of the drawbacks is that we have to scan the entire linkedlist in order to verify if a value already exists in the bucket (i.e. the lookup operation).
+
+To optimize the above process, one of the strategies could be that we maintain a **sorted list as the bucket**. With the sorted list, we could obtain the `O(log⁡N)` time complexity for the lookup operation, with the binary search algorithm, rather than a linear `O(N)` complexity as in the above approach.
+
+On the other hand, if we implement the sorted list in a continuous space such as Array, it would incur a linear time complexity for the update operations (e.g. insert and delete), since we would need to shift the elements.
+
+_So the question is can we have a data structure that have `O(log⁡N)` time complexity, for the operations of search, insert and delete ?_
+The answer is yes, with **Binary Search Tree (BST)**. Thanks to the properties of BST, we could optimize the time complexity of our first approach with LinkedList.
+![BST](705_BST.png "BST")
+
+One could build upon the implementation of first approach for our second approach, by applying the Façade design pattern.
+
+_We have already defined a façade class (i.e. bucket) with three interfaces (exists, insert and delete), which hides all the underlying details from its users (i.e. HashSet)._
+
+So we can keep the bulk of the code, and simply modify the implementation of bucket class with BST. 
