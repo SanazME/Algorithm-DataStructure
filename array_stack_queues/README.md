@@ -1548,3 +1548,9 @@ One could build upon the implementation of first approach for our second approac
 _We have already defined a façade class (i.e. bucket) with three interfaces (exists, insert and delete), which hides all the underlying details from its users (i.e. HashSet)._
 
 So we can keep the bulk of the code, and simply modify the implementation of bucket class with BST. 
+
+First solve the following for BST:
+- [Search in BST](https://leetcode.com/articles/search-in-a-bst/)
+- [Insert in BST](https://leetcode.com/articles/insert-into-a-bst/)
+- [Delete in BST](https://leetcode.com/articles/delete-node-in-a-bst)
+
