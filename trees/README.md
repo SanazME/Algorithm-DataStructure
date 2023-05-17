@@ -29,6 +29,17 @@ def inorder(root):
 ```
 ![InOrder Traversal](450_inorder.png)
 
+**5. Successor = "after node", i.e., the next node, or the smallest node after the current node**
+- It's also the next node in the inoerder tranversal
+
+
+**6. Predecessor = "before node", i.e. the previous node, or the largest node before the current node**
+- It's also the previous node in the inorder tranversal
+
+
+![successor & predecessor](succ2.png)
+
+
 ### Height-balanced Binary Tree
 [**Drill Down With Recursion And Respond Back Up**](https://www.youtube.com/watch?v=LU4fGD-fgJQ) : 
 
