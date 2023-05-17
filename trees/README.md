@@ -31,11 +31,23 @@ def inorder(root):
 
 **5. Successor = "after node", i.e., the next node, or the smallest node after the current node**
 - It's also the next node in the inoerder tranversal
-
+```py
+def successor(root: TreeNode) -> TreeNode:
+    root = root.right
+    while root.left:
+        root = root.left
+    return root
+```
 
 **6. Predecessor = "before node", i.e. the previous node, or the largest node before the current node**
 - It's also the previous node in the inorder tranversal
-
+```py
+def predecessor(root: TreeNode) -> TreeNode:
+    root = root.left
+    while root.right:
+        root = root.right
+    return root
+```
 
 ![successor & predecessor](succ2.png)
 
@@ -855,3 +867,62 @@ class Solution:
         
         return root
 ```
+
+## 6. Delete from a Binary Tree
+- https://leetcode.com/problems/delete-node-in-a-bst
+
+There are three possible situations here :
+
+1. Node is a leaf, and one could delete it straightforward : node = null.
+2. Node is not a leaf and **has a right child**. Then the node could be replaced by its successor which is somewhere lower in the right subtree. Then one could proceed down recursively to delete the successor.
+![](del_succ.png)
+3. Node is not a leaf, has no right child and has a left child. That means that its successor is somewhere upper in the tree but we don't want to go back. Let's use the predecessor here which is somewhere lower in the left subtree. The node could be replaced by its predecessor and then one could proceed down recursively to delete the predecessor.
+![](del_pred.png)
+
+```py
+class Solution:
+    # One step right and then always left
+    def successor(self, root: TreeNode) -> int:
+            root = root.right
+            while root.left:
+                root = root.left
+            return root.val
+        
+    # One step left and then always right
+    def predecessor(self, root: TreeNode) -> int:
+        root = root.left
+        while root.right:
+            root = root.right
+        return root.val
+
+    def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
+        if not root:
+            return None
+
+        # delete from the right subtree
+        if key > root.val:
+            root.right = self.deleteNode(root.right, key)
+        # delete from the left subtree
+        elif key < root.val:
+            root.left = self.deleteNode(root.left, key)
+        # delete the current node
+        else:
+            # the node is a leaf
+            if not (root.left or root.right):
+                root = None
+            # the node is not a leaf and has a right child
+            elif root.right:
+                root.val = self.successor(root)
+                root.right = self.deleteNode(root.right, root.val)
+            # the node is not a leaf, has no right child, and has a left child    
+            else:
+                root.val = self.predecessor(root)
+                root.left = self.deleteNode(root.left, root.val)
+                        
+        return root
+```
+**Time Complexity**
+- `O(H)` height of the tree and on-average `O(log N)`
+**Space Complexity**
+- `O(H)` to keep the recursion stack, where H is a tree height. `H=logN` for the **balanced tree**.
+
