@@ -20,9 +20,14 @@
 - like the indexing databases are BST. or **git bisect** to find where the bad commit happens uses BST.
 - BST are fast in insertion and lookup - **average case** a BST algorithm can insert or locate a node in a n-node BST in log2(N). The worst case can be slower based on the shapre of the tree (skewed)
 - Always checkout the base/edge cases: empty tree (Null) and one node, two nodes and very skewed trees (https://yangshun.github.io/tech-interview-handbook/algorithms/tree)
-- 
-
-
+- **4. Inorder tranversal of BST is an array sorted in ascending order**
+```py
+def inorder(root):
+    if root is None:
+        return []
+    return inorder(root.left) + [root.val] + inorder(root.right)
+```
+![InOrder Traversal](450_inorder.png)
 
 ### Height-balanced Binary Tree
 [**Drill Down With Recursion And Respond Back Up**](https://www.youtube.com/watch?v=LU4fGD-fgJQ) : 
