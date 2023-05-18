@@ -274,10 +274,5 @@ class Solution:
             elif i < len(seats) - 1:
                 right[i] = right[i+1] + 1
 
-        maxDistance = 0
-        for i in range(len(seats)):
-            if seats[i] == 0:
-                maxDistance = max(maxDistance, min(left[i], right[i]))
-
-        return maxDistance
+        return max(min(left[i], right[i]) for i, seat in enumerate(seats) if seat == 0)
 ```
