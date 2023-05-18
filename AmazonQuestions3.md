@@ -276,3 +276,37 @@ class Solution:
 
         return max(min(left[i], right[i]) for i, seat in enumerate(seats) if seat == 0)
 ```
+
+## 60 Find Words that can be formed by Characters
+- https://leetcode.com/problems/find-words-that-can-be-formed-by-characters/description/
+
+```py
+from collections import defaultdict
+class Solution:
+    def countCharacters(self, words: List[str], chars: str) -> int:
+        result = []
+
+        for word in words:
+            hashMap = self.createFreqMap(chars)
+            canBeFormed = self.matchChars(hashMap, word)
+            if canBeFormed:
+                result.append(word)
+
+        return sum(len(word) for word in result)
+            
+            
+    def createFreqMap(self, chars):
+        freq = defaultdict(int)
+        for char in chars:
+            freq[char] += 1
+        return freq
+    
+    def matchChars(self, hashMap, word):
+        for char in word:
+            if hashMap[char] == 0:
+                return False
+
+            hashMap[char] -= 1
+
+        return True
+```
