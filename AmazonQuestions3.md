@@ -246,3 +246,38 @@ class Solution:
         
         return count
 ```
+
+## 59 Maximize distance to closest person
+- https://leetcode.com/problems/maximize-distance-to-closest-person/
+
+Let `left[i]` be the distance from seat i to the closest person sitting to the left of i. Similarly, let `right[i]` be the distance to the closest person sitting to the right of `i`. This is motivated by the idea that the closest person in seat i sits a distance `min(left[i], right[i])` away.
+
+Algorithm
+
+To construct `left[i]`, notice it is either `left[i-1] + 1` if the seat is empty, or `0` if it is full. `right[i]` is constructed in a similar way.
+```py
+class Solution:
+    def maxDistToClosest(self, seats: List[int]) -> int:
+        left = [len(seats) for _ in range(len(seats))]
+        right = [len(seats) for _ in range(len(seats))]
+
+        for i in range(len(seats)):
+            if seats[i] == 1:
+                left[i] = 0
+            elif i > 0:
+                left[i] = left[i - 1] + 1
+
+            
+        for i in range(len(seats) - 1, -1, -1):
+            if seats[i] == 1:
+                right[i] = 0
+            elif i < len(seats) - 1:
+                right[i] = right[i+1] + 1
+
+        maxDistance = 0
+        for i in range(len(seats)):
+            if seats[i] == 0:
+                maxDistance = max(maxDistance, min(left[i], right[i]))
+
+        return maxDistance
+```
