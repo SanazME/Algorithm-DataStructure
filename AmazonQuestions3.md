@@ -310,3 +310,132 @@ class Solution:
 
         return True
 ```
+
+## 61 Exam Room
+- https://leetcode.com/problems/exam-room/description/
+
+We will name a range of unoccupied seats from i to j an Available segment with first index i and last index j. For each available segment we can say how far the "best" seat in this segment is from the closest occupied seat. The number of empty seats in between is priority of the segment. The higher the priority the better seat you can get from a segment. For the edge cases when segment starts with index 0 or ends with index N - 1 priority equals to segment_size - 1. For segments in the middle of the row priority can be calculated as (segment_size - 1) // 2 or (last - first) // 2. Please note that two segments of different size may have equal priority. For example, segments with 3 seats and with 4 seats have the same priority "1".
+
+We will use priority queue self.heap to store all currently available segments. Python implements heapq as min heap, so we will use negated priority to keep the best availabe segment on top of the queue. If two segments have equal priority, then the one with lower first index is better. Taken this into account, we will store availabale segment in self.heap as 4-items list: [-segment_priority, first_index_of_segment, last_index_of_segment, is_valid]. The first two items -segment_priority and first_index_of_segment guarantee correct priority queue order.
+
+A helper function put_segment() takes first and last index of the available segment, calculates its priority and pushes a list object into self.heap. In addition, it puts this list object into two dicts: self.avail_first[first] = segment and self.avail_last[last] = segment. These dicts will be used later in leave().
+
+We start with only one available segment [0, N - 1]. When seat() is called, we pop best available segment from self.heap. If segment's is_valid flag is False then we pop another one, until we get a valid available segment. There are two edge cases when popped segment starts at 0 or ends at N - 1. For these cases we return the edge seat number (0 or N - 1 respectively) and push new segment into self.heap. Otherwize, when the popped segment is in the middle of the row, we return its middle seat and create up to two new available segments of smaller size, and push them into self.heap.
+
+Now, leave() implementation is quite interesting. When seat p is vacated, we need to check if there are adjacent available segment(s) in the heap, and merge them together with p. We use dicts self.avail_first and self.avail_last to check for adjacent available segments. If these segment(s) are found, they need to be excluded from self.heap. Deleting items in self.heap will break heap invariant and requires subsequent heapify() call that executes in O(n log n) time. Instead we can just mark segments as invalid by setting is_valid flag: segment[3] = False. Invalid segments will be skipped upon heappop() in seat().
+
+```py
+from heapq import heappop, heappush
+
+
+class ExamRoom(object):
+
+    def __init__(self, N):
+        """
+        :type N: int
+        """
+        self.size = N
+        self.heap = []
+        self.starting_segment = {}
+        self.ending_segment = {}
+        self.put_segment(0, self.size - 1)
+
+    def put_segment(self, left, right):
+
+        if left == 0 or right == self.size - 1:
+            priority = right - left
+        else:
+            priority = (right - left)//2
+
+        segment = [-priority, left, right, True]
+
+        heappush(self.heap, segment)
+        
+        self.ending_segment[right] = segment
+        self.starting_segment[left] = segment
+
+    def seat(self):
+        """
+        :rtype: int
+        """
+        isValid = False
+
+        while not isValid:
+            _, left, right, isValid = heappop(self.heap)
+
+        del self.starting_segment[left]
+        del self.ending_segment[right]
+            
+
+        if left == 0:
+            nextIdx = 0
+            if left < right:
+                self.put_segment(left + 1, right)
+
+        elif right == self.size - 1:
+            nextIdx = right
+            if left < right:
+                self.put_segment(left, right - 1)
+
+        else:
+            nextIdx = (left + right) // 2
+
+            if nextIdx > left:
+                self.put_segment(left, nextIdx - 1)
+
+            if nextIdx < right:
+                self.put_segment(nextIdx + 1, right)
+
+        return nextIdx
+
+    def leave(self, p):
+        """
+        :type p: int
+        :rtype: void
+        """
+        segmentSizeLeft = 0
+        segmentSizeRight = 0
+        
+        left = p - 1
+        right = p + 1
+        
+        startIdx = p
+        endIdx = p
+
+        if left > 0 and left in self.ending_segment:
+            left_segment = self.ending_segment.pop(left)
+            left_segment[3] = False
+            startIdx = left_segment[1]
+            
+            
+        if right < self.size and right in self.starting_segment:
+            right_segment = self.starting_segment.pop(right)
+            right_segment[3] = False
+            endIdx = right_segment[2]
+            
+
+        self.put_segment(startIdx, endIdx)
+
+        # first = p
+        # last = p
+
+        # left = p - 1
+        # right = p + 1
+
+        # if left >= 0 and left in self.ending_segment:
+        #     segment_left = self.ending_segment.pop(left)
+        #     segment_left[3] = False
+        #     first = segment_left[1]
+
+        # if right < self.size and right in self.starting_segment:
+        #     segment_right = self.starting_segment.pop(right)
+        #     segment_right[3] = False
+        #     last = segment_right[2]
+
+        # self.put_segment(first, last)
+
+# Your ExamRoom object will be instantiated and called as such:
+# obj = ExamRoom(n)
+# param_1 = obj.seat()
+# obj.leave(p)
+```
