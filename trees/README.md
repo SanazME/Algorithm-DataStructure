@@ -13,7 +13,7 @@
 - B-tree generalized binary search tree, allowing nodes with more than two children
 - Unlike self-balancing binary search trees, the B-tree is well suited for storage systems that read and write relatively large blocks of data, such as databases and filesystems.
 
-## Binary Tree - Array Representation**
+## Binary Tree - Array Representation
 
 ![BT Array Representation](BTArray.png)
 - In array, the nodes are places level by level
@@ -34,18 +34,18 @@
 ![Array filling](BTArray1.png)
 
 
-**Full Binary Tree**
+### Full Binary Tree
 - At its height, it has max number of nodes. If we add a new node, we increase the height of the tree and add a new level.
 - If the height of the binary tree is `h` (**height is 0 at root**), the number of nodes in full binary tree are: `2^(h+1) - 1`.
     - if height starts from **1**: `2^(h) - 1`
 
-**Complete Binary Tree**
+### Complete Binary Tree
 - From looking at the array of the BT, we don't see any missing elements:
 ![](completeBT.png)
-- A complete binary tree is a full BT up to height `h - 1` and in the last level, elements are filled from left to right.
+- A complete binary tree of height `h` is a full BT up to height `h - 1` and in the last level, elements are filled from left to right.
 
 
-**Binary Search Tree (BST)**
+## Binary Search Tree (BST)
 1. BST, every parent node can only have two possible child nodes and not more than that
 2. so the root node points to two subtrees, left subtree and right subtree and this recursively is true for each subtrees that are binary trees and two subtrees...
 3. the searchable part of the BST is that all the subtrees to the left a node are smaller than the value of that node and all the subtrees to the right of that node are larger in value than the value of that node.
