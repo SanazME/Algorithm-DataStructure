@@ -51,6 +51,7 @@
 - Max heap: every node has value greater than its descendents.
 
 **Insert in Max Heap**
+
 ![](insertHeap1.png)
 
 - we insert elements at the last free space available (not in the root) as leaf. filling from left to right at the leaf nodes. After insertion we need to sort the tree so it will be max heap again (every node value is higher than its descendant nodes):
@@ -70,6 +71,28 @@
 
 ![](deleteHeap1.png) 
 ![](deleteHeap2.png) 
+
+- if we start adding the deleted elements to available space in the array (outside of heap), we get sorted values: heap sort
+![](deleteHeap3.png)
+
+## Heap Sort
+- when deleting from a heap, if we keep the deleted elements in the heap array at the available space (at the end but out of the heap), we get sorted next max element: we get heap sort.
+
+- Heap sort has two steps:
+1. for a set of elements, create a heap by inserting elements one by one.
+2. once the heap is formed, delete all elements from the heap one by one. we get the sorted elements: Heap sort. 
+
+- **Time complexity of creating a heap: O(n log n)**
+- **Time complexity of deleting elements: O(n log n)**
+
+![](heapsort.png)
+
+## Heapify
+- We see how to create a heap by inserting elements at leaf and adjusting upwards from leaf to root.
+- Another way of creating a heap is heapify but the direction is downward. We have a tree and its array and we need to heapify that tree:
+ - start from the last (leaf) nodes and look downwards towards the descendants. The leaf node themselves are heap.
+ - in the array go from last to first and for each element, compare it against its descendant nodes and swap them if needed and once adjusted, compare that again with its descendatns and do it recursively all the way to the leaf. Once it is over, go to the next node in the array and repeat.
+ - Time complexity: `O(n)`. **Creating a heap is `O(n log n) while heapify is faster: `O(n)`**
 
 
 ## Binary Search Tree (BST)
