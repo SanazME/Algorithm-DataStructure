@@ -13,6 +13,9 @@
 - B-tree generalized binary search tree, allowing nodes with more than two children
 - Unlike self-balancing binary search trees, the B-tree is well suited for storage systems that read and write relatively large blocks of data, such as databases and filesystems.
 
+**Binary Tree - Array Representation**
+![BT Array Representation](BTArray)
+
 **Binary Search Tree (BST)**
 1. BST, every parent node can only have two possible child nodes and not more than that
 2. so the root node points to two subtrees, left subtree and right subtree and this recursively is true for each subtrees that are binary trees and two subtrees...
