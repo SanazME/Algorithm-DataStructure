@@ -43,6 +43,33 @@
 - From looking at the array of the BT, we don't see any missing elements:
 ![](completeBT.png)
 - A complete binary tree of height `h` is a full BT up to height `h - 1` and in the last level, elements are filled from left to right.
+- **Height of a binary tree is minimu and is: `h = log n`. Because we don't go to the next level unless that level is full**
+
+## Heap
+- **Heap is a complete BT**.
+- It's height is `h = log n`
+- Max heap: every node has value greater than its descendents.
+
+**Insert in Max Heap**
+![](insertHeap1.png)
+
+- we insert elements at the last free space available (not in the root) as leaf. filling from left to right at the leaf nodes. After insertion we need to sort the tree so it will be max heap again (every node value is higher than its descendant nodes):
+    - compare the added node to its parent and if it's larger, it will be swapped by its parent. The node will be compared against its anscestors and will reach its right place.
+    - **Insertion into heap time complexity**: the amount of time to do the swaps. How many swaps? **The height of the BT: O(log n)**
+    - insert element to heap moves upward.
+
+![](insertHeap2.png)
+
+
+**Delete in Max Heap**
+- like an arrangement of apples in a pyramid, we remove elements from the top.
+- when the top is removed the last element in the BT should take its place.
+- to adjust it to a max heap, from root to leaf, we compare the parent node to its children and swap till the node find its right place
+- **Deleting an element in heap time complexity**: the amount of time to do the swaps. How many swaps? **The height of the BT: O(log n)**
+    - delete element in heap moves upward.
+
+![](deleteHeap1.png) 
+![](deleteHeap2.png) 
 
 
 ## Binary Search Tree (BST)
