@@ -844,7 +844,9 @@ def longestConsecutive(self, nums):
                 result = max(result, y - x)
         return result
 ```
-## Heap data structure (min heap, max heap and Priority Queue): 
+## 
+data structure (min heap, max heap and Priority Queue): 
+- Look at readme in tree: https://github.com/SanazME/Algorithm-DataStructure/blob/master/trees/README.md#tree
 - https://www.youtube.com/watch?v=HqPJF2L5h9U
 - https://www.programiz.com/dsa/priority-queue
 - Python heap: `heappush, heappop...` for min heap
