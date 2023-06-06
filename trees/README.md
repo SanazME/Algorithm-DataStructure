@@ -14,7 +14,24 @@
 - Unlike self-balancing binary search trees, the B-tree is well suited for storage systems that read and write relatively large blocks of data, such as databases and filesystems.
 
 **Binary Tree - Array Representation**
-![BT Array Representation](BTArray)
+
+![BT Array Representation](BTArray.png)
+- In array, the nodes are places level by level
+- The relationship between nodes (left child, right child, parent) are formed by these statements (**also applied for BST**):
+    - if a node is at index `i` (index starts as **1**):
+    - its left child is at `2*i`
+    - its right child is at `2*i + 1`
+    - its parent is at `i // 2`
+
+- if a node is at index `i` (index starts as **0**):
+    - its left child is at `2*i + 1`
+    - its right child is at `2*i + 2`
+    - its parent is at `(i - 1) // 2`
+
+- so based on those relationships we can find the left child, right child and a parent of a node with a given index in that array.
+- When filling the array for that BT, BST, we need to put a blank if the child does not exist (`null`)
+
+![Array filling](BTArray1.png)
 
 **Binary Search Tree (BST)**
 1. BST, every parent node can only have two possible child nodes and not more than that
