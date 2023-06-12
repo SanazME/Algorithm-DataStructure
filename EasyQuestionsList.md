@@ -153,3 +153,54 @@ class MinStack:
     def getMin(self) -> int:
         return self.min_stack[-1][0]   
 ```
+
+## 2. Intersection of Two Linked Lists
+- Time complexity: `O(N + M)` where `N` and `M` are lenght of linked lists
+- Space complexity: `O(1)`
+
+```py
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+        pa, pb = headA, headB
+        lena, lenb = 0, 0
+
+        while pa.next:
+            pa = pa.next
+            lena += 1
+        lena += 1
+
+        while pb.next:
+            pb = pb.next
+            lenb += 1
+        lenb += 1
+
+        if pa.val != pb.val:
+            return None
+
+        if lena > lenb:
+            pLong, pShort = headA, headB
+            countLong, countShort = lena, lenb
+        else:
+            pLong, pShort = headB, headA
+            countLong, countShort = lenb, lena
+        
+        while countLong > countShort:
+            pLong = pLong.next
+            countLong -= 1
+
+        # both lists have the same length
+        while pLong:
+            if pLong == pShort:
+                return pLong
+            
+            pLong = pLong.next
+            pShort = pShort.next
+
+        return None
+```
