@@ -204,3 +204,6 @@ class Solution:
 
         return None
 ```
+
+## 3. Rotate Array
+- https://github.com/SanazME/Algorithm-DataStructure/blob/master/array_stack_queues/README.md#rotate-array
