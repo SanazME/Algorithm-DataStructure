@@ -36,6 +36,16 @@
 **Serialization and Deserialization**
 - Serialization is the process of converting a data structure or object into a sequence of bits so that it can be saved in a file or memory buffer, or transmitted across a network connection.
 
+**Tricks to remember**
+- To get digits of a number (base 10) from right to left, use modulu (`%`):
+```py
+n = 196
+while n > 0:
+    digit-from-right-to-left = n % 10
+    n = n // 10
+
+```
+
 **Useful Python methods**
 1. `enumerate()` for enumerate :
 ```python
