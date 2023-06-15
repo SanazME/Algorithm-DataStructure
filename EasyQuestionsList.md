@@ -207,3 +207,6 @@ class Solution:
 
 ## 3. Rotate Array
 - https://github.com/SanazME/Algorithm-DataStructure/blob/master/array_stack_queues/README.md#rotate-array
+
+## 4. Happy Number
+- https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions3.md#53-happy-number
