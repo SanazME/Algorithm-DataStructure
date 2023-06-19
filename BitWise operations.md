@@ -4,7 +4,7 @@
 1 - 1 = 0
 0 - 0 = 0
 1 - 0 = 1
-0 - 1 = 1 (borrow 1)
+0 - 1 = 1 (borrow 1) or use two's complement of the number?
 ```
 - `n &= n - 1` remove the rightmost in binary representation. for example:
 ```sh
@@ -30,6 +30,21 @@ class Solution:
 - a ^ 0 = a
 - a ^ a ^ b ^ c ^ c = b
 - https://leetcode.com/problems/single-number/
+
+## Sum and Subtraction operations on positive integers x + y, x - y
+- Sum operation can be broken down to :
+1. `x ^ y` (without carry)
+2. `(x & y) << 1` (carry)
+
+So we keep doing the same operation till carry is 0:
+```py
+x = (x ^ y)
+y = (x & y) << 1
+```
+
+- Subtract:
+1. `x ^ y` (without carry)
+2. `((~x) & y) << 1`
 
 ### Operations
 - `x << y` : returns `x` with the bits shifted to the left by `y` places (and the new bits on the right are zero). This is the same as mulitplying `x` by `2**y`.
