@@ -210,3 +210,26 @@ class Solution:
 
 ## 4. Happy Number
 - https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions3.md#53-happy-number
+
+## 5. Sum of two numbers
+- https://leetcode.com/problems/sum-of-two-integers/editorial/?envType=list&envId=o160a5j5
+```py
+class Solution:
+    def getSum(self, a: int, b: int) -> int:
+        x, y = abs(a), abs(b)
+        # ensure x >= y
+        if x < y:
+            return self.getSum(b, a)  
+        sign = 1 if a > 0 else -1
+        
+        if a * b >= 0:
+            # sum of two positive integers
+            while y:
+                x, y = x ^ y, (x & y) << 1
+        else:
+            # difference of two positive integers
+            while y:
+                x, y = x ^ y, ((~x) & y) << 1
+        
+        return x * sign
+```
