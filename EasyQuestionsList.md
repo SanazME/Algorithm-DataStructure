@@ -389,6 +389,39 @@ If any node in "tree rooted at root" has hash value equal to the hash value of "
 - avoid concatenating strings for hash value purposes because it will take `O(N)` time to concatenate strings.
 - To ensure minimum spurious hits, we can map each node to two hash values, thus getting one hash pair for each node. Trees rooted at s and Tree rooted at t will have the same hash pair iff they are identical, provided our hashing technique maps nodes to unique hash pairs
 
+**Algorithm**
+1. Define two constants MOD_1 and MOD_2 as two large prime numbers.
+
+2. Initialize a memo set to memoize hash values of each node in the tree rooted at root. Please ensure that the data structure for memoizing has constant time insertion.
+
+3. Define function hashSubtreeAtNode which takes two parameter, node and needToAdd. It essentially returns the hash pair of the subtree rooted at node.
+
+- If node is null, then return hash pair (3, 7). Note that we can return any two values.
+
+- Else, compute the hash pair of this node using the left and right child's hash pair.
+
+- For the first hash of the pair
+
+    - left shift the first hash of the left node by some fixed value.
+    - left shift the first hash of the right node by 1 (or some other fixed value)
+    - add these shifted values with this node's value to get the first hash of this node.
+    - take MOD_1 at each step to avoid overflow.
+
+- For the second hash of the pair
+
+    - left shift the second hash of the left node by some fixed value (different from what was used for the first element of the pair).
+    - left shift the second hash of the right node by 1 (or some other fixed value)
+    - add these shifted values with this node's value to get the second hash of this node.
+    - take MOD_2 at each step to avoid overflow.
+
+- If needToAdd is true, then add this hash pair to memo.
+
+- Return the hash pair of this node.
+
+4. Call hashSubtreeAtNode(root, true), for calculating the hash of root, we will calculate the hash of every node in the tree rooted at root. The true value of needToAdd means we will add every computed hash to the memo.
+
+5. Now, call hashSubtreeAtNode(subRoot, false). This will calculate the hash of subRoot and will not add it to the memo. If the hash pair of subRoot is present in memo, then subRoot is a subtree of root. Hence, return if hashSubtreeAtNode(subRoot, false) is present in memo or not.
+
 ```py
 class Solution:
     def isSubtree(self, root: TreeNode, subRoot: TreeNode) -> bool:
