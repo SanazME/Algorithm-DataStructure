@@ -364,3 +364,75 @@ class Solution:
 **Time and Space complexities**
 - Time: `O(NM)`. For every `N` node in the tree, we check if the tree rooted at node is identical to subRoot. This check takes `O(M)` time, where `M` is the number of nodes in `subRoot`.
 - Space: `O(N + M)`. There will be at most `N` recursive call to `dfs` (or `isSubtree`). Now, each of these calls will have `M` recursive calls to `isIdentical`. Before `isIdentical`, our call stack has at most `O(N)` elements and might increase to `O(N+M)` during the call. After calling `isIdentical`, it will be back to at most `O(N)` since all elements made by `isIdentical` are popped out.
+
+**Efficient solution with Hasing nodes**
+- It turns out that tree comparison is expensive. In the very first approach, we need to perform the comparison for at most NNN nodes, and each comparison cost `O(M)`. If we can somehow reduce the cost of comparison, then we can reduce the overall time complexity
+
+You may recall that the cost of comparison of two integers is constant. As a result, if we can somehow transform the subtree rooted at each node to a unique integer, then we can compare two trees in constant time.
+
+*Is there any way to transform a tree into an integer?
+Yes, there is. We can use the concept of Hashing.*
+
+- We want to hash (map) each subtree to a unique value. We want to do this in such a way that if two trees are identical, then their hash values are equal. And, if two trees are not identical, then their hash values are not equal. This hashing can be used to compare two trees in O(1) time.
+
+We will build the hash of each node depending on the hash of its left and right child. The hash of the root node will represent the hash of the whole tree because to build the hash of the root node, we used (directly, or indirectly) the hash values of all the nodes in its subtree.
+
+If any node in "tree rooted at root" has hash value equal to the hash value of "tree rooted at subRoot", then "tree rooted at subRoot" is a subtree of "tree rooted at root", provided our hashing mechanism maps nodes to unique values.
+
+- One can use any hashing function which guarantees minimum spurious hits and is calculated in O(1) time. We will use the following hashing function.
+    - if it's `null` node, then hash it to `3`. (you can use any prime number here)
+    - Else,
+        - left shift the hash value of the left node by some fixed value
+        - left shift the hash value of right node by 1
+        - add these shifted values with this `node.val` to get the hash of this node
+     
+- avoid concatenating strings for hash value purposes because it will take `O(N)` time to concatenate strings.
+- To ensure minimum spurious hits, we can map each node to two hash values, thus getting one hash pair for each node. Trees rooted at s and Tree rooted at t will have the same hash pair iff they are identical, provided our hashing technique maps nodes to unique hash pairs
+
+```py
+class Solution:
+    def isSubtree(self, root: TreeNode, subRoot: TreeNode) -> bool:
+
+        MOD_1 = 1_000_000_007
+        MOD_2 = 2_147_483_647
+
+        def hash_subtree_at_node(node, need_to_add):
+            if node is None:
+                return (3, 7)
+
+            left = hash_subtree_at_node(node.left, need_to_add)
+            right = hash_subtree_at_node(node.right, need_to_add)
+
+            left_1 = (left[0] << 5) % MOD_1
+            right_1 = (right[0] << 1) % MOD_1
+            left_2 = (left[1] << 7) % MOD_2
+            right_2 = (right[1] << 1) % MOD_2
+
+            hashpair = ((left_1 + right_1 + node.val) % MOD_1,
+                        (left_2 + right_2 + node.val) % MOD_2)
+
+            if need_to_add:
+                memo.add(hashpair)
+
+            return hashpair
+
+        # List to store hashed value of each node.
+        memo = set()
+
+        # Calling and adding hash to List
+        hash_subtree_at_node(root, True)
+
+        # Storing hashed value of subRoot for comparison
+        s = hash_subtree_at_node(subRoot, False)
+
+        # Check if hash of subRoot is present in memo
+        return s in memo
+```
+
+**Time and Space complexity**
+- Time: `O(N+M)`
+- We are traversing the tree rooted at root in O(N) time. We are also traversing the tree rooted at subRoot in O(M) time. For each node, we are doing constant time operations. After traversing, for lookup we are either doing O(1) operations, or O(N) operations. Hence, the overall time complexity is O(N+M).
+- Space: `O(N+M)`
+- We are using memo to store the hash pair of each node in the tree rooted at root. Hence, for this, we need O(N) space.
+Moreover, since we are using recursion, the space required for the recursion stack will be O(N) for hashSubtreeAtNode(root, true) and O(M) for hashSubtreeAtNode(subRoot, false).
+Hence, overall space complexity is O(M+N).
