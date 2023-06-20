@@ -292,3 +292,75 @@ class Solution(object):
         
         return out
 ```
+
+## 8. Subtree of another tree
+- https://leetcode.com/problems/subtree-of-another-tree/editorial/?envType=list&envId=o160a5j5
+**Inefficient first solution:**
+Let's consider the most naive approach first. We can traverse the tree rooted at root (using Depth First Search) and for each node in the tree, check if the "tree rooted at that node" is identical to the "tree rooted at subRoot". If we find such a node, we can return true. If traversing the entire tree rooted at root doesn't yield any such node, we can return false.
+Since we have to check for identicality, again and again, we can write a function isIdentical which takes two roots of two trees and returns true if the trees are identical and false otherwise.
+
+Checking the identicality of two trees is a classical task. We can use the same approach as the one in Same Tree Problem. We can traverse both trees simultaneously and
+
+- if any of the two nodes being checked is null, then for trees to be identical, both the nodes should be null. Otherwise, the trees are not identical.
+
+- if both nodes are non-empty. Then for the tree to be identical, ensure that
+
+    - values of the nodes are the same
+    - left subtrees are identical
+    - right subtrees are identical
+
+**Algorithm**
+1. Create a function dfs that takes node as the argument. This function will return true if the "tree rooted at node" is identical to the "tree rooted at subRoot" and false otherwise.
+
+Now, if for any node, "tree rooted at node" is identical to the "tree rooted at subRoot", then we can be sure that there is a subtree in the "tree rooted at root" which is identical to the "tree rooted at subRoot".
+
+2. For dfs,
+
+- if node is null, we can return false because the null node cannot be identical to a tree rooted at subRoot, which as per constraints is not null.
+
+- else if, check for the identicality of the "tree rooted at node" and the "tree rooted at subRoot" using the function isIdentical, if trees are identical, return true.
+
+- otherwise, call the dfs function for the left child of node, and the right child of node. If either of them returns true, return true. Otherwise, return false.
+
+3. Create the function isIdentical which takes two roots of two trees (namely node1 and node2) and returns true if the trees are identical and false otherwise.
+
+```py
+class Solution:
+    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+
+        # Check for all subtree rooted at all nodes of tree "root"
+        def dfs(node):
+
+            # If this node is Empty, then no tree is rooted at this Node
+            # Thus "tree rooted at node" cannot be same as "rooted at subRoot"
+            # "tree rooted at subRoot" will always be non-empty (constraints)
+            if node is None:
+                return False
+
+            # If "tree rooted at node" is identical to "tree at subRoot"
+            elif is_identical(node, subRoot):
+                return True
+
+            # If "tree rooted at node" was not identical.
+            # Check for tree rooted at children
+            return dfs(node.left) or dfs(node.right)
+
+        def is_identical(node1, node2):
+
+            # If any one Node is Empty, both should be Empty
+            if node1 is None or node2 is None:
+                return node1 is None and node2 is None
+
+            # Both Nodes Value should be Equal
+            # And their respective left and right subtree should be identical
+            return (node1.val == node2.val and
+                    is_identical(node1.left, node2.left) and
+                    is_identical(node1.right, node2.right))
+
+        # Check for node rooted at "root"
+        return dfs(root)
+```
+
+**Time and Space complexities**
+- Time: `O(NM)`. For every `N` node in the tree, we check if the tree rooted at node is identical to subRoot. This check takes `O(M)` time, where `M` is the number of nodes in `subRoot`.
+- Space: `O(N + M)`. There will be at most `N` recursive call to `dfs` (or `isSubtree`). Now, each of these calls will have `M` recursive calls to `isIdentical`. Before `isIdentical`, our call stack has at most `O(N)` elements and might increase to `O(N+M)` during the call. After calling `isIdentical`, it will be back to at most `O(N)` since all elements made by `isIdentical` are popped out.
