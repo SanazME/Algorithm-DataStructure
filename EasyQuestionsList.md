@@ -254,3 +254,41 @@ def findMissingNumbers(nums):
         return missing
 ```
   
+## 7. Reverse Words in a String III
+- https://leetcode.com/problems/reverse-words-in-a-string-iii/description/?envType=list&envId=o160a5j5
+```py
+class Solution(object):
+    def reverseWords(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        n = len(s)
+        if n <= 1:
+            return s
+
+        count = 0
+        out = ''
+
+        while count < n:
+            innerCount = count
+            word = []
+            while innerCount < n and s[innerCount] != ' ':
+                word.append(s[innerCount])
+                innerCount += 1
+
+            # Reverse word
+            out += self.reverseWord(word) + " "
+
+            count = innerCount + 1
+
+        out = out.strip()
+        return out
+
+    def reverseWord(self, word):
+        out = ""
+        for i in range(len(word)-1, -1, -1):
+            out += word[i]
+        
+        return out
+```
