@@ -233,3 +233,24 @@ class Solution:
         
         return x * sign
 ```
+
+## 6. Find All Numbers Disappeared in an Array
+- https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/description/?envType=list&envId=o160a5j5
+- in O(1) space:
+```py
+def findMissingNumbers(nums):
+    for i in range(n):
+            curr = abs(nums[i])
+            if nums[curr - 1] < 0:
+                continue
+            else:
+                nums[curr - 1] *= -1
+
+        missing = []
+        for i in range(n):
+            if nums[i] > 0:
+                missing.append(i+1)
+
+        return missing
+```
+  
