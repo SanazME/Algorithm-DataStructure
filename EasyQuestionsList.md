@@ -293,7 +293,7 @@ class Solution(object):
         return out
 ```
 
-## 8. Subtree of another tree
+## 8. ** Subtree of another tree
 - https://leetcode.com/problems/subtree-of-another-tree/editorial/?envType=list&envId=o160a5j5
 **Inefficient first solution:**
 Let's consider the most naive approach first. We can traverse the tree rooted at root (using Depth First Search) and for each node in the tree, check if the "tree rooted at that node" is identical to the "tree rooted at subRoot". If we find such a node, we can return true. If traversing the entire tree rooted at root doesn't yield any such node, we can return false.
