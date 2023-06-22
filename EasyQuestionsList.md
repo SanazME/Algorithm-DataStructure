@@ -472,3 +472,13 @@ Hence, overall space complexity is O(M+N).
 
 ## 9. Can Place Flowers
 - https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions3.md#56-can-place-flowers
+
+## 10. Merge two binary trees
+- https://github.com/SanazME/Algorithm-DataStructure/blob/master/trees/README.md#1-merge-two-binary-trees
+- both recursive and iterative solutions
+
+## 11. Non-decreasing Array
+- https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions3.md#57-non-decreasing-array
+  
+## 12. Trim a binary search tree
+- https://github.com/SanazME/Algorithm-DataStructure/blob/master/trees/README.md#2-trim-a-binary-search-tree
