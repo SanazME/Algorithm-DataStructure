@@ -469,3 +469,6 @@ class Solution:
 - We are using memo to store the hash pair of each node in the tree rooted at root. Hence, for this, we need O(N) space.
 Moreover, since we are using recursion, the space required for the recursion stack will be O(N) for hashSubtreeAtNode(root, true) and O(M) for hashSubtreeAtNode(subRoot, false).
 Hence, overall space complexity is O(M+N).
+
+## 9. Can Place Flowers
+- https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions3.md#56-can-place-flowers
