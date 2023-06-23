@@ -418,7 +418,7 @@ q.empty() # check if it's empty
 
 ############
 
-val = q.get()
+val = q.get()  // remove and return the item
 val, nn = q.get()
 ```
 
