@@ -479,6 +479,7 @@ Hence, overall space complexity is O(M+N).
 
 ## 11. Non-decreasing Array
 - https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions3.md#57-non-decreasing-array
+- Hard version: https://github.com/SanazME/Algorithm-DataStructure/blob/master/HardQuestionsList.md#1-make-array-non-decreasing-or-non-increasing
   
 ## 12. Trim a binary search tree
 - https://github.com/SanazME/Algorithm-DataStructure/blob/master/trees/README.md#2-trim-a-binary-search-tree
