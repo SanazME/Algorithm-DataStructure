@@ -1556,6 +1556,33 @@ First solve the following for BST:
 - [Insert in BST](https://leetcode.com/articles/insert-into-a-bst/)
 - [Delete in BST](https://leetcode.com/articles/delete-node-in-a-bst)
 
+**3 important facts to know about BST:**
+1. In-order traversal of a BST is a sorted array in ascending order
+```py
+def inorder(root: Optional[TreeNode]) -> List:
+    return inorder(root.left) + [root.val] + inorder(root.right) if root else []
+```
+
+2. Successor = "after node", i.e. the next node, or the smallest node after the current one. To find the successor: **go to the right once
+and then as many times to the left as you could.**
+```py
+def successor(root: TreeNode) -> TreeNode:
+    root = root.right
+    while root.left:
+        root = root.left
+    return root
+```
+
+3. Predecessor = "before node", i.e. the previous node, or the largest node before the current one. To find the predecessor: **go to the left and then as many times to the right as you could**
+```py
+def predecessor(root: TreeNode) -> TreeNode:
+    root = root.left
+    while root.right:
+        root = root.right
+    return root
+```
+
+
 ```py
 class MyHashSet:
 
