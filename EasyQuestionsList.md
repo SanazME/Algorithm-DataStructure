@@ -483,3 +483,7 @@ Hence, overall space complexity is O(M+N).
   
 ## 12. Trim a binary search tree
 - https://github.com/SanazME/Algorithm-DataStructure/blob/master/trees/README.md#2-trim-a-binary-search-tree
+
+## 13. Kth Largest Element in a Stream
+- https://github.com/SanazME/Algorithm-DataStructure/tree/master/array_stack_queues#2-kth-largest-element-in-a-stream
+- check out Heap in tree/README for time complexity of heap insertion and deletion of elements
