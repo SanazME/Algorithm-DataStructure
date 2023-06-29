@@ -1718,3 +1718,137 @@ class BSTree:
 
 **Space complexity**
 - `O(N + K)` where `K` is the number of predefined buckets and `M` is the number of unique values that have been inserted into the HashSet.
+
+## Search in BST:
+**- recursive:**
+```py
+def searchBST(root, val):
+    if root is None or root.val == val:
+        return root
+    if root.val > val:
+        return searchBST(root.left, val)
+    elif root.val < val:
+        return searchBST(root.right, val)
+```
+**- iterative:**
+```py
+def searchBST(root, val):
+    if root is None:
+        return
+    
+    stack = [root]
+    
+    while stack:
+        curr = stack.pop()
+        if curr.val == val:
+            return curr
+        if val > curr.val and curr.right:
+            stack.append(curr.right)
+        elif val < curr.val and curr.left:
+            stack.append(curr.left)
+    
+    return
+
+
+def searchBST2(root, val):
+    while root and root.val != key:
+        if root.val > key:
+            root = root.left
+        else:
+            root = root.right
+    return root
+```
+
+## Insert in BST:
+```py
+def addBST(root, val):
+    if root is None:
+        return Node(val)
+    
+    if root.val > val:
+        root.left = addBST(root.left, val)
+    elif root.val < val:
+        root.right = addBST(root.right, val)
+        
+    return root
+```
+**Iterative:**
+```py
+class Solution:
+    def insertIntoBST(self, root: TreeNode, val: int) -> TreeNode:
+        node = root
+        while node:
+            # insert into the right subtree
+            if val > node.val:
+                # insert right now
+                if not node.right:
+                    node.right = TreeNode(val)
+                    return root
+                else:
+                    node = node.right
+            # insert into the left subtree
+            else:
+                # insert right now
+                if not node.left:
+                    node.left = TreeNode(val)
+                    return root
+                else:
+                    node = node.left
+        return TreeNode(val)
+```
+
+
+## Delete in BST:
+There are 3 cases to cover:
+1. node is a leaf node and we can just delete it.
+2. node has a right child:
+    - we find it's successor
+    - copy the value of successor on the node (replace node with its successor)
+    - recursively remove its successor node on the right subtree of the node
+3. node has no right child (meaning that its successor is somewhere on the left subtree of its parents that we have not visited), instead we find its predecessor in its left children:
+    - find its predecessor
+     - copy the value of predecessor on the node (replace node with its predecessor)
+    - recursively remove its predecessor node on the left subtree of the node
+   
+```py
+class Solution:
+    # One step right and then always left
+    def successor(self, root: TreeNode) -> int:
+            root = root.right
+            while root.left:
+                root = root.left
+            return root.val
+        
+    # One step left and then always right
+    def predecessor(self, root: TreeNode) -> int:
+        root = root.left
+        while root.right:
+            root = root.right
+        return root.val
+
+    def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
+        if not root:
+            return None
+
+        # delete from the right subtree
+        if key > root.val:
+            root.right = self.deleteNode(root.right, key)
+        # delete from the left subtree
+        elif key < root.val:
+            root.left = self.deleteNode(root.left, key)
+        # delete the current node
+        else:
+            # the node is a leaf
+            if not (root.left or root.right):
+                root = None
+            # the node is not a leaf and has a right child
+            elif root.right:
+                root.val = self.successor(root)
+                root.right = self.deleteNode(root.right, root.val)
+            # the node is not a leaf, has no right child, and has a left child    
+            else:
+                root.val = self.predecessor(root)
+                root.left = self.deleteNode(root.left, root.val)
+                        
+        return root
+```
