@@ -493,3 +493,5 @@ Hence, overall space complexity is O(M+N).
 
 ## * 15. Maximize Distance to Closest Person
 - https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions3.md#59-maximize-distance-to-closest-person
+**Meduim difficulty**: https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions3.md#61-exam-room
+  
