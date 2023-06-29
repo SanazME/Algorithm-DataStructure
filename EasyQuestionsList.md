@@ -490,3 +490,6 @@ Hence, overall space complexity is O(M+N).
 
 ## ** 14. Desin a HashSet
 - https://github.com/SanazME/Algorithm-DataStructure/tree/master/array_stack_queues#3-design-a-hashset
+
+## * 15. Maximize Distance to Closest Person
+- https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions3.md#59-maximize-distance-to-closest-person
