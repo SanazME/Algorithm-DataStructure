@@ -316,6 +316,7 @@ class Solution:
 
 ## 61 Exam Room
 - https://leetcode.com/problems/exam-room/description/
+- https://leetcode.com/problems/exam-room/solutions/139941/python-o-log-n-time-for-both-seat-and-leave-with-heapq-and-dicts-detailed-explanation/
 
 We will name a range of unoccupied seats from i to j an Available segment with first index i and last index j. For each available segment we can say how far the "best" seat in this segment is from the closest occupied seat. The number of empty seats in between is priority of the segment. The higher the priority the better seat you can get from a segment. For the edge cases when segment starts with index 0 or ends with index N - 1 priority equals to segment_size - 1. For segments in the middle of the row priority can be calculated as (segment_size - 1) // 2 or (last - first) // 2. Please note that two segments of different size may have equal priority. For example, segments with 3 seats and with 4 seats have the same priority "1".
 
