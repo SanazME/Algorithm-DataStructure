@@ -495,3 +495,7 @@ Hence, overall space complexity is O(M+N).
 - https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions3.md#59-maximize-distance-to-closest-person
 **Meduim difficulty**: https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions3.md#61-exam-room
   
+## 16. Peak Index in a Mountain Array
+- https://leetcode.com/problems/peak-index-in-a-mountain-array/description
+
+  
