@@ -11,10 +11,12 @@ There are two ways to implement a DP algorithm:
 - Before we start, we need to first define a term: **state**. In a DP problem, **a state is a set of variables that can sufficiently describe a scenario**. These variables are called state variables, and we only care about relevant ones. For example, to describe every scenario in Climbing Stairs, there is only 1 relevant state variable, the current step we are on. We can denote this with an integer 
 i. If i = 6, that means that we are describing the state of being on the 6th step. Every unique value of i represents a unique state.
 
-To solve a DP problem, we need to combine 3 things:
+## To solve a DP problem, we need to combine 3 things:
+
 **1. A function or data structure that will compute/contain the answer to the problem for every given state.**
 - For Climbing Stairs, let's say we have an function dp where dp(i) returns the number of ways to climb to the ith step. Solving the original problem would be as easy as return dp(n).
 - Typically, **top-down is implemented with a recursive function and hash map**, whereas **bottom-up is implemented with nested for loops and an array**. When designing this function or array, we also need to decide on state variables to pass as arguments. This problem is very simple, so all we need to describe a state is to know what step we are currently on i.
 
 **2. A recurrence relation to transition between states.**
+
 **3. Base cases, so that our recurrence relation doesn't go on infinitely.**
