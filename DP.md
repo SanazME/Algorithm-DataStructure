@@ -28,7 +28,7 @@ i. If i = 6, that means that we are describing the state of being on the 6th ste
 
   - The problem is asking for "the maximum amount of money you can rob". Therefore, we would use either a function dp(i) that returns the maximum amount of money you can rob up to and including house i, or an array dp where dp[i] represents the maximum amount of money you can rob up to and including house i.
 
-## Min Cost Climbing Stairs
+## 1. Min Cost Climbing Stairs
 - https://leetcode.com/problems/min-cost-climbing-stairs/description/
 
 ### Options to select correct function for stat variable:
@@ -86,4 +86,35 @@ def minCostClimbingStairs(self, cost):
           dp[i] = cost[i] + min(dp[i + 2], dp[i + 1])
 
       return min(dp[0], dp[1])
+```
+
+## 2. Delete and Earn
+- https://leetcode.com/problems/delete-and-earn
+- We want `maxPoints(num)` to return the maximum points that we can gain if we only consider all the elements in `nums` with values between 0 and `num`.
+
+- Then it comes to x, we have to make a choice: **take, or don't take.**
+
+1. If we take x, then we gain points equal to x times the number of times x occurs in nums - we can pre-compute these values. For now, let's call this value gain. However, because of the deletion, by taking x, we are no longer allowed to take x - 1. The largest number that we can still consider is x - 2. Therefore, if we choose to take x, then the most points that we can have here is gain + maxPoints(x - 2), where gain is how many points we gain from taking x and maxPoints(x - 2) is the maximum number of points we can obtain from the numbers between x - 2 and 0.
+
+2. If we choose not to take x, then we don't gain any points here, but we still may have accumulated some points from numbers smaller than x. Because we didn't take x, we did not close the door to x - 1. In this case, the most points we can have here is maxPoints(x - 1).
+
+```py
+def deleteAndEarn(self, nums: List[int]) -> int:
+        
+        points = defaultdict(int)
+        maxVal = 0
+        for num in nums:
+            points[num] += num
+            maxVal = max(maxVal, num)
+            
+        
+        # maxPoints[num] = max(num + maxPoints[num - 2], maxPoints[num - 1])
+        maxPoints = [0 for _ in range(maxVal + 1)]
+        maxPoints[0] = 0  # the points from num = 0 is always 0
+        maxPoints[1] = points[1]  # if num=1 exists in points
+        
+        for num in range(2, maxVal + 1):
+            maxPoints[num] = max(points[num] + maxPoints[num - 2], maxPoints[num - 1])
+            
+        return maxPoints[maxVal]
 ```
