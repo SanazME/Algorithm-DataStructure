@@ -27,3 +27,63 @@ i. If i = 6, that means that we are describing the state of being on the 6th ste
   - If the problem had an added constraint such as "you are only allowed to rob up to k houses", then k would be another necessary state variable. This is because being at, say house 4 with 3 robberies left is different than being at house 4 with 5 robberies left.
 
   - The problem is asking for "the maximum amount of money you can rob". Therefore, we would use either a function dp(i) that returns the maximum amount of money you can rob up to and including house i, or an array dp where dp[i] represents the maximum amount of money you can rob up to and including house i.
+
+## Min Cost Climbing Stairs
+- https://leetcode.com/problems/min-cost-climbing-stairs/description/
+
+### Options to select correct function for stat variable:
+1. `dp[i]`: min cost to climb to the top **starting** from index i.
+  - Assuming we have n staircase labeled from 0 to n - 1 and assuming the top is n, then dp[n] = 0, marking that if you are at the top, the cost is 0.
+```py
+dp[i] = min(cost[i] + dp[i + 1], cost[i] + dp[i + 2]) = cost[i] + min(dp[i + 1], dp[i + 2])`
+dp[n] = 0
+dp[n - 1] = cost[n - 1]
+
+answer: min(dp[0], dp[1]) # because we can start from index 0 or index 1.
+```
+
+2. `dp[i]`: min cost to reach to step i.
+```py
+dp[i] = min(cost[i - 1] + dp[i - 1], cost[i - 2] + dp [i - 2])
+dp[0] = 0
+dp[1] = 0 # because we start from either 0 or 1
+```
+
+```py
+def minCostClimbingStairs(self, cost):
+    """
+    :type cost: List[int]
+    :rtype: int
+    """
+    n = len(cost)
+    dp = [None for _ in range(n + 1)]
+    dp[0], dp[1] = 0, 0
+
+    for i in range(2, n + 1):
+        dp[i] = min(cost[i - 1] + dp[i - 1], cost[i - 2] + dp[i - 2])
+
+    return dp[n]
+
+def minCostClimbingStairs(self, cost):
+      """
+      :type cost: List[int]
+      :rtype: int
+      """
+      if len(cost) == 0:
+          return
+      if len(cost) == 1:
+          return cost[0]
+      
+      if len(cost) == 2:
+          return min(cost[0], cost[1])
+
+      n = len(cost)
+      dp = [None for _ in range(n + 1)]
+      dp[n] = 0
+      dp[n - 1] = cost[n - 1]
+      
+      for i in range(n - 2, -1, -1):
+          dp[i] = cost[i] + min(dp[i + 2], dp[i + 1])
+
+      return min(dp[0], dp[1])
+```
