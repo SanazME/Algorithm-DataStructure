@@ -118,3 +118,84 @@ def deleteAndEarn(self, nums: List[int]) -> int:
             
         return maxPoints[maxVal]
 ```
+
+
+## ** 3. Maximum Score from performing multiplication operations
+- https://leetcode.com/problems/maximum-score-from-performing-multiplication-operations
+
+To determine a state, we essentially need 3 things:
+
+1. **left**: specify we have used **left** integers from the left side of nums so far. Next, we may use **nums[left]**
+
+2. **right**: specify we have used **right** integers from the right side of nums so far. Next, we may use **nums[right]**
+
+3. **op**: number of operations done.
+
+we can calculate **right** from **left** and **op**. op shows the total operations have done so far:
+- `op - left` : right operations have done
+- `len(nums) - (op - right)` : number of **right** elements coming from the end to the start
+- `[len(nums) - (op - left)] - 1` : index of **right** 
+
+### Top-down:
+- Top-down approach TLE beacuse of recursion depth: `O(M^2)` where multipliers can vary from 0 to M - 1. Now, in two recursive calls that we are making, one time we are incrementing `left`, along with `op`. Other time, we are not incrementing `left`, but incrementing `op`. So, `left` is at most `op`. Thus, `left` also varies from 0 to `M-1`. So, there are `O(M^2)`.
+- Space complexity: `O(M^2)`, the memo will store at most M^2such pairs!
+
+```py
+class Solution:
+    def maximumScore(self, nums: List[int], multipliers: List[int]) -> int:
+
+        # Number of Operations
+        m = len(multipliers)
+
+        # For Right Pointer
+        n = len(nums)
+
+        memo = {}
+
+        def dp(op, left):
+            if op == m:
+                return 0
+
+            # If already computed, return
+            if (op, left) in memo:
+                return memo[(op, left)]
+
+            l = nums[left] * multipliers[op] + dp(op+1, left+1)
+            r = nums[(n-1)-(op-left)] * multipliers[op] + dp(op+1, left)
+
+            memo[(op, left)] = max(l, r)
+
+            return memo[(op, left)]
+
+        # Zero operation done in the beginning
+        return dp(0, 0)
+```
+
+### Bottom-up:
+
+- we only need part of the 2D array where `op >= left`. Because if `op` reaches zero there is no operations left for the remaining of `left` elements.
+```py
+class Solution:
+    def maximumScore(self, nums: List[int], multipliers: List[int]) -> int:
+
+        # Number of Operations
+        m = len(multipliers)
+
+        # For Right Pointer
+        n = len(nums)
+
+        dp = [[0] * (m + 1) for _ in range(m + 1)]
+
+        for op in range(m - 1, -1, -1):
+            for left in range(op, -1, -1):
+
+                dp[op][left] = max(multipliers[op] * nums[left] + dp[op + 1][left + 1],
+                                   multipliers[op] * nums[n - 1 - (op - left)] + dp[op + 1][left])
+
+        return dp[0][0]
+ 
+```
+
+- Time complexity: `O(M^2)`. op varies from M-1 to 0, and left varies from op to 0. This is equivalent to iterating half matrix of order M×M. So, we are computing O(M^2/2).
+
+- Space complexity: `O(M^2)` as evident from the dp array.
