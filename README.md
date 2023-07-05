@@ -443,6 +443,35 @@ heappush(arr, val)
 heappop(arr)
 
 ```
+- If the value we are pushing into heap is not comparable, we can also pass in a tuple to heap instead:
+```py
+heappush(myHeap, (priority_value, data) # heappush(myHeap, (4, 'helloworld)
+
+#for comparing the linked nodes, it will error out because it doesn't know how to compare the node. We also need to add these to the definition of list node otherwise it errors out as it can't compare. if that doesn't work use PriorityQueue instead:
+
+class Node:
+    def __init__(self, val=None):
+        self.val = val
+        self.next = None
+        
+    def __eq__(self, other):
+        return self.val == other.val
+    
+    def __ne__(self, other):
+        return not (self.val == other.val)
+    
+    def __gt__(self, other):
+        return self.val > other.val
+
+    def __lt__(self, other):
+        return self.val < other.val
+
+    def __le__(self, other):
+        return self.val <= other.val
+
+    def __ge__(self, other):
+        return self.val >= other.val
+```
 
 27. `someStr.zfill(width)` returns a copy of the string **left filled with ASCII `0`** digits to make a string of lenght `width`.
 ```py
