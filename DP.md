@@ -199,3 +199,60 @@ class Solution:
 - Time complexity: `O(M^2)`. op varies from M-1 to 0, and left varies from op to 0. This is equivalent to iterating half matrix of order M×M. So, we are computing O(M^2/2).
 
 - Space complexity: `O(M^2)` as evident from the dp array.
+
+## 4. Longest Common Subsequence
+- https://leetcode.com/problems/longest-common-subsequence/description/
+- Finding a longest common subsequent has read-world application: for diffing file names in git.
+
+### Bottom-up
+- we first try to find the state variables and the function:
+  - state variables will be i ad j to show where we are in text1 and text2: `text1[0...i], text2[0...j]`
+  - the function: `dp[i][j]` : the longest common subsequent up until i and j.
+  - The relation:
+```py
+if text1[i] == text2[j]:
+    dp[i][j] = 1 + dp[i-1][j-1]  # we are moving diagonally in the table
+else:
+    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])  # we down and left in the table
+```
+- so for i = 0 and j = 0, if the letter is the same, the rest of first column or first row will be 1 as well:
+```py
+def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+    n, m = len(text1), len(text2)
+    dp = [[0 for _ in range(m)] for _ in range(n)]
+
+    # if any letter in text1 is equal to the first letter of text2 then for the rest of letters in text1, value is 1
+    for i in range(n):
+        if text1[i] == text2[0]:
+            for ii in range(i, n):
+                dp[ii][0] = 1
+            break
+    # if any letter in text2 is equal to the first letter of text1 then for the rest of letters in text2, value is 1
+    for j in range(m):
+        if text2[j] == text1[0]:
+            dp[0][j:] = [1 for _ in range(m - j)]
+            break
+
+    for i in range(1, n):
+        for j in range(1, m):
+            if text1[i] == text2[j]:
+                dp[i][j] = 1 + dp[i-1][j-1]
+            else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+    return dp[-1][-1]
+```
+
+- another way to have this table is that instead of that complicated way of setting the first column and first row to one is to start from the end of `text1` and `text2` and move up to the start:
+```py
+dp2 = [[0 for _ in range(m + 1)] for _ in range(n + 1)]
+
+for i in range(n-1, -1, -1):
+    for j in range(m-1, -1, -1):
+        if text1[i] == text2[j]:
+            dp2[i][j] = 1 + dp2[i+1][j+1]
+        else:
+            dp2[i][j] = max(dp2[i+1][j], dp2[i][j+1])
+
+return dp2[0][0]
+```
