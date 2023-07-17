@@ -318,6 +318,23 @@ public class Application {
 - `.remove(key)`
 - `.clear()` : clear all elements
 
+## Get a set view of the mappings, each key-value pair
+- `entrySet()`: it returns a set view of the mapping. Each element in this set is a `Map.Entry` object, which is a key-value pair.
+```java
+public class EntrySetExample {
+    public static void main(String[] args) {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("one", 1);
+        map.put("two", 2);
+        map.put("three", 3);
+
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+        }
+    }
+}
+```
+
 ## Collections
 - List, Set, Queue
 - `contains(ele)`
