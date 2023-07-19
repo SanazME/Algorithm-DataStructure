@@ -802,6 +802,46 @@ print("Output: Medians =", output2)
 
 Backtracking is an algorithm for finding all solutions by exploring all potential candidates. If the solution candidate turns to be not a solution (or at least not the last one), backtracking algorithm discards it by making some changes on the previous step, i.e. backtracks and then try again.
 
+**Solution 1**
+- Take a look at my `BackTracking.md` for the pattern of backtracking.
+```py
+def permutation():
+    if len(nums) == 0:
+        return []
+
+    if len(nums) == 1:
+        return [nums]
+
+    def helper(node, seen, curr):
+        if len(curr) == len(nums):
+            result.add(tuple(curr))
+            return
+
+        for num in nums:
+            if num in seen:
+                continue
+
+            seen.add(num)
+            curr.append(num)
+
+            helper(num, seen, curr)
+
+            seen.remove(num)
+            curr.pop()
+
+        return
+
+
+    result = set()
+
+    for num in nums:
+        helper(num, set(), [])
+
+    return list(result)
+```
+
+
+
 Here is a backtrack function which takes the index of the first integer to consider as an argument `backtrack(first)`.
 
 - If the first integer to consider has index n that means that the current permutation is done.
