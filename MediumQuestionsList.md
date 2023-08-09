@@ -60,6 +60,15 @@ def longestPalindrome(self, s):
           right += 1
       return s[left+1:right]
 ```
+To check if a word is palindrom coming from out to in:
+```py
+def isPalindrome(s, start, end):
+    if start > end:
+        return True
+        
+    return s[start] == s[end] and isPalindrome(s, start + 1, end - 1)
+```
+
 
 ## 2. Web Crawler Multithread - Databrick
 - https://leetcode.com/problems/web-crawler-multithreaded/description/
