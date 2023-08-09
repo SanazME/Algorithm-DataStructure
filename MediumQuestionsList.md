@@ -261,3 +261,35 @@ class Solution {
     }
 }
 ```
+
+## 3. Container with most water
+- https://leetcode.com/problems/container-with-most-water/description/
+- start with two pointer from left and right and always move the pointer with the shortest height:
+```py
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        if len(height) <= 1:
+            return 0
+
+        if len(height) == 2:
+            return min(height)
+
+
+        left, right = 0, len(height) - 1
+        volume = 0
+
+
+
+        while left < right:
+            volume = max(volume, min(height[left], height[right]) * (right - left))
+            if height[left] < height[right]:
+                left += 1
+            else:
+                right -= 1
+
+        return volume
+```
+
+
+## 4. Trapped rain water
+- https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions.md#6-trapping-rain-water
