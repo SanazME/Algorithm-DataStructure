@@ -1,3 +1,32 @@
+## 0. Longest Substring Without Repeating Characters
+- https://leetcode.com/problems/longest-substring-without-repeating-characters/description
+```py
+class Solution:
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        
+
+        if len(s) <= 1:
+            return len(s)
+
+        start = 0
+        maxLen = 0
+        seen = {}
+
+        for i, char in enumerate(s):
+            if char in seen and start <= seen[char] :
+                start = seen[char] + 1
+                seen[char] = i
+            else:
+                maxLen = max(maxLen, i - start + 1)
+                seen[char] = i
+        return maxLen
+
+```
+
 ## 1. Longest Palindromic Substring
 - https://leetcode.com/problems/longest-palindromic-substring/
 ```py
