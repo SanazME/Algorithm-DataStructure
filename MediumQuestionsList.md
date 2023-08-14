@@ -293,3 +293,6 @@ class Solution:
 
 ## 4. Trapped rain water
 - https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions.md#6-trapping-rain-water
+
+## 5. Letter Comibnations of a Phone Number
+- https://github.com/SanazME/Algorithm-DataStructure/blob/master/Netflix.md#feature--9-created-all-the-possible-viewing-orders-of-movies-appearing-in-a-specific-sequence-of-genre
