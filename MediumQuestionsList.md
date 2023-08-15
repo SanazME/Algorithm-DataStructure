@@ -429,3 +429,45 @@ class Solution:
         # Return the new head node.
         return dummy.next
 ```
+
+## 8. Bus Routes
+- https://leetcode.com/problems/bus-routes/description
+- We consider buses as nodes and try to find the shortest path, i.e., least number of buses through BFS. at each level, we add a list of stops of a bus and count the levels as we go move from one level to another. Each level is equal to a bus (with all its stops). The stating level is 0 since we start from source:
+
+```py
+class Solution:
+    def numBusesToDestination(self, routes: List[List[int]], source: int, target: int) -> int:
+
+        stopsToBusesMap = {}
+
+        for i, route in enumerate(routes):
+            for stop in route:
+                if stop not in stopsToBusesMap:
+                    stopsToBusesMap[stop] = set([i])
+                else:
+                    stopsToBusesMap[stop].add(i)
+
+        print(stopsToBusesMap)
+
+        queue = deque()
+        queue.append(source)
+        visited = set()
+        busCount = -1
+
+        while queue:
+            size = len(queue)
+            busCount += 1
+
+            for _ in range(size):
+                stop = queue.popleft()
+
+                if stop == target:
+                    return busCount
+
+                for bus in stopsToBusesMap[stop]:
+                    if bus not in visited:
+                        visited.add(bus)
+                        queue.extend(routes[bus])
+
+        return -1
+```
