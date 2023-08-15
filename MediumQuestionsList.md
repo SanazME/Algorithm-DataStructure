@@ -321,3 +321,52 @@ class Solution:
         
         return result
 ```
+
+## 6. Generate Parantheses
+- https://leetcode.com/problems/generate-parentheses/description
+
+**- Backtracking:**
+A better approach is to use backtracking to generate only valid strings. This involves recursively building strings of length 2n and checking their validity as we go. 
+
+To ensure that the current string is always valid during the backtracking process, we need two variables left_count and right_count that record the number of left and right parentheses in it, respectively.
+
+Therefore, we can define our backtracking function as backtracking(cur_string, left_count, right_count) that takes the current string, the number of left parentheses, and the number of right parentheses as arguments. This function will build valid combinations of parentheses of length 2n recursively.
+
+The function adds more parentheses to cur_string only when certain conditions are met:
+
+    - If left_count < n, it suggests that a left parenthesis can still be added, so we add one left parenthesis to cur_string, creating a new string new_string = cur_string + (, and then call backtracking(new_string, left_count + 1, right_count).
+
+    - If left_count > right_count, it suggests that a right parenthesis can be added to match a previous unmatched left parenthesis, so we add one right parenthesis to cur_string, creating a new string new_string = cur_string + ), and then call backtracking(new_string, left_count, right_count + 1).
+
+```py
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+
+        self.result = []
+
+        def backtracking(leftcount, rightcount, currentstring):
+            if len(currentstring) == 2 * n:
+                self.result.append("".join(currentstring))
+                return
+
+            if leftcount < n:
+                currentstring.append("(")
+                backtracking(leftcount + 1, rightcount, currentstring)
+                currentstring.pop()
+
+            if rightcount < leftcount:
+                currentstring.append(")")
+                backtracking(leftcount, rightcount + 1, currentstring)
+                currentstring.pop()
+
+
+        backtracking(0, 0, [])
+
+        return self.result
+```
+
+**Time complexity O(4^n/sqrt(n))**
+Catalan Number - ask GPT for details!
+
+**Space complexit O(n)**
+The space complexity of a recursive call depends on the maximum depth of the recursive call stack, which is 2n. As each recursive call either adds a left parenthesis or a right parenthesis, and the total number of parentheses is 2n. Therefore, at most O(n)O(n)O(n) levels of recursion will be created, and each level consumes a constant amount of space.
