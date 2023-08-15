@@ -370,3 +370,62 @@ Catalan Number - ask GPT for details!
 
 **Space complexit O(n)**
 The space complexity of a recursive call depends on the maximum depth of the recursive call stack, which is 2n. As each recursive call either adds a left parenthesis or a right parenthesis, and the total number of parentheses is 2n. Therefore, at most O(n)O(n)O(n) levels of recursion will be created, and each level consumes a constant amount of space.
+
+## 7. Swap Nodes in Pairs
+- https://leetcode.com/problems/swap-nodes-in-pairs/description
+
+```py
+
+# Recursive
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def swapPairs(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if head == None or head.next == None:
+            return head
+        
+        nextNode = head.next.next
+        
+        head, head.next = head.next, head
+        
+        head.next.next = self.swapPairs(nextNode)
+        return head
+
+# Iterative
+
+class Solution:
+    def swapPairs(self, head: ListNode) -> ListNode:
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        # Dummy node acts as the prevNode for the head node
+        # of the list and hence stores pointer to the head node.
+        dummy = ListNode(-1)
+        prev_node = dummy
+
+        while head and head.next:
+
+            # Nodes to be swapped
+            first_node = head;
+            second_node = head.next;
+
+            # Swapping
+            first_node.next = second_node.next
+            second_node.next = first_node
+            prev_node.next = second_node
+
+            # Reinitializing the head and prev_node for next swap
+            prev_node = first_node
+            head = first_node.next
+
+        # Return the new head node.
+        return dummy.next
+```
