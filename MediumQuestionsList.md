@@ -471,3 +471,8 @@ class Solution:
 
         return -1
 ```
+## 9. Desgin Browser History
+- https://leetcode.com/problems/design-browser-history/
+
+## 10. Desgin File System
+- https://leetcode.com/problems/design-file-system/description/
