@@ -633,3 +633,57 @@ class BrowserHistory:
         
         return self.backStack[-1]
 ```
+
+## 11. Closest Leaf in a Binary Tree
+- https://leetcode.com/problems/closest-leaf-in-a-binary-tree/description/
+
+**Intuition**
+
+Instead of a binary tree, if we converted the tree to a general graph, we could find the shortest path to a leaf using breadth-first search.
+
+**Algorithm**
+
+We use a depth-first search to record in our graph each edge travelled from parent to node.
+
+After, we use a breadth-first search on nodes that started with a value of k, so that we are visiting nodes in order of their distance to k. When the node is a leaf (it has one outgoing edge, where the root has a "ghost" edge to null), it must be the answer.
+
+```py
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+import collections
+class Solution:
+    def findClosestLeaf(self, root: Optional[TreeNode], k: int) -> int:
+        graph = defaultdict(list)
+
+        def dfs(node, parent):
+            if node:
+                graph[node].append(parent)
+                graph[parent].append(node)
+                dfs(node.left, node)
+                dfs(node.right, node)
+
+
+        dfs(root, None) # This None prevents the root being returned in the while loop because the lenght of list of root will be 2 and not 1
+
+        queue = deque()
+        for node in graph:
+            if node and node.val == k:
+                queue.append(node)
+        
+        visited = set()
+
+        while queue:
+            node = queue.popleft()
+            if node:
+                if len(graph[node]) <= 1:
+                    return node.val
+                for neighbor in graph[node]:
+                    if neighbor not in visited:
+                        visited.add(neighbor)
+                        queue.append(neighbor)
+```
