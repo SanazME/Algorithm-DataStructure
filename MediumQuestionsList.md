@@ -471,10 +471,7 @@ class Solution:
 
         return -1
 ```
-## 9. Desgin Browser History
-- https://leetcode.com/problems/design-browser-history/
-
-## 10. Desgin File System
+## 9. Desgin File System
 - https://leetcode.com/problems/design-file-system/description/
 **Version 1:**
 ```py
@@ -599,4 +596,40 @@ def insert2(self, words, val):
         current.val = val
 
         return True
+```
+## 10. Desgin Browser History
+- https://leetcode.com/problems/design-browser-history/
+- Two heaps for back and forward:
+```py
+class BrowserHistory:
+
+    def __init__(self, homepage: str):
+        self.backStack = [homepage]
+        self.forwardStack = []
+        
+
+    def visit(self, url: str) -> None:
+        self.backStack.append(url)
+        self.forwardStack = []
+
+
+    def back(self, steps: int) -> str:
+        count = min(steps, len(self.backStack) - 1)
+
+        for _ in range(count):
+            self.forwardStack.append(self.backStack.pop())
+
+        return self.backStack[-1]
+        
+
+    def forward(self, steps: int) -> str:
+        if len(self.forwardStack) == 0:
+            return self.backStack[-1]
+
+        count = min(steps, len(self.forwardStack) )
+                
+        for _ in range(count):
+            self.backStack.append(self.forwardStack.pop())
+        
+        return self.backStack[-1]
 ```
