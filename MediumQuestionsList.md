@@ -687,3 +687,36 @@ class Solution:
                         visited.add(neighbor)
                         queue.append(neighbor)
 ```
+
+## 12. Rank Teams by Votes
+- https://leetcode.com/problems/rank-teams-by-votes/description/
+- Steps
+1. Create a ranking system for each char of each string in the array (hashmap), s.t.:
+```py
+	d = {
+		'A': [0, 0, 0],  # initialize array of size len(string)
+		'B': [0, 0, 0],
+		...
+	}
+```
+2. For each char in the string, we add 1 to the position they are ranked,
+e.g. d['A'] = [3, 0, 1] means A is ranked first 3 times, second 0 times, and third once.
+
+3. Sort d.keys() based on their ranking values in dictionary, in descending order
+in case of equal votes, we alphabetically order the keys first using .sort()
+
+4. Join elements in the sorted list into a string
+
+```py
+def rankTeams(self, votes: List[str]) -> str:
+        d = {}
+
+        for vote in votes:
+            for i, char in enumerate(vote):
+                if char not in d:
+                    d[char] = [0] * len(vote)
+                d[char][i] += 1
+
+        voted_names = sorted(d.keys())
+        return "".join(sorted(voted_names, key=lambda x: d[x], reverse=True))
+```
