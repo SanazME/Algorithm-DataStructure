@@ -476,3 +476,127 @@ class Solution:
 
 ## 10. Desgin File System
 - https://leetcode.com/problems/design-file-system/description/
+**Version 1:**
+```py
+class TrieNode:
+    def __init__(self):
+        self.children = dict()
+        self.endOfWord = False
+        self.val = None
+
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, words, val):
+        current = self.root
+
+        for word in words:
+            if word not in current.children:
+                node = TrieNode()
+                current.children[word] = node
+                print(current.children[word])
+                current = node
+
+            else:
+                current = current.children[word]
+
+        current.endOfWord = True
+        current.val = val
+
+       
+    def search(self, words):
+        current = self.root
+        for word in words:
+            if word not in current.children:
+                return (False, None)
+            current = current.children[word]
+
+        if current.endOfWord:
+            return (True, current.val)
+        else:
+            return (False, None)
+
+    def startsWith(self, prefix):
+        current = self.root
+
+        for pre in prefix:
+            if pre not in current.children:
+                return False
+            current = current.children[pre]
+
+        return True
+
+
+
+class FileSystem:
+
+    def __init__(self):
+        self.trie = Trie()
+
+    def createPath(self, path: str, value: int) -> bool:
+        words = path[1:].split("/")
+ 
+        if len(words) == 0 or (len(words) == 1 and words[0] == "/"):
+            return False
+
+        # prefix exists
+        prefix = words[:-1]
+ 
+        if len(words) > 1 and not self.trie.startsWith(prefix):
+            return False
+
+        # The whole path does not exists
+        exists, _ =  self.trie.search(words)
+ 
+        if exists:
+            return False
+
+        self.trie.insert(words, value)
+        return True
+        
+            
+
+    def get(self, path: str) -> int:
+        words = path[1:].split("/")
+        exists, val = self.trie.search(words) 
+        if exists:
+            return val
+        
+        return -1
+
+        
+# Your FileSystem object will be instantiated and called as such:
+# obj = FileSystem()
+# param_1 = obj.createPath(path,value)
+# param_2 = obj.get(path)
+```
+
+**Version 2**
+- we can have only one pass that covers bothe the checks for existence of prefix and the non-existence of the full path during insert:
+```py
+def insert2(self, words, val):
+        current = self.root
+
+        for i, word in enumerate(words):
+            if word not in current.children:
+                # Check prefix of the path exists
+                if i == len(words) - 1:
+                    node = TrieNode()
+                    current.children[word] = node
+                    current = node
+                else:
+                    return False
+            else:
+                current = current.children[word]
+        
+        # Entry existed from before
+        if current.val != None:
+            return False
+
+        current.endOfWord = True
+        current.val = val
+
+        return True
+```
