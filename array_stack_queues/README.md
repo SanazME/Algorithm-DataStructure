@@ -1,3 +1,30 @@
+# 25 problems:
+MinStack (2 approach)
+Valid Parantheses
+Daily Temp
+Reverse Polish Notation
+DFS
+Deep copy of a graph
+Target Sum
+BT in-order traversal (2 approaches)
+Decode String
+Flood fill (2)
+Path sum (2)
+water trap
+Longets consecutive sequence
+Spiral Array
+Pascal triangle
+Min size subarray sum
+Rotate Array
+Circular queue (2)
+Moving average from data stream
+Subtree of Another tree (2)
+Kth Largest Element in a Stream
+Desing a HashSet (2 large)
+Search in BST
+Insert in BST
+Delete in BST
+
 ### Array of Doubled Pairs
 - https://leetcode.com/problems/array-of-doubled-pairs/
 - for each element in array, x, we need to find whether `2*x or x/2` exist. However, if we sort the array based on their abs value, then we need to only check for the existence of `2*x` because, x is the least value and so `x/2` can not exist.
