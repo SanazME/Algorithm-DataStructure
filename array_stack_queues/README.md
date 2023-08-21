@@ -1,4 +1,10 @@
-# 25 problems:
+# 32 problems:
+- Array of Doubled Pairs
+- BFS
+- Walls and Gates
+- Number of Islands
+- Open the lock
+- Perfect square
 - MinStack (2 approach)
 - Valid Parantheses
 - Daily Temp
