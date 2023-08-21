@@ -161,6 +161,17 @@ class Solution:
         return -1
  ```
 
+**Time Complexity : `O(A^N * N^2 + D)`**:
+- `N` is the number of dials (4 in our case)
+- `A` is the number of alphabets (10 in our case -> 0 to 9)
+- `D` is the size of deadends
+
+There are 10*10*10*10 possible combinations --> `A^N`
+for each combination, we are looping 4 times (which is `N`) and in each iteration, there are substring operations (`O(N)`):
+`A^N * N^2 + D`
+
+**Space complexity: `O(A^N + D)`**
+
 ## Perfect Squares
 - https://leetcode.com/problems/perfect-squares/
 - We consider an N-ary tree where each node represents a remainder of the number `n` substracting a combination of square numbers. We can use BFS to find the minimal number of square numbers that add up to our original number. To avoid doing the same calculations for the same value of remainder, we use `visited` set.
