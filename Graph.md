@@ -218,6 +218,76 @@ class Solution:
 **Time complexity**:
 the complexity is `O(n * s)`, where n is the length of the input and s the target. The reason is that each entry in our cache table corresponds to each node in the recursion tree of the above algorithm. O(ns) in our case will most likely be less than O(2^n) because usually there are duplicate nodes (duplicate meaning "at the same height of the recursion tree and with the same residual sum"), but there are cases (rare) in which the two are the same, therefore we don't exceed time limit.
 
+```py
+# first approach which results in Time limit exceeds
+def __init__(self):
+        self.count = 0
+    def findTargetSumWays(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+        if len(nums) == 0 or target is None:
+            return 0
+        
+        if len(nums) == 1:
+            if abs(target) == abs(nums[0]):
+                return 1
+            else:
+                return 0
+
+        def backtrack(currVal, idx):
+            if idx == len(nums):
+                if currVal == target:
+                    self.count += 1
+                return
+            
+            backtrack(currVal + nums[idx], idx+1)
+            backtrack(currVal - nums[idx], idx+1)
+
+        backtrack(0, 0)
+
+        return self.count
+
+# second approach with memoization
+class Solution(object):
+    def findTargetSumWays(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+        if len(nums) == 0 or target is None:
+            return 0
+        
+        if len(nums) == 1:
+            if abs(target) == abs(nums[0]):
+                return 1
+            else:
+                return 0
+
+        memo = {}
+        def backtrack(currVal, idx, memo):
+            if idx == len(nums):
+                if currVal == target:
+                    return 1
+                return 0
+            
+            if (currVal, idx) in memo:
+                return memo[(currVal, idx)]
+            
+            count1 = backtrack(currVal + nums[idx], idx+1, memo)
+            count2 = backtrack(currVal - nums[idx], idx+1, memo)
+
+            memo[(currVal, idx)] = count1 + count2
+
+            return memo[(currVal, idx)]
+
+        count = dfs(0, 0, memo)
+
+        return count
+```
 
 ## Number of connected components in an Undirected Graph
 - https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph
