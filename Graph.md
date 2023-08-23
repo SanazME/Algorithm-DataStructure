@@ -116,6 +116,36 @@ class Solution(object):
 - **Time complexity**: `O(N + M)` where N is a number of node and M is a number of edges
 - **Space complexity**: `O(N)`. The space occupied by the `visited` hash map **in addition to that, space would also be occupied by the recursion stack since we are adopting a recursive approach here. The space occupied by the recursion stack would be equal to O(H) where H is the height of the graph. Overall, the space complexity would be O(N).**
 
+### Less sophisticated solution that still works with the concept above:
+```py
+class Solution(object):
+    def cloneGraph(self, node):
+        """
+        :type node: Node
+        :rtype: Node
+        """
+        if node is None:
+            return None
+        hashMap = {}
+        start = node
+        self.dfs(node, hashMap)
+        
+        for n in hashMap:
+            nn = hashMap[n]
+            for nei in n.neighbors:
+                nn.neighbors.append(hashMap[nei])
+        
+        return hashMap[start]
+
+    def dfs(self, node, hashMap):
+        if node:
+            if node not in hashMap:
+                hashMap[node] = Node(node.val)
+                
+            for neigh in node.neighbors:
+                if neigh not in hashMap:
+                    self.dfs(neigh, hashMap)
+```
 
 **2. BFS**
 - If the recursion stack is what we are worried about then DFS is not our best bet. We can use BFS instead.
