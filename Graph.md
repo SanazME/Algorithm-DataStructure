@@ -291,3 +291,42 @@ class Solution(object):
 
 ## Number of connected components in an Undirected Graph
 - https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph
+```py
+class Solution(object):
+    def countComponents(self, n, edges):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :rtype: int
+        """
+        if len(edges) == 0:
+            return n
+
+        if n <= 1:
+            return n
+
+        connectivity = defaultdict(list)
+        for edge in edges:
+            connectivity[edge[0]].append(edge[1])
+            connectivity[edge[1]].append(edge[0])
+
+        visited = set()
+        count = 0
+        for node in connectivity:
+            if node not in visited:
+                self.dfs(node, visited, connectivity)
+                count += 1
+
+        return count + (n - len(connectivity))
+
+
+    def dfs(self, node, visited, connectivity):
+        if node != None:
+            if node not in visited:
+                visited.add(node)
+                for nextNode in connectivity[node]:
+                    self.dfs(nextNode, visited, connectivity)
+
+
+        return visited
+```
