@@ -125,3 +125,60 @@ class Solution:
 **Space Complexity: O(N)**  
 - `N` is the number of queens (which is the same as the width and height of the board)
 - Extra memory used includes the 3 sets used to store board state as well as **the recursion call stack** . All of this scale linearly with the number of queens
+
+## Beautiful Arrangement
+- https://leetcode.com/problems/beautiful-arrangement/description/
+```py
+class Solution(object):
+    def countArrangement(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        if n <=1 :
+            return n
+
+        self.count = 0
+        self.backTracking(n, 1, [])
+
+        return self.count
+
+    def backTracking(self, n, position, tmp):
+        if len(tmp) == n:
+            print(tmp)
+            self.count += 1
+            return
+
+        for num in range(1, n+1):
+            if num not in tmp and (num % position == 0 or position % num == 0):
+                tmp.append(num)
+                self.backTracking(n, position + 1, tmp)
+                # print(tmp)
+                tmp.pop()
+# OR
+class Solution(object):
+    def countArrangement(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        if n <=1 :
+            return n
+
+        self.count = 0
+        visited = [False] * (n+1)
+        self.backTracking(n, 1, visited)
+
+        return self.count
+
+    def backTracking(self, n, position, visited):
+        if position > n:
+            self.count += 1
+            return
+
+        for num in range(1, n+1):
+            if visited[num] == False and (num % position == 0 or position % num == 0):
+                visited[num] = True
+                self.backTracking(n, position + 1, visited)
+                visited[num] = False
+```
