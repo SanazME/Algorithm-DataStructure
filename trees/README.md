@@ -499,8 +499,8 @@ class Solution:
             curr = stack.pop()
 
             if curr in visited:
-                count += 1
-                if count == k:
+                k -= 1
+                if k == 0:
                     return curr.val
 
             else:
