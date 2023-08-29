@@ -101,7 +101,8 @@
 3. the searchable part of the BST is that all the subtrees to the left a node are smaller than the value of that node and all the subtrees to the right of that node are larger in value than the value of that node.
 - like the indexing databases are BST. or **git bisect** to find where the bad commit happens uses BST.
 - BST are fast in insertion and lookup - **average case** a BST algorithm can insert or locate a node in a n-node BST in log2(N). The worst case can be slower based on the shapre of the tree (skewed)
-- Always checkout the base/edge cases: empty tree (Null) and one node, two nodes and very skewed trees (https://yangshun.github.io/tech-interview-handbook/algorithms/tree)
+- Always checkout the base/edge cases: empty tree (Null) and one node, two nodes and very skewed trees
+  
 - **4. Inorder tranversal of BST is an array sorted in ascending order**
 ```py
 def inorder(root):
