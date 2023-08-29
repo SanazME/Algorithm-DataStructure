@@ -476,7 +476,47 @@ def helper(self, start, end):
     return all_trees
 
  ```
-### Trie
+
+### Kth Smallest Element in BST
+- https://leetcode.com/problems/kth-smallest-element-in-a-bst/
+```py
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        if root is None or k is None:
+            return None
+
+        count = 0
+        stack = [root]
+        visited = set()
+
+        while stack:
+            curr = stack.pop()
+
+            if curr in visited:
+                count += 1
+                if count == k:
+                    return curr.val
+
+            else:
+                visited.add(curr)
+                if curr.right:
+                    stack.append(curr.right)
+                stack.append(curr)
+                if curr.left:
+                    stack.append(curr.left)
+
+        if count < key:
+            return None
+```
+
+
+## Trie
 - Trie is a tree data structure used for storing collections of strings. If 2 strings have a common prefix then they will have a same ancestor in a trie.
 - Used for prefix-based search and you can sort strings lexographically in a trie.
 - Each trie node has two main components: a map and a boolean for end of word:
