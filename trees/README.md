@@ -514,7 +514,47 @@ class Solution:
         if count < key:
             return None
 ```
+### Minimum Distance between Nodes
+- https://leetcode.com/problems/minimum-distance-between-bst-nodes
+```py
+# In-order traversal give an array in ascending order
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def minDiffInBST(self, root: Optional[TreeNode]) -> int:
+        if root is None:
+            return root
 
+        stack = [root]
+        visited = set()
+        # result = []
+        prev = None
+        minDiff = float('Inf')
+
+        while stack:
+            curr = stack.pop()
+            if curr in visited:
+                # result.append(curr.val)
+                if prev != None:
+                    minDiff = min(minDiff, abs(curr.val - prev))
+                    prev = curr.val
+                else:
+                    prev = curr.val
+            else:
+                visited.add(curr)
+                if curr.right:
+                    stack.append(curr.right)
+                stack.append(curr)
+                if curr.left:
+                    stack.append(curr.left)
+
+        # print(result)
+        return minDiff
+```
 
 ## Trie
 - Trie is a tree data structure used for storing collections of strings. If 2 strings have a common prefix then they will have a same ancestor in a trie.
