@@ -98,7 +98,8 @@
 ## Binary Search Tree (BST)
 1. BST, every parent node can only have two possible child nodes and not more than that
 2. so the root node points to two subtrees, left subtree and right subtree and this recursively is true for each subtrees that are binary trees and two subtrees...
-3. the searchable part of the BST is that all the subtrees to the left a node are smaller than the value of that node and all the subtrees to the right of that node are larger in value than the value of that node.
+3. **Not only the right child should be larger than the node but all the elements in the right subtree. Similarly, not only the left child should be less than the node but all the elements in the left subtree. **
+4. the searchable part of the BST is that all the subtrees to the left a node are smaller than the value of that node and all the subtrees to the right of that node are larger in value than the value of that node.
 - like the indexing databases are BST. or **git bisect** to find where the bad commit happens uses BST.
 - BST are fast in insertion and lookup - **average case** a BST algorithm can insert or locate a node in a n-node BST in log2(N). The worst case can be slower based on the shapre of the tree (skewed)
 - Always checkout the base/edge cases: empty tree (Null) and one node, two nodes and very skewed trees
