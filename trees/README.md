@@ -557,6 +557,62 @@ class Solution:
         return minDiff
 ```
 
+### Valid BST
+- https://leetcode.com/problems/validate-binary-search-tree/description/
+- Every children in the left subtree should also be less than the node and every children in the right subtree should be larger than the node **not only the left child and right child compared to the node**
+
+```py
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        if root is None:
+            return True
+
+        # return self.helperRecursion(root, -float('Inf'), float('Inf'))
+        return self.helperIterative(root)
+        
+
+    def helperRecursion(self, node, lowerLimit, upperLimit):
+        if node is None:
+            return True
+
+        if node.val <= lowerLimit or node.val >= upperLimit:
+            return False
+
+        return self.helperRecursion(node.left, lowerLimit, node.val) and self.helperRecursion(node.right, node.val, upperLimit)
+
+
+    def helperIterative(self, node):
+        if node is None:
+            return True
+
+        stack = [(node, -float('Inf'), float('Inf'))]
+        visited = set()
+
+        while stack:
+            curr, lowerLimit, upperLimit = stack.pop()
+            if curr in visited:
+                continue
+
+            visited.add(curr)
+
+            if curr.val <= lowerLimit or curr.val >= upperLimit:
+                return False
+
+            if curr.left:
+                stack.append((curr.left, lowerLimit, curr.val))
+            
+            if curr.right:
+                stack.append((curr.right, curr.val, upperLimit))
+
+        return True
+```
+
 ## Trie
 - Trie is a tree data structure used for storing collections of strings. If 2 strings have a common prefix then they will have a same ancestor in a trie.
 - Used for prefix-based search and you can sort strings lexographically in a trie.
