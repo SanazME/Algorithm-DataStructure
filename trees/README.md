@@ -103,6 +103,14 @@
 - like the indexing databases are BST. or **git bisect** to find where the bad commit happens uses BST.
 - BST are fast in insertion and lookup - **average case** a BST algorithm can insert or locate a node in a n-node BST in log2(N). The worst case can be slower based on the shapre of the tree (skewed)
 - Always checkout the base/edge cases: empty tree (Null) and one node, two nodes and very skewed trees
+- **Which one uses less memory in BST? DFS or BFS?**
+- In terms of memory usage, Depth-First Search (DFS) generally uses less memory compared to Breadth-First Search (BFS) for traversing a tree or a graph. This is because DFS explores as far as possible along a branch before backtracking, which means it only needs to keep track of the nodes along the current branch using a stack. On the other hand, BFS explores all the neighbors of a node before moving on to their children, requiring a queue to keep track of nodes at the current level.
+- **DFS**
+    - DFS uses a stack to keep track of nodes in the current branch being explored. In the worst case, the stack depth can be equal to the height of the tree (in a binary tree, this is O(log N) for a balanced tree, and up to O(N) for an unbalanced tree).
+    - The memory required for the stack is proportional to the depth of the recursion, which is less than the total number of nodes in the tree.
+ 
+- **BFS**
+  - BFS uses a queue to keep track of nodes at the current level. In the worst case, the queue can hold all the nodes at the current level, and in the case of a binary tree, the maximum number of nodes at a particular level in a binary tree: 2^(level). The hth level (h: height of the tree): 2^(h-1) nodes.
   
 - **4. Inorder tranversal of BST is an array sorted in ascending order**
 ```py
