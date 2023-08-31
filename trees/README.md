@@ -625,6 +625,8 @@ class Solution:
 ### Serialize and Deserialize BST
 - https://leetcode.com/problems/serialize-and-deserialize-bst/
 - Post order traversal will give us the parent at the bottom of the list/string so we can pop it and deserialize like that
+- we can use either **post-order** or **pre-order** to serialize bcs we will know where to find the parent and from there, construct the children. **In-order** will be hard because the parent will be somewhere in the middle
+- **the constrain for BST during finding subtrees/children is that all nodes in left subtree should be smaller than the parent and all node in the right subtree should be larger than the parent**. So we need limits to check that condition.
 
 ```py
 # Definition for a binary tree node.
@@ -698,7 +700,8 @@ class Codec:
 # deser = Codec()
 # tree = ser.serialize(root)
 # ans = deser.deserialize(tree)
-# return ans```
+# return ans
+```
 
 ## Trie
 - Trie is a tree data structure used for storing collections of strings. If 2 strings have a common prefix then they will have a same ancestor in a trie.
