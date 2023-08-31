@@ -568,6 +568,7 @@ class Solution:
 ### Valid BST
 - https://leetcode.com/problems/validate-binary-search-tree/description/
 - Every children in the left subtree should also be less than the node and every children in the right subtree should be larger than the node **not only the left child and right child compared to the node**
+- either **post order** or **pre order** can be used for serialization because it'll be easier since we know where the parent is in the list and we can find its left and right children. In-order will be hard because the parent will be somewhere in the middle.
 
 ```py
 # Definition for a binary tree node.
@@ -620,6 +621,84 @@ class Solution:
 
         return True
 ```
+
+### Serialize and Deserialize BST
+- https://leetcode.com/problems/serialize-and-deserialize-bst/
+- Post order traversal will give us the parent at the bottom of the list/string so we can pop it and deserialize like that
+
+```py
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Codec:
+
+    def serialize(self, root: Optional[TreeNode]) -> str:
+        """Encodes a tree to a single string.
+        """
+        if root is None:
+            return ''
+
+        nodeList  = map(str, self.postorder(root))
+
+        return ','.join(nodeList)
+       
+    def postorder(self, node):
+        if node is None:
+            return []
+
+        leftSubTree = self.postorder(node.left)
+        rightSubTree = self.postorder(node.right)
+
+        return leftSubTree + rightSubTree + [node.val]
+        
+    def dfs(self, node, visited, output):
+        if node is None or node in visited:
+            return output
+
+        visited.add(node)
+        self.dfs(node.left, visited, output)
+        self.dfs(node.right, visited, output)
+        output.append(node.val)
+
+        return output
+
+
+    def deserialize(self, data: str) -> Optional[TreeNode]:
+        """Decodes your encoded data to tree.
+        """
+        if len(data) == 0:
+            return None
+        
+        data = [int(char) for char in data.split(',')]
+        return self.unpack(data, -float('Inf'), float('Inf'))
+        
+
+    def unpack(self, data, lowerLimit, upperLimit):
+        if not data:
+            return None
+
+        # we don't pop val before check because if it fails this check it means that it belongs to a different subtree and we don't want to lose that val
+        if data[-1] < lowerLimit or data[-1] > upperLimit:
+            return None
+
+        val = data.pop()
+        node = TreeNode(val)
+        node.right = self.unpack(data, val, upperLimit)
+        node.left = self.unpack(data, lowerLimit, val)
+        
+        return node
+        
+# Your Codec object will be instantiated and called as such:
+# Your Codec object will be instantiated and called as such:
+# ser = Codec()
+# deser = Codec()
+# tree = ser.serialize(root)
+# ans = deser.deserialize(tree)
+# return ans```
 
 ## Trie
 - Trie is a tree data structure used for storing collections of strings. If 2 strings have a common prefix then they will have a same ancestor in a trie.
