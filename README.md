@@ -482,6 +482,13 @@ class Node:
 ```
 
 28. Reversing a list: `ll = myList[::-1]`
+29. **to map a function on a list:**
+```py
+map(function, iteratble)
+
+map(str, myNumList)  # change it to list of strings
+map(lambda x: x + 2, myNumList)
+```
 
 ####################################################################################
 - In dividing a even or odd array into two partitions and later on calculate the median. We put the partition line in a place where the left side partition would always have one more element than the right side so the median was calculated:
