@@ -139,6 +139,18 @@ class Solution:
         return '.'.join(baseIp) + "/" + str(32 - idxLeastBit)
 ```   
 
+### bit shifting
+The expression `MaxInt uint64 = 1<<64 - 1` in Go sets `MaxInt` as the maximum representable value for a `uint64` (unsigned 64-bit integer).
+
+Breaking it down:
+
+- `1<<64`: This is a bitwise left shift operation. It takes the binary representation of 1 (`000...001`) and shifts it to the left 64 times, effectively placing a 1 at the 65th bit position. Note that Go uses zero-based bit numbering, so this would be the bit at index 64 if we start counting from the rightmost bit as index 0.
+  
+- `1<<64 - 1`: The `- 1` then flips that 65th bit back to 0 and sets all the 64 bits to the right of it to 1.
+
+In binary representation, `MaxInt` will be `111...111` (64 ones).
+
+The reason for this is that `uint64` is an unsigned 64-bit integer, meaning it can represent integers from \(0\) to \(2^{64} - 1\), inclusive. \(2^{64} - 1\) is the largest integer that can be represented by 64 bits when all bits are set to 1.
 
 
 - https://realpython.com/python-bitwise-operators/
