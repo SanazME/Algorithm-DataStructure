@@ -10,6 +10,49 @@
 - **Must do Dynamic programming Category wise:** https://leetcode.com/discuss/general-discussion/1050391/Must-do-Dynamic-programming-Problems-Category-wise
 
 
+## A Scheduling Application
+**Setup:**
+- One shared resource (e.g processor)
+- Many jobs to do (e.g. processes)
+
+**Question**: In what order should we sequence the jobs?
+**Assume**
+  - weight wj (priority)
+  - lenght Lj
+
+### Completion Times
+**Definition:** The completion time Cj of job j = Sum of job lenghts up to and including j.
+
+### The Objective Function
+- There are differnt objective functions can be thought for the scheduling problem, here we assume:
+  
+**Goal: Minimize the weighted sum of completion times:**
+```sh
+min(sigma(wj* Cj))
+```
+### Intuition for Algorithm
+**Recall:** want to minimize `min(sigma(wj* Cj))`
+
+**Goal:** devise correct greedy algorithm
+
+**Questions:** 
+1. With equal lengths, schedule larger or smaller weight jobs earlier?
+2. With equal weights, schedule shorter or longer jobs?
+
+    1. larger weight jobs (more important jobs)
+    2. shorter jobs (complete more jobs first)
+
+### Resolving Conglicting Advice
+**Questions:** what if wi > wj but Li > Lj?
+
+**Idea:** assign **score** to jobs (instead of two params weight and duration) that are:
+- increasing in weight
+- decreasing in lenght
+**Guess 1**: Order jobs by deceasing `wj - Lj`
+**Guess 2**: Order jobs by decreasing `wj/Lj`
+
+  
+
 ## Memoization
 - Interleaving string (https://leetcode.com/problems/interleaving-string/). 
 - Explanation: https://www.youtube.com/watch?v=EzQ_YEmR598
