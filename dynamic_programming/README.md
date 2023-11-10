@@ -10,7 +10,8 @@
 - **Must do Dynamic programming Category wise:** https://leetcode.com/discuss/general-discussion/1050391/Must-do-Dynamic-programming-Problems-Category-wise
 
 
-## A Scheduling Application
+# Greedy Algorithm:
+## 1. A Scheduling Application
 **Setup:**
 - One shared resource (e.g processor)
 - Many jobs to do (e.g. processes)
@@ -51,7 +52,51 @@ min(sigma(wj* Cj))
 **Guess 1**: Order jobs by deceasing `wj - Lj`
 **Guess 2**: Order jobs by decreasing `wj/Lj`
 
-  
+### Breaking a Greedy Algorithm
+- to distinguish guess 1 and 2: find example where the two algorithms produces different outputs (At least one will be incorrect):
+- Example:
+  - `L1 = 5, w1 = 3` (longer ratio)
+  - `L1 = 2, w1 = 1` (larger difference)
+
+**Question**
+What is the sum of weighted completion times of algorithms 1 and 2 respectively? 23, 22
+
+**So far:** Algo 1 not always correct
+**Claim:** ALgo 2 is always correct (not obvious!)
+**Running time:** `O(n log n)` **just need to sort**
+
+
+## 2. MST (Minimum Spanning Tree)
+**Informal Goal**: connect a bunch of points together as cheaply as possible
+
+**Application:** Clustinering, networking
+
+**Blazingly fast Greedy Algorithms**:
+  - Prim's Algorithm
+  - Kruskal's Algorithm
+=> _O(m log n)_ m: # of edges, n: # ofnodes
+
+### Problem Definition
+
+**Input:** **Undirected** graph G = (V, E) and a cost `ce` for each edge `e (memeber of) E`
+  - Assume adjacency list representation
+  - Ok if edge cost are negative
+
+**Output:** **minimum cost (some of edge costs) spanning tree** T that **spans all vertices**
+1. T has no cycles
+2. the subgraph (V,T) is **connected (contains path between each parit of vertices)**
+
+**Assumption 1** : Input graph G is connected
+- Else no spanning trees
+- Easy to check in preprocessing (e.g., depth-first-search)
+
+**Assumption 2**: Edge costs are distinct
+- Prim + Kruskal remain correct with ties (which can be broken arbitrarily)
+
+
+
+
+
 
 ## Memoization
 - Interleaving string (https://leetcode.com/problems/interleaving-string/). 
