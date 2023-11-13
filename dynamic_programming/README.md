@@ -112,6 +112,36 @@ This algorithm time complexity:
 - The raison d'etre of a heap is to speed up **repeated minimum computations**
 - heap supports insert, extract with min key value, and delete in _O(log n)_ where n is number of objects in the heap
 
+**idea 1:** use heap to store edges, with keys = edge costs `O(mlog n)` of Prim's algorithm
+**idea 2:** store vetices in the heap instead of the edges (better):
+
+**Invariant 1**: Elements in the heap = vertices of V - X (the vertices that we haven't spanned yet)
+
+**Invariant 2**: for v member of V-X, `key[v]= cheapest edge (u,v) with u member of X`. If the key `v` does not have any edges that goes to X, we define the edge as Inf.
+
+**1. How to setup heap at the start of Prim's algorithm so both of those Invariants are satisfied?**
+- At the start `X` contains an arbitraty vertex `s` and `V-X` contains other vertices other than `s`
+- The key value of the heap is the cheapest edge between that each vertex (V-X) and `s` if there is one or Inf if there is none.
+- So with a **single scan through the edges `O(m)`** we can compute the key values for each vertex that needs to go on heap and then we need to **insert those `n-1` vertices into heap: `O(n log n)`**
+- So we can initialize heap with `O(m + nlogn) = O(m log n)` time perprocessing. The reason we have `O(m + nlogn) = O(m log n)`  is that:
+  - `m >= n - 1` since the graph is connected, so we can replace `n` with `m` and factor out `m`.
+
+
+Here's a basic outline of how Prim's algorithm works:
+
+1. Start with an arbitrary vertex, setting its key value to 0 (the cost of adding that vertex to X spanning tree) and all others to infinity.
+2. Add this vertex to the MST (X spanning tree).
+3. For each vertex adjacent to a vertex in the MST, update its key value to the minimum of its current key value and the cost of the edge connecting it to the MST:
+- When v (from V - X) added to X:
+  - If each edge (v, w):
+    - If w is a member of V - X -> **The only vertex whose key might have changed since the cut boundary is changed**
+      1. Delete w from heap (at position i and not from the top - depending on where `w` is on the heap, we need some book-keeping)
+      2. Recompute `key[w] := min{key[w], cvw}`
+      3. Re-Insert into heap
+
+4. Select the vertex with the smallest key value not in the MST and add it to the MST.
+5. Repeat steps 3 and 4 until all vertices are in the MST.
+
 
 
 
