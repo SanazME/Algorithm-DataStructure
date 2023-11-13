@@ -142,6 +142,12 @@ Here's a basic outline of how Prim's algorithm works:
 4. Select the vertex with the smallest key value not in the MST and add it to the MST.
 5. Repeat steps 3 and 4 until all vertices are in the MST.
 
+### Running Time with Heaps
+- n - 1 inserts during preprocessing
+- n - 1 extract-mins (one per iteration of while loop)
+- Each edge (v,w) triggers one Delete/Insert combo (**when its first endpoint is sucked into X**)
+- => `O(m)` heap operation (**recall m >= n - 1 since graph is connected**)
+- => `O(m log n)` time
 
 
 
