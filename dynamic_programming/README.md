@@ -93,6 +93,24 @@ What is the sum of weighted completion times of algorithms 1 and 2 respectively?
 **Assumption 2**: Edge costs are distinct
 - Prim + Kruskal remain correct with ties (which can be broken arbitrarily)
 
+### Prim's MST Algorithm
+- Initialize X = {s} (s is memebr of V vertices chosen arbitraty)
+- T = 0 [initialize our spanning tree,  X = vertices spanned by tree-so-far T]
+- While X != V (while x does not include all veritices):
+  - Let e = (u, v) be the cheapest edge of G with u is part of X and v is not part of X
+  - Add e to T
+  - Add v to X
+While loop: Increase # of spanned veritces in cheapest way possible.
+
+This algorithm time complexity:
+- O(n) iteration (n: number of veritces)
+- O(m) time per iteration (m of edges)
+
+  ==> _O(mn)_
+
+### Prim's MST Algorithm with Heaps
+- The raison d'etre of a heap is to speed up **repeated minimum computations**
+- heap supports insert, extract with min key value, and delete in _O(log n)_ where n is number of objects in the heap
 
 
 
