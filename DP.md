@@ -7,6 +7,10 @@ There are two ways to implement a DP algorithm:
 
 - To summarize: if a problem is asking for the maximum/minimum/longest/shortest of something, the number of ways to do something, or if it is possible to reach a certain point, it is probably greedy or DP. With time and practice, it will become easier to identify which is the better approach for a given problem. Although, in general, if the problem has constraints that cause decisions to affect other decisions, such as using one element prevents the usage of other elements, then we should consider using dynamic programming to solve the problem. These two characteristics can be used to identify if a problem should be solved with DP.
 
+- Memoization is a type of caching used in top-down DP approach. It refers more specfically to **caching function that returns the value.**
+
+- Tabulation outperforms memoization by a constant factor. This is because the tabulation has no overhead of recursion which reduces the time for resolving the call stack from the stack memory.
+
 **Framework to solve DP problems**
 - Before we start, we need to first define a term: **state**. In a DP problem, **a state is a set of variables that can sufficiently describe a scenario**. These variables are called state variables, and we only care about relevant ones. For example, to describe every scenario in Climbing Stairs, there is only 1 relevant state variable, the current step we are on. We can denote this with an integer 
 i. If i = 6, that means that we are describing the state of being on the 6th step. Every unique value of i represents a unique state.
