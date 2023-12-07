@@ -260,3 +260,11 @@ for i in range(n-1, -1, -1):
 
 return dp2[0][0]
 ```
+# DP Patterns:
+- https://leetcode.com/discuss/general-discussion/458695/Dynamic-Programming-Patterns
+- 
+## 5. Minimum Path Sum
+- https://leetcode.com/problems/minimum-path-sum/description/?envType=list&envId=55ac4kuc
+- Bottom-up and Top-bottom:
+**Solution**: https://leetcode.com/problems/minimum-path-sum/solutions/3345941/explained-in-detailed-with-image-dry-run-of-same-i-p-most-upvoted/
+
