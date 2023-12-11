@@ -39,6 +39,12 @@ Here are a few notes about the above pseudocode.
 
 - There are two symmetric functions that allow us to **mark the decision** (`place(candidate)`) and **revert the decision** (`remove(candidate)`).  
 
+## Square Matrice Properties N * N:
+1. Primary diagonal : all points wher `i = j`.
+2. Anti-diagonal: all points where `j = N - i - 1` (start from top-right and going to left-bottom)
+3. For each node (i,j):
+  - its primary diagonal nodes: `(k, l) where: k - l = i - j`
+  - its secondary diagonal node: `(k, l) where:  k + l = i + j`
 
 ## 1. Queen II
 - https://leetcode.com/problems/n-queens-ii
