@@ -268,3 +268,6 @@ return dp2[0][0]
 - Bottom-up and Top-bottom:
 **Solution**: https://leetcode.com/problems/minimum-path-sum/solutions/3345941/explained-in-detailed-with-image-dry-run-of-same-i-p-most-upvoted/
 
+## 6. Word Break
+- https://leetcode.com/problems/word-break/editorial/
+- 
