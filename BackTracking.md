@@ -132,6 +132,35 @@ class Solution:
 - `N` is the number of queens (which is the same as the width and height of the board)
 - Extra memory used includes the 3 sets used to store board state as well as **the recursion call stack** . All of this scale linearly with the number of queens
 
+## Queen II
+- Another solution: https://www.educative.io/courses/mastering-algorithms-for-problem-solving-in-python/n-queens is to:
+- define an array `Q: [0] * N` where here `Q[i]` `i` is the row i and `Q[i]` stores the index of a column where the queen is located in row i.
+- For each row, we have two for loops:
+  - we iterate throught column
+  - for a given column, we iterate through all previous rows (0 -> row - 1) and check if the queen has been placed in previous rows in the same column, in the diagonal to that node or in anti-diagonal to that node:
+```py
+def totalNQueens(self, n: int) -> int:
+    def place_queen(Q, row):
+            if row == len(Q):
+                self.count += 1
+                print(self.count)
+
+            else:
+                for col in range(len(Q)):
+                    legal = True
+                    for i in range(row):
+                        if Q[i] == col or (Q[i] == col - row + i) or (Q[i] == col + row - i):
+                            legal = False
+                    if legal:
+                        Q[row] = col
+                        place_queen(Q, row + 1)
+
+
+        place_queen([0]*n, 0)
+
+        return self.count
+```
+
 ## Beautiful Arrangement
 - https://leetcode.com/problems/beautiful-arrangement/description/
 ```py
