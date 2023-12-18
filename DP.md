@@ -275,6 +275,7 @@ return dp2[0][0]
 ## 7. Coin change
 - we can use BFS: https://github.com/SanazME/Algorithm-DataStructure/blob/master/trees/README.md#7-coin-change
 - or DP:
+  
 **7.1 Top-bottom**
   - The helper is `F(s) = min(F(s - coin) + 1 for coin in coins)`. The base cases are when s = 0 and s < 0.
 ```py
@@ -298,9 +299,7 @@ def helper(self, s, coins, memo):
       
   return memo[s]
 ```
- 
 **7.2 Bottom-top**
-  - 
 ```py
 def coinChange(coins, amount):
     if len(coins) == 0:
@@ -318,3 +317,48 @@ def coinChange(coins, amount):
     
     return dp[amount] if dp[amount] != math.inf else -1
 ```
+
+## 8. Min Falling Path Sum
+- https://leetcode.com/problems/minimum-falling-path-sum/
+  
+**top-bottom**
+```py
+class Solution:
+    def minFallingPathSum(self, matrix: List[List[int]]) -> int:
+        if matrix is None:
+            return None
+        
+        if len(matrix) == 1:
+            return min(matrix[0])
+
+        if len(matrix[0]) == 1:
+            return sum(matrix)
+
+        minVal = math.inf
+        memo = {}
+        for j in range(len(matrix[0])):
+            minVal = min(minVal, self.helper(matrix, 0, j, memo))
+
+        return minVal if minVal != math.inf else -1
+
+    def helper(self, matrix, i, j, memo):
+        # dp[i,j] = min(dp[i+1,j], dp[i+1, j-1], dp[i+1, j+1]) + matrix[i][j]
+        # base cases
+        if j < 0 or j >= len(matrix[0]):
+            return math.inf
+        if i == len(matrix) - 1:
+            return matrix[i][j]
+            
+        if (i, j) in memo:
+            return memo[(i, j)]
+
+        left = self.helper(matrix, i+1, j-1, memo)
+        center = self.helper(matrix, i+1, j, memo)
+        right = self.helper(matrix, i+1, j+1, memo)
+
+        memo[(i,j)] = min(left, center, right) + matrix[i][j]
+        
+        return memo[(i,j)]
+```
+- **Time complexity: O(N^2)**: For every cell in the matrix, we will compute the result only once and update the memo. For the subsequent calls, we are using the stored results that take O(1) time. There are N^2 cells in the matrix, and thus N^2 dp states. So, the time complexity is O(N^2).
+- **Space complexityL O(N^2)**: The recursive call stack uses O(N) space. As the maximum depth of the tree is N, we can’t have more than N recursive calls on the call stack at any time. The 2D matrix memo uses O(N^2)space. Thus, the space complexity is `O(N) + O(N^2) = O(N^2)`.
