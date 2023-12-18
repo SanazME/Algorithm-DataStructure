@@ -271,3 +271,50 @@ return dp2[0][0]
 ## 6. Word Break
 - https://leetcode.com/problems/word-break/editorial/
 - 
+
+## 7. Coin change
+- we can use BFS: https://github.com/SanazME/Algorithm-DataStructure/blob/master/trees/README.md#7-coin-change
+- or DP:
+**7.1 Top-bottom**
+  - The helper is `F(s) = min(F(s - coin) + 1 for coin in coins)`. The base cases are when s = 0 and s < 0.
+```py
+def coinChange(self, coins: List[int], amount: int) -> int:
+    if len(coins) == 0 or amount <= 0:
+          return 0
+      result =  self.helper(amount, coins, {})
+
+      return result if result != math.inf else -1
+
+def helper(self, s, coins, memo):
+  # helper(s) = helper(s - coin) + 1
+  if s == 0:
+      return 0
+  if s < 0:
+      return math.inf
+  if s in memo:
+      return memo[s]
+  
+  memo[s] = min(self.helper(s - coin, coins, memo) + 1 for coin in coins)
+      
+  return memo[s]
+```
+ 
+**7.2 Bottom-top**
+  - 
+```py
+def coinChange(coins, amount):
+    if len(coins) == 0:
+        return 0
+    
+    if amount <= 0 :
+        return 0
+    
+    dp = [math.inf for _ in range(amount + 1)]
+    dp[0] = 0
+    
+    for coin in coins:
+        for i in range(coin, amount + 1):
+            dp[i] = min(dp[i], dp[i-coin] + 1)
+    
+    return dp[amount] if dp[amount] != math.inf else -1
+```
