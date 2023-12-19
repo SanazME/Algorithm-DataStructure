@@ -331,9 +331,6 @@ class Solution:
         if len(matrix) == 1:
             return min(matrix[0])
 
-        if len(matrix[0]) == 1:
-            return sum(matrix)
-
         minVal = math.inf
         memo = {}
         for j in range(len(matrix[0])):
@@ -362,3 +359,78 @@ class Solution:
 ```
 - **Time complexity: O(N^2)**: For every cell in the matrix, we will compute the result only once and update the memo. For the subsequent calls, we are using the stored results that take O(1) time. There are N^2 cells in the matrix, and thus N^2 dp states. So, the time complexity is O(N^2).
 - **Space complexityL O(N^2)**: The recursive call stack uses O(N) space. As the maximum depth of the tree is N, we can’t have more than N recursive calls on the call stack at any time. The 2D matrix memo uses O(N^2)space. Thus, the space complexity is `O(N) + O(N^2) = O(N^2)`.
+
+**bottom-up**
+```py
+def minFallingPathSum(self, matrix: List[List[int]]) -> int:
+        if matrix is None:
+            return None
+
+        if len(matrix) == 1:
+            return min(matrix[0])
+
+        dp = [[0 for _ in range(len(matrix[0]))] for _ in range(len(matrix))]
+        # dp[i][j] = min(dp[i+1,j-1], dp[i+1,j], dp[i+1, j+1]) + matrix[i][j]
+        
+        rows = len(matrix)
+        cols = len(matrix[0])
+        
+        for j in range(cols):
+            dp[rows-1][j] = matrix[rows-1][j]
+            
+        for i in range(rows-2, -1, -1):
+            for j in range(cols):
+                if j > 0:
+                    left = dp[i+1][j-1]
+                else:
+                    left = math.inf
+                middle = dp[i+1][j]
+                if j < rows - 1:
+                    right = dp[i+1][j+1]
+                else:
+                    right = math.inf
+                    
+                dp[i][j] = min(left, middle, right) + matrix[i][j]
+        
+        print(dp)
+        
+        return min(dp[0])
+```
+- To improve the space for this bottom-up, we can use a 1D array instead of 2D array since each time we only care about the values in only one row.
+```py
+def minFallingPathSum(self, matrix: List[List[int]]) -> int:
+        if matrix is None:
+            return None
+
+        if len(matrix) == 1:
+            return min(matrix[0])
+
+        dp = [0 for _ in range(len(matrix[0]))]
+        currentRow = [0 for _ in range(len(matrix[0]))]
+        # dp[i][j] = min(dp[i+1,j-1], dp[i+1,j], dp[i+1, j+1]) + matrix[i][j]
+        
+        rows = len(matrix)
+        cols = len(matrix[0])
+        
+        for j in range(cols):
+            dp[j] = matrix[rows-1][j]
+            
+        for i in range(rows-2, -1, -1):
+            for j in range(cols):
+                if j > 0:
+                    left = dp[j-1]
+                else:
+                    left = math.inf
+                middle = dp[j]
+                if j < rows - 1:
+                    right = dp[j+1]
+                else:
+                    right = math.inf
+                    
+                currentRow[j] = min(left, middle, right) + matrix[i][j]
+        
+            for j in range(cols):
+                dp[j] = currentRow[j]
+        
+        return min(dp)
+```
