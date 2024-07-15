@@ -1,4 +1,5 @@
 # 32 problems:
+- Best time to buy and sell stock
 - Array of Doubled Pairs
 - BFS
 - Walls and Gates
@@ -30,6 +31,35 @@
 - Search in BST
 - Insert in BST
 - Delete in BST
+
+### Best Time to Buy and Sell Stock
+- https://leetcode.com/problems/best-time-to-buy-and-sell-stock/description/?envType=study-plan-v2&envId=top-interview-150
+- Based on the fact that we have to sell after we buy and we are trying to maximize profit, we can iterate through the prices and only need to consider two things:
+1.  Is this price cheaper than any other price I've seen before?
+2.  If I subtract current price by the cheapest price I've found, does this yield a greater profit than what I've seen so far?
+
+A fun thing to note is if #1 is true, then #2 cannot be true as well so there isn't a need to check
+```py
+def maxProfit(self, prices: 'List[int]') -> 'int':
+        if len(prices) <= 1:
+            return 0
+
+        minPrice = float('Inf')
+        maxProfit = 0
+
+        for i in range(len(prices)):
+            if prices[i] < minPrice:
+                minPrice = prices[i]
+                # maxProfit = 
+
+            if prices[i] - minPrice > maxProfit:
+                maxProfit = prices[i] - minPrice
+
+        return maxProfit
+```
+
+
+
 
 ### Array of Doubled Pairs
 - https://leetcode.com/problems/array-of-doubled-pairs/
