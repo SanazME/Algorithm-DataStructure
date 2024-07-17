@@ -97,6 +97,7 @@ class Solution:
 
         return True
 ```
+**Note: we can also use BFS approach which is less efficient than greedy jump- explained in Jump Game II**
 
 ### Jump Game II
 - https://leetcode.com/problems/jump-game-ii/description
@@ -138,6 +139,38 @@ class Solution:
         return count
 ```
 
+- **BFS appoach:** less efficient. We treat each index as a node in the tree and the value at that Each index in the array can be thought of as a node in a graph. The possible jumps from each index represent the edges to other nodes.
+```py
+from collections import deque
+
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        if len(nums) <= 1:
+            return 0
+
+        if nums[0] >= len(nums) - 1:
+            return 1
+
+        queue = deque([0])
+        depth = 0
+        visited = set()
+
+        while queue:
+            size = len(queue)
+            depth += 1
+
+            for _ in range(size):
+                i = queue.popleft()
+                if i in visited: continue
+                visited.add(i)
+                if i + nums[i] >= len(nums) - 1:
+                    return depth
+
+                for j in range(1, nums[i] + 1):
+                    queue.append(i + j)
+
+        return depth
+```
 
 
 ### Array of Doubled Pairs
