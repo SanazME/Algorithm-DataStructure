@@ -1,6 +1,7 @@
 # 32 problems:
 - Best time to buy and sell stock
 - Jump Game
+- Jump Game II
 - Array of Doubled Pairs
 - BFS
 - Walls and Gates
@@ -96,6 +97,47 @@ class Solution:
 
         return True
 ```
+
+### Jump Game II
+- https://leetcode.com/problems/jump-game-ii/description
+- We can think of this as a level-by-level progression through the array. At each level, we want to make the jump that takes us the furthest. We increment our jump count each time we need to make a new jump. So, we calculate the maximum index we can reach from the current index. If our pointer i reaches the last index that can be reached with current number of jumps then we have to make a jumps.
+So, we increase the count.
+- Edge cases:
+  - List of one element: 0 jump
+  - first element in the list is 0: impossible
+  - first element in the list reaches the end of the list: 1 jump 
+```py
+class Solution:
+    def jump(self, nums):
+        if len(nums) <= 1:
+            return 0
+
+        if nums[0] >= len(nums) - 1:
+            return 1
+        
+        # Initialize reach (maximum reachable index), count (number of jumps), and last (rightmost index reached)
+        reach, count, last = 0, 0, 0
+        
+        # Loop through the array excluding the last element
+        for i in range(len(nums)-1):    
+            # Update reach to the maximum between reach and i + nums[i]
+            reach = max(reach, i + nums[i])
+
+            if reach >= len(nums) - 1:
+                count +=1
+                break
+        
+            # If i has reached the last index that can be reached with the current number of jumps
+            if i == last:
+                # Update last to the new maximum reachable index
+                last = reach
+                # Increment the number of jumps made so far
+                count += 1
+        
+        # Return the minimum number of jumps required
+        return count
+```
+
 
 
 ### Array of Doubled Pairs
