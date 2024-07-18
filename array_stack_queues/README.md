@@ -2,6 +2,7 @@
 - Best time to buy and sell stock
 - Jump Game
 - Jump Game II
+- h index
 - Array of Doubled Pairs
 - BFS
 - Walls and Gates
@@ -171,7 +172,52 @@ class Solution:
 
         return depth
 ```
+### H-Index
+- https://leetcode.com/problems/h-index/description/
 
+**approach 1:** sort the array and try to find max of min between the value in the array and how far it is from the end of array. First think of edge cases and check if the solution can cover those as well:
+- one elements arrays: if [0] vs [4]
+- two or more element array with all zeros
+```py
+    def hIndex(self, citations: List[int]) -> int:
+        if len(citations) == 0:
+            return 0
+
+        # if len(citations) == 1:
+        #     if citations[0] == 0:
+        #         return 0
+        #     else:
+        #         return 1
+
+    
+        citations.sort()
+
+        maxSoFar = -float('Inf')
+        for i in range(len(citations) - 1, -1, -1):
+            maxSoFar = max(maxSoFar, min(citations[i], len(citations) - i))
+
+        return maxSoFar
+```
+
+**approach 2**: another way is createa  tmp array / bucket to hold the count of papers with frequency citations equal to the index of that bucket. Then iterate backward through that tmp array and accumulate the total number of citations up to each index i. If the total is larger or equal to that index i then that index is h index:
+```py
+class Solution:
+    def hIndex(self, citations: List[int]) -> int:
+        n = len(citations)
+        temp = [0 for _ in range(n + 1)]
+
+        for i,v in enumerate(citations):
+            if v > n :
+                temp[n] += 1
+            else:
+                temp[v] += 1
+        
+        total = 0
+        for i in range(n, -1, -1):
+            total += temp[i]
+            if total >= i:
+                return i
+```
 
 ### Array of Doubled Pairs
 - https://leetcode.com/problems/array-of-doubled-pairs/
