@@ -4,6 +4,7 @@
 - Jump Game II
 - h index
 - Insert Delet GetRandom O(1)
+- Product of Array except self
 - Array of Doubled Pairs
 - BFS
 - Walls and Gates
@@ -287,6 +288,51 @@ class RandomizedSet:
         # if running outside of leetcode, you need to `import random`.
         # random.choice will randomly select an element from the list of data.
         return random.choice(self.data)
+```
+
+### Product of Array except self
+- https://leetcode.com/problems/product-of-array-except-self
+- calculate suffix and prefix array for each element
+**with extra space**
+```py
+def productExceptSelf(nums):
+    if len(nums) <= 1:
+        return None
+    
+    prefix, suffix = [1] * len(nums),[1] * len(nums)
+    output = [0] * len(nums)
+    
+    for i in range(len(nums) - 2, -1, -1):
+        suffix[i] = nums[i + 1] * suffix[i + 1]
+        
+    for i in range(1, len(nums)):
+        prefix[i] = nums[i - 1] * prefix[i - 1]
+    
+    for i in range(len(nums)):
+        output[i] = prefix[i] * suffix[i]
+        
+    return output
+```
+**without extra space**
+```py
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        if len(nums) <= 1:
+            return None
+        
+        prefix, suffix = 1, 1
+        output = [0] * len(nums)
+        
+        for i in range(len(nums) - 1, -1, -1):
+            output[i] = suffix
+            suffix = nums[i] * suffix
+            
+        for i in range(len(nums)):
+            output[i] *= prefix
+            prefix *= nums[i]
+        
+    
+        return output
 ```
 
 ### Array of Doubled Pairs
