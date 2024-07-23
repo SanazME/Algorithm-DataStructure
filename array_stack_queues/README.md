@@ -6,6 +6,7 @@
 - Insert Delet GetRandom O(1)
 - Product of Array except self
 - Gas station
+- Candy
 - Array of Doubled Pairs
 - BFS
 - Walls and Gates
@@ -355,6 +356,72 @@ class Solution:
 
         return startIdx
 ```
+### Candy
+- https://leetcode.com/problems/candy/description/
+- We can solve it in Time O(n) and Space O(n) looping over the array twice - we can even optimize it more by looping once with space O(1):
+```py
+# Time: O(n) and Space O(n) - two passes
+        if len(ratings) <= 1:
+            return len(ratings)
+
+        candy = [1] * len(ratings)
+
+        for i in range(1, len(ratings)):
+            if ratings[i] > ratings[i - 1]:
+                candy[i] = candy[i - 1] + 1
+
+        for i in range(len(ratings) - 2, -1, -1):
+            if ratings[i] > ratings[i + 1]:
+                candy[i] = max(candy[i], candy[i + 1] + 1)
+
+        return sum(candy)
+```
+- One-Pass Greedy Algorithm: Up-Down-Peak Method
+Why Up, Down, and Peak?
+The essence of the one-pass greedy algorithm lies in these three variables: Up, Down, and Peak. They serve as counters for the following:
+* **Up**: Counts how many children have increasing ratings from the last child. This helps us determine how many candies we need for a child with a higher rating than the previous child.
+* **Down**: Counts how many children have decreasing ratings from the last child. This helps us determine how many candies we need for a child with a lower rating than the previous child.
+* **Peak**: Keeps track of the last highest point in an increasing sequence. When we have a decreasing sequence after the peak, we can refer back to the Peak to adjust the number of candies if needed.
+How Does it Work?
+1. Initialize Your Counters
+   * Start with ret = 1 because each child must have at least one candy. Initialize up, down, and peak to 0.
+2. Loop Through Ratings
+   * For each pair of adjacent children, compare their ratings. Here are the scenarios:
+      * If the rating is increasing: Update **up** and **peak** by incrementing them by 1. Set **down** to 0. Add up + 1 to **ret** because the current child must have one more candy than the previous child.
+      * If the rating is the same: Reset **up**, **down**, and **peak** to 0, because neither an increasing nor a decreasing trend is maintained. Add 1 to **ret** because the current child must have at least one candy.
+      * If the rating is decreasing: Update **down** by incrementing it by 1. Reset **up** to 0. Add **down** to **ret**. Additionally, **if peak is greater than or equal to down, decrement ret by 1. This is because the peak child can share the same number of candies as one of the children in the decreasing sequence, which allows us to reduce the total number of candies.**
+
+This subtraction is only done when peak >= down because that's when we know we can "borrow" a candy from the peak without violating the rules. Once down > peak, we can no longer borrow from the peak, so we stop subtracting. This subtraction is safe because as long as peak >= down, we know that the peak still has more candies than the current decreasing element, even after subtracting 1.
+```py
+# Time: O(n) and Space O(1) - one pass: runtime optimization
+        if len(ratings) <= 0:
+            return len(ratings)
+
+        up, down, peak = 0, 0, 0
+        total = 1
+
+        for i in range(1, len(ratings)):
+            if ratings[i] > ratings[i - 1]:
+                up += 1
+                down = 0
+                peak = up
+                total += up + 1
+
+            elif ratings[i] < ratings[i - 1]:
+                down += 1
+                up = 0
+                if peak >= down:
+                    total += down + 1 - 1
+                else:
+                    total += down + 1
+                
+            else:
+                up = down = peak = 0
+                total += 1
+
+        return total
+```
+
 
 ### Array of Doubled Pairs
 - https://leetcode.com/problems/array-of-doubled-pairs/
