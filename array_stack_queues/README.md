@@ -1,5 +1,6 @@
 # 32 problems:
 - Best time to buy and sell stock
+- Best Time to Buy and Sell Stock II
 - Jump Game
 - Jump Game II
 - h index
@@ -64,6 +65,27 @@ def maxProfit(self, prices: 'List[int]') -> 'int':
 
         return maxProfit
 ```
+
+### Best Time to Buy and Sell Stock II
+- https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/description/
+```py
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        profit = 0
+        if len(prices) == 1:
+            return profit
+
+        profit = 0
+        for i in range(1, len(prices)):
+            diff = prices[i] - prices[i-1]
+            if diff > 0:
+                profit += diff
+```
+ 
+
 
 ### Jump Game
 - https://leetcode.com/problems/jump-game/description/
