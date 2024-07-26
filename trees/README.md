@@ -857,7 +857,17 @@ print(s.search('lmne'))
 ```
 ## Find Longest Common Prefix
 - https://leetcode.com/problems/longest-common-prefix/
-
+```py
+# after inserting words in a trie, we need to find that longest prefix:
+def searchPrefix(self):
+   curr = self.root
+   output = ''
+   while len(curr.children.keys()) == 1 and curr.endOfWord == False:
+        key = list(curr.children.keys())[0]
+        output += key
+        curr = curr.children[key]
+   return output
+```
 
 
 ## Binary Tree Height, Depth, node indices based on depth
