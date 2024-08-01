@@ -369,6 +369,53 @@ def maxDepth(root):
 
 - For iterative call, we use BFS & queue and compare two adjacent nodes to see if the symmtric condition holds. At the beginning, we need to push root node twice to pass the comparison in the loop.
 
+### [My own interview Q] Implement a function to remove all nodes with negative values from a tree data structure, while maintaining the structure of the remaining positive nodes.
+
+```py
+class Node():
+    def __init__(self, val=0):
+        self.val = val
+        self.children = set()
+
+def remove_negative_nodes(root):
+    if not root:
+        return None
+    
+    # DFS
+    return helper(root, None)
+
+def helper(node, parent):
+    if not node:
+        return
+    
+    stack = [(node, parent)]
+    
+    while stack:
+        curr, currParent = stack.pop()
+        
+        if curr.val < 0:
+            if currParent:
+                currParent.children.remove(curr)
+            else:
+                return None
+        else:
+            for child in curr.children:
+                stack.append((child, curr))
+    
+    return node
+
+# Example usage
+root = Node(-1)
+child1 = Node(2)
+child2 = Node(-3)
+child3 = Node(4)
+root.children.add(child1)
+root.children.add(child2)
+child1.children.add(child3)
+
+result = remove_negative_nodes(root)
+```
+
 ### Populating Next Right Pointers in Each Node (Leetcode)
 - Since we are manipulating tree nodes on the same level, it's easy to come up with
 a very standard BFS solution using queue. But because of next pointer, we actually
