@@ -1,4 +1,5 @@
 # 32 problems:
+- My own interview problem
 - Best time to buy and sell stock
 - Best Time to Buy and Sell Stock II
 - Jump Game
@@ -39,6 +40,65 @@
 - Search in BST
 - Insert in BST
 - Delete in BST
+
+### My own interview Q: Implement a function to compare two json templates. A template can contain either strings or nested templates. 
+
+```py
+def compareTemplates(dict1, dict2):
+    output = {}
+    
+    # when key is not in dict2
+    for key in dict1.keys():
+        if key not in dict2:
+            output[key] = (1, 0, None)
+        else:
+            val1 = dict1[key]
+            val2 = dict2[key]
+            
+            if val1 == val2:
+                continue
+            else:
+                if not isinstance(val1, str) and not isinstance(val2, str):
+                    output[key] = compareTemplates(val1, val2)
+                else:
+                    output[key] = (1, 1, val2)
+    # print(output, dict2)
+    # when key is not in dict1
+    for key in dict2.keys():
+        if key not in dict1:
+            output[key] = (0, 1, None)
+            
+    return output
+
+
+# Example usage:
+template2 = {
+    "section1": {
+        "title": "Hello",
+        "content": {
+            "paragraph1": "This is a test",
+            "paragraph2": "Of nested templates"
+        }
+    },
+    "section2": "Simple string"
+}
+
+template1 = {
+    "section1": {
+        "title": "Hello",
+        "content": {
+            "paragraph1": "This is a test",
+            "paragraph2": "With different content"
+        }
+    },
+    "section2": {
+        "new": "Nested template instead of string"
+    }
+}
+
+result = compareTemplates(template1, template2)
+print(result)
+```
 
 ### Best Time to Buy and Sell Stock
 - https://leetcode.com/problems/best-time-to-buy-and-sell-stock/description/?envType=study-plan-v2&envId=top-interview-150
