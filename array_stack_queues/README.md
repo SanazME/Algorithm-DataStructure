@@ -1,5 +1,6 @@
 # 32 problems:
 - My own interview problem
+- Cron job
 - Best time to buy and sell stock
 - Best Time to Buy and Sell Stock II
 - Jump Game
@@ -99,6 +100,115 @@ template1 = {
 result = compareTemplates(template1, template2)
 print(result)
 ```
+
+## Cron job
+- Write a data structure "Cron" to represent a single row of the file optimized for getting the next schedule time.
+Write a method calculating the next time "Date getNext(Date current, Cron schedule)"
+- There are 6 columns: Second, Minute, Hour, Day, Month, DayOfWeek
+Each column can contain expressions:
+- Star '*' stands for every/any
+- Comma ',' separates values
+- Dash '-' stands for range
+- Slash '/' stands for period
+- Combinations of the above are possible
+
+```py
+from datetime import datetime
+from enum import Enum
+# 0 0 0 * * *
+# h min sec
+# return 12 am
+
+
+# 30 * * * * *
+# get_next(2021-10-15 11:20:10) ======> 2021-10-15 11:20:30
+# get_next(2021-10-15 11:20:30) ======> 2021-10-15 11:20:30
+# get_next(2021-10-15 11:20:40) ======> 2021-10-15 11:21:30
+
+class TimeSlice(Enum):
+    SEC = 1
+    MIN = 2
+    HR = 3
+    DAY = 4
+    MONTH = 5
+    DAYWEEK = 6
+
+class Cron:
+    def __init__(self, line):
+        print(line)
+        self.fields = line.split(' ')
+        print(self.fields)
+        
+        self.mapEvery = {
+            TimeSlice.SEC: range(60),
+            TimeSlice.MIN: range(60),
+            TimeSlice.HR: range(24),
+            TimeSlice.DAY: range(1, 31),
+            TimeSlice.MONTH: range(1,13),
+            TimeSlice.DAYWEEK: range(1,8)
+        }
+        
+        self.mapEnd = {
+            TimeSlice.SEC: 60,
+            TimeSlice.MIN: 60,
+            TimeSlice.HR: 24,
+            TimeSlice.DAY: 30,
+            TimeSlice.MONTH: 12,
+            TimeSlice.DAYWEEK: 7
+        }
+        
+        self.seconds = self.parse_field(self.fields[0], TimeSlice.SEC)
+        self.mins = self.parse_field(self.fields[1], TimeSlice.MIN)
+        self.hours = self.parse_field(self.fields[2], TimeSlice.HR)
+        self.days = self.parse_field(self.fields[3], TimeSlice.DAY)
+        self.months = self.parse_field(self.fields[4], TimeSlice.MONTH)
+        self.days_of_week = self.parse_field(self.fields[5], TimeSlice.DAYWEEK)
+        
+
+    def parse_field(self, field, enumVal):
+        
+        if field == '*':
+            possibleRange = self.mapEvery[enumVal]        
+            return set(possibleRange)
+        
+        result = set()
+        for par in field.split(','):
+            if '-' in par:
+                start, end = map(int, par.split('-'))
+                result.update(range(start, end + 1))
+            elif '/' in par:
+                start, step = map(int, par.split('/'))
+                result.update(range(start, self.mapEnd[enumVal], step))
+            else:
+                result.add(int(par))
+                
+        return result
+        
+    def get_next(self, current_time):
+        nextTime = current_time
+        
+        while True:
+            if (nextTime.second in self.seconds and \
+            nextTime.minute in self.mins and \
+            nextTime.hour in self.hours and \
+            nextTime.day in self.days and \
+            nextTime.month in self.months and \
+            nextTime.weekday() in self.days_of_week):
+                return nextTime
+
+            nextTime += timedelta(seconds = 1)
+        
+        
+
+frequency = Cron('30 * * * * *')
+nextRun = frequency.get_next(datetime(2021,10,15,11,20,10))
+print(f"# get_next() ======> {nextRun.strftime('%Y-%m-%d %H:%M:%S')}")
+nextRun = frequency.get_next(datetime(2021,10,15,11,20,30))
+print(f"# get_next() ======> {nextRun.strftime('%Y-%m-%d %H:%M:%S')}")
+nextRun = frequency.get_next(datetime(2021,10,15,11,20,40))
+print(f"# get_next() ======> {nextRun.strftime('%Y-%m-%d %H:%M:%S')}")  
+```
+
 
 ### Best Time to Buy and Sell Stock
 - https://leetcode.com/problems/best-time-to-buy-and-sell-stock/description/?envType=study-plan-v2&envId=top-interview-150
