@@ -10,6 +10,7 @@
 - Product of Array except self
 - Gas station
 - Candy
+- Zigzag conversion
 - Array of Doubled Pairs
 - BFS
 - Walls and Gates
@@ -613,7 +614,50 @@ This subtraction is only done when peak >= down because that's when we know we c
 
         return total
 ```
+### zigzag conversion
+- https://leetcode.com/problems/zigzag-conversion/description
+```py
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        if numRows <= 1:
+            return s
+        
+        order = {}
+        for i in range(1, numRows + 1):
+            order[i] = ''
 
+        print(order)
+
+        counter = 1
+        direction = 'up'
+
+        for char in s:
+            # correct direction and reset counter
+            
+            if counter > numRows:
+                counter -= 2
+                direction = 'down'
+            elif counter <= 0:
+                counter += 2
+                direction = 'up'
+            
+            # print(char, counter, direction)
+            # populate order dictionary
+            if direction == 'up':
+                order[counter] += char
+                counter += 1
+
+            elif direction == 'down':
+                order[counter] += char
+                counter -= 1
+
+        # print(order)
+        result = ''
+        for i in range(1, numRows + 1):
+            result += order[i]
+
+        return result
+```
 
 ### Array of Doubled Pairs
 - https://leetcode.com/problems/array-of-doubled-pairs/
