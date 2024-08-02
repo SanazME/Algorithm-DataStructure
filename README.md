@@ -490,6 +490,15 @@ map(str, myNumList)  # change it to list of strings
 map(lambda x: x + 2, myNumList)
 ```
 
+30. **Enum in python**
+```py
+class TimeSlice(Enum):
+  SEC = 1
+  MIN = 2
+  HR = 3
+
+```
+
 ####################################################################################
 - In dividing a even or odd array into two partitions and later on calculate the median. We put the partition line in a place where the left side partition would always have one more element than the right side so the median was calculated:
     - if the array has even number of elements: median = (left of partition + partition line) / 2
