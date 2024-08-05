@@ -11,6 +11,8 @@
 - Gas station
 - Candy
 - Zigzag conversion
+- Needle in haystack
+- Text Justification
 - Array of Doubled Pairs
 - BFS
 - Walls and Gates
@@ -658,6 +660,37 @@ class Solution:
 
         return result
 ```
+
+### Needle in haystack
+- https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/
+```py
+def strStr(self, haystack: str, needle: str) -> int:
+        if len(needle) == 0:
+            return 0
+
+        if len(needle) > len(haystack):
+            return -1
+        
+        pointer = 0
+        
+        for i in range(len(haystack)):
+            
+            if i + len(needle) > len(haystack):
+                break
+            
+            for j in range(len(needle)):
+                if needle[j] != haystack[i + j]:
+                    break
+                    
+                if j == len(needle) - 1:
+                    return i
+                
+        return -1
+```
+
+### Text Justification
+- https://leetcode.com/problems/text-justification/description/
+- 
 
 ### Array of Doubled Pairs
 - https://leetcode.com/problems/array-of-doubled-pairs/
