@@ -46,6 +46,12 @@ while n > 0:
 
 ```
 
+**Useful functions**
+- `isalpha()`: if a string is only alphabetic (a-z,A-Z): `someWord.isalpha()`
+- `isascii()`: if a string is ASCII : `someWord.isascii()`
+- `isdigit()`: if a string is digit, `b '0123456789'` : `someWord.isdigit()`
+- `islower()`: lowercase
+
 **Useful Python methods**
 1. `enumerate()` for enumerate :
 ```python
