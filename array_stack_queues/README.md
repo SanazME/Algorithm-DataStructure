@@ -690,7 +690,51 @@ def strStr(self, haystack: str, needle: str) -> int:
 
 ### Text Justification
 - https://leetcode.com/problems/text-justification/description/
-- 
+- Adding extra space from left to right meaning a round robin approach: we first add required space evently to after each word and then for extra spaces, we add them from left to right again.
+```py
+class Solution:
+    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
+
+        result = []
+        curr_line = []
+        curr_line_length = 0
+
+        def justify_line(line, isLastLine = False):
+            if isLastLine or len(line) == 1:
+                return ' '.join(line).ljust(maxWidth)
+
+            total_spaces = maxWidth - sum(len(word) for word in line)
+            gaps = len(line) - 1
+            if gaps > 0:
+                spaces_per_gap = total_spaces // gaps
+                extra_spaces = total_spaces % gaps
+
+            justified = []
+            for i, word in enumerate(line):
+                justified.append(word)
+                if i < gaps:
+                    spaces = spaces_per_gap + (1 if i < extra_spaces else 0)
+                    justified.append(' ' * spaces)
+                elif gaps == 0:
+                    justified.append(' ' * spaces)
+
+            return ''.join(justified)
+
+
+        for word in words:
+            if curr_line_length + len(word) + len(curr_line) <= maxWidth:
+                curr_line.append(word)
+                curr_line_length += len(word)
+            else:
+                result.append(justify_line(curr_line))
+                curr_line = [word]
+                curr_line_length = len(word)
+
+        if curr_line:
+            result.append(justify_line(curr_line, True))
+        
+        return result
+```
 
 ### Array of Doubled Pairs
 - https://leetcode.com/problems/array-of-doubled-pairs/
