@@ -48,8 +48,9 @@ while n > 0:
 
 **Useful functions**
 - `isalpha()`: if a string is only alphabetic (a-z,A-Z): `someWord.isalpha()`
-- `isascii()`: if a string is ASCII : `someWord.isascii()`
+- `isalnum()`: if a string is only alphabetic (a-z,A-Z) or number (0-9): `someWord.isalnum()`
 - `isdigit()`: if a string is digit, `b '0123456789'` : `someWord.isdigit()`
+- `isascii()`: if a string is ASCII : `someWord.isascii()` 
 - `islower()`: lowercase
 
 **Useful Python methods**
