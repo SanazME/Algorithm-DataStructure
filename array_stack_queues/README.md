@@ -13,6 +13,7 @@
 - Zigzag conversion
 - Needle in haystack
 - Text Justification
+- Contianer with most water
 - Array of Doubled Pairs
 - BFS
 - Walls and Gates
@@ -734,6 +735,34 @@ class Solution:
             result.append(justify_line(curr_line, True))
         
         return result
+```
+
+### Container with most water
+- https://leetcode.com/problems/container-with-most-water/?envType=study-plan-v2&envId=top-interview-150
+
+- use two pointers starting from start and end and always move the shorter pointer.
+```py
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        if len(height) <= 1:
+            return 0
+
+        if len(height) == 2:
+            return min(height)
+
+
+        left, right = 0, len(height) - 1
+        volume = 0
+
+        while left < right:
+            volume = max(volume, min(height[left], height[right]) * (right - left))
+            if height[left] < height[right]:
+                left += 1
+            else:
+                right -= 1
+
+
+        return volume
 ```
 
 ### Array of Doubled Pairs
