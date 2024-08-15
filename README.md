@@ -373,6 +373,7 @@ print(','.join([str(x[0])+':'+str(x[1]) for x in arr4]))
 ```
 23. - **`ss.isalpha(), ss.isnumeric()` to check if its a letter or number**
 
+23.1 - `ljust(maxWidth)`: to adjust line and padded to reach maxWidth. `' '.join(line).ljust(maxWidth)`, joins words in line list with a space in between them and then it left justifies the string within a field of width maxWidth. Add extra spacing from left to right.
 
 24. **Python combination and permutation**:
 - for a given input if we should not change the place of elements in that input, use combination (n choose k: n!/(n-k)! k!):
