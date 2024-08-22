@@ -904,6 +904,30 @@ class Solution:
         return result
 ```
 
+### Max Consecutive Ones III
+- https://leetcode.com/problems/max-consecutive-ones-iii/description/
+```py
+def longestOnes(self, nums: List[int], k: int) -> int:
+        if len(nums) == 0:
+            return None
+
+        left, result = 0, 0
+
+        for right in range(len(nums)):
+            if nums[right] == 0:
+                k -= 1
+
+            while k < 0:
+                if nums[left] == 0:
+                    k += 1
+                left += 1
+
+            result = max(result, right - left + 1)
+        
+        return result
+```
+- similar to prev question, sliding windows and the size of the window is dynamic and can get as large as long as we can still flip zeros in the subarray.
+
 ### Array of Doubled Pairs
 - https://leetcode.com/problems/array-of-doubled-pairs/
 - for each element in array, x, we need to find whether `2*x or x/2` exist. However, if we sort the array based on their abs value, then we need to only check for the existence of `2*x` because, x is the least value and so `x/2` can not exist.
