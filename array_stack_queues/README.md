@@ -795,6 +795,12 @@ class Solution:
 ### Minimum Size Subarray Sum
 - https://leetcode.com/problems/minimum-size-subarray-sum/description
 - since we don't want to order the array `N logN`, we start adding numbers and once the sum becomes bigger than target, we keep remove elements from left to right till that sum becomes smaller. This way we can find the smallest subarray that its sum is at least equal to target.
+- The idea behind it is to maintain two pointers: start and end, moving them in a smart way to avoid examining all possible values 0<=end<=n-1 and 0<=start<=end (to avoid brute force).
+What it does is:
+1. Incremeting the end pointer while the sum of current subarray (defined by current values of start and end) is smaller than the target.
+2. Once we satisfy our condition (the sum of current subarray >= target) we keep incrementing the start pointer until we violate it (until `sum(array[start:end+1]) < target`).
+3. Once we violate the condition we keep incrementing the end pointer until the condition is satisfied again and so on.
+
 ```py
 class Solution:
     def minSubArrayLen(self, target: int, nums: List[int]) -> int:
