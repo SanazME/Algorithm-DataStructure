@@ -824,7 +824,85 @@ class Solution:
             return minCount
 ```
 
-### 
+### Subarrays with k Different Integers
+- https://leetcode.com/problems/subarrays-with-k-different-integers/description/
+- The key insight is that we can transform this problem into a sliding window problem. Instead of directly counting subarrays with exactly K different integers, we can use the following trick:
+**(number of subarrays with at most K different integers) - (number of subarrays with at most K-1 different integers)**
+
+This works because any subarray with exactly K different integers is included in the count of subarrays with at most K different integers, but not in the count of subarrays with at most K-1 different integers.
+
+So, we need to create a function that counts subarrays with at most K different integers, and then use it twice.
+For the "at most K" function, we'll use a sliding window approach with two pointers (left and right) and a Counter to keep track of the unique integers in the current window.
+
+- as for how to count number of subarrays when we slide the window: The key insight here is that every time we add a new element (move the right pointer), we're not just adding one new subarray, but potentially many. Here's how it works:
+
+1. At each step, `right - left + 1` represents the length of the current window.
+2. This length also equals the number of subarrays that end at the current right pointer and still satisfy our "at most K distinct integers" condition.
+
+The key points to understand are:
+
+1. Every time we add a new element, we're creating new subarrays that end with this element.
+2. The number of these new subarrays is equal to the current window length `(right - left + 1)`.
+3. This works because for each existing subarray that satisfied our condition, adding the new element creates a new valid subarray.
+
+Consider the array [1, 2, 1, 2] with k = 2.
+Step 1: [1]
+
+Window: [1]
+right - left + 1 = 0 - 0 + 1 = 1
+New subarrays: [1]
+result += 1
+
+Step 2: [1, 2]
+
+Window: [1, 2]
+right - left + 1 = 1 - 0 + 1 = 2
+New subarrays: [2], [1, 2]
+result += 2
+
+Step 3: [1, 2, 1]
+
+Window: [1, 2, 1]
+right - left + 1 = 2 - 0 + 1 = 3
+New subarrays: [1], [2, 1], [1, 2, 1]
+result += 3
+
+Step 4: [1, 2, 1, 2]
+
+Window: [1, 2, 1, 2]
+right - left + 1 = 3 - 0 + 1 = 4
+New subarrays: [2], [1, 2], [2, 1, 2], [1, 2, 1, 2]
+result += 4
+
+Final result: 1 + 2 + 3 + 4 = 10
+
+```py
+from collections import Counter
+
+class Solution:
+    def subarraysWithKDistinct(self, nums: List[int], k: int) -> int:
+        return self.atMostK(nums, k) - self.atMostK(nums, k - 1)
+    
+    def atMostK(self, nums: List[int], k: int) -> int:
+        count = Counter()
+        left = 0
+        result = 0
+        
+        for right in range(len(nums)):
+            if count[nums[right]] == 0:
+                k -= 1
+            count[nums[right]] += 1
+            
+            while k < 0:
+                count[nums[left]] -= 1
+                if count[nums[left]] == 0:
+                    k += 1
+                left += 1
+            
+            result += right - left + 1
+        
+        return result
+```
 
 ### Array of Doubled Pairs
 - https://leetcode.com/problems/array-of-doubled-pairs/
