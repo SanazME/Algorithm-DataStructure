@@ -15,6 +15,7 @@
 - Text Justification
 - Contianer with most water
 - Three Sum
+- Minimum Size Subarray Sum
 - Array of Doubled Pairs
 - BFS
 - Walls and Gates
@@ -790,6 +791,40 @@ class Solution:
         return result
 ```
 - to make sure the uniqueness, we add the element from the main loop to `dups` set because if we already process for that element. we know the answers and we don't need to do it again later but also we have `seen` dictionary which add any seen element (seconds loop) as key and its value to ele from main loop. This way, we know when we visit that element (during which element from the main loop). Like [1,0,-1, 1, 2, -3], when j == -1, we already have 0 in seen associated with i = 1 but for the second 1 not yet.
+
+### Minimum Size Subarray Sum
+- https://leetcode.com/problems/minimum-size-subarray-sum/description
+- since we don't want to order the array `N logN`, we start adding numbers and once the sum becomes bigger than target, we keep remove elements from left to right till that sum becomes smaller. This way we can find the smallest subarray that its sum is at least equal to target.
+```py
+class Solution:
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        maxVal = max(nums)
+        if maxVal >= target:
+            return 1
+
+        if len(nums) == 0:
+            return 0
+
+        left = 0
+        minCount = float('Inf')
+        sumSoFar = 0
+        
+        
+        for i in range(len(nums)):
+            sumSoFar += nums[i]
+            
+            while sumSoFar >= target:
+                minCount = min(minCount, i - left + 1)
+                sumSoFar -= nums[left]
+                left += 1
+                
+        if minCount == float('Inf'):
+            return 0
+        else:
+            return minCount
+```
+
+### 
 
 ### Array of Doubled Pairs
 - https://leetcode.com/problems/array-of-doubled-pairs/
