@@ -934,6 +934,71 @@ def longestOnes(self, nums: List[int], k: int) -> int:
 ```
 - similar to prev question, sliding windows and the size of the window is dynamic and can get as large as long as we can still flip zeros in the subarray.
 
+###  Shortest Subarray with Sum at Least K
+- https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/description/
+- the difference of this from problem with positive inegers only is the persence of negative numbers. Sliding window alone would work for case of positive integer array. The idea behind it is to maintain two pointers: start and end, moving them in a smart way to avoid examining all possible values `0<=end<=n-1` and `0<=start<=end` (to avoid brute force).
+What it does is:
+
+1. Incremeting the `end` pointer while the sum of current subarray (defined by current values of `start` and `end`) is smaller than the target.
+2. Once we satisfy our condition (the sum of current `subarray >= target`) we keep incrementing the start pointer until we violate it (until `sum(array[start:end+1]) < target`).
+3. Once we violate the condition we keep incrementing the end pointer until the condition is satisfied again and so on.
+ 
+The reason why we stop incrementing start when we violate the condition is that we are sure we will not satisfy it again if we keep incrementing start. In other words, if the sum of the current subarray `start -> end` is smaller than the target then the sum of `start+1 -> end` is neccessarily smaller than the target. (positive values). The problem with this solution is that it doesn't work if we have negative values, this is because of the sentence above **Once we "violate" the condition we stop incrementing start**.
+
+**Problem of the sliding windows with negative values**
+Now, let's take an example with negative values `nums = [3, -2, 5]` and `target=4`. Initially `start=0`, we keep moving the end pointer until we satisfy the condition, here we will have `start=0 and end=2`. Now we are going to move the start pointer `start=1`. The sum of the current subarray is `-2+5=3 < 4` so we violate the condition. However if we just move the `start` pointer another time `start=2` we will find `5 >= 4` and we are satisfying the condition. And this is not what the Sliding window assumes.
+
+We need to use deque and it's a modiifcation of sliding window solution.
+
+**What does the Deque store :**
+The deque stores the possible values of the start pointer. Unlike the sliding window, values of the `start` variable will not necessarily be contiguous.
+
+**Why is it increasing :**
+So that when we move the start pointer and we violate the condition, we are sure we will violate it if we keep taking the other values from the Deque. In other words, if the sum of the subarray from `start=first` value in the deque to end is smaller than `target`, then the sum of the subarray from `start=second` value in the deque to end is necessarily smaller than target.
+So because the Deque is increasing `(B[d[0]] <= B[d[1]])`, we have `B[i] - B[d[0]] >= B[i] - B[d[1]]`, which means the sum of the subarray starting from `d[0]` is greater than the sum of the sub array starting from `d[1]`.
+
+**Why do we have a prefix array and not just the initial array like in sliding window :**
+Because in the sliding window when we move `start` (typically when we increment it) we can just substract `nums[start-1]` from the current sum and we get the sum of the new subarray. Here the value of the `start` is jumping and **one way to compute the sum of the current subarray in a constant time is to have the prefix array**.
+
+**Why using Deque and not simply an array :**
+We can use an array, however we will find ourselves doing only three operations:
+1. `remove_front` : when we satisfy our condition and we want to move the start pointer
+2. `append_back` : for any index that may be a future start pointer
+3. `remove_back` : When we are no longer satisfying the **increasing order of the array**
+Deque enables doing these 3 operations in a constant time.
+
+```py
+from collections import deque
+
+class Solution:
+    def shortestSubarray(self, nums: List[int], k: int) -> int:
+        n = len(nums)
+        prefix_sum = [0] * (n + 1)
+        for i in range(n):
+            prefix_sum[i + 1] = prefix_sum[i] + nums[i]
+        
+        result = n + 1  # Initialize with a value larger than possible subarrays
+        d = deque()
+        
+        for i in range(n + 1):
+            while d and prefix_sum[i] - prefix_sum[d[0]] >= k:
+                result = min(result, i - d.popleft())
+            
+            while d and prefix_sum[i] <= prefix_sum[d[-1]]:
+                d.pop()
+            
+            d.append(i)
+        
+        return result if result <= n else -1
+```
+
+
+
+
+
+
+
+
 ### Array of Doubled Pairs
 - https://leetcode.com/problems/array-of-doubled-pairs/
 - for each element in array, x, we need to find whether `2*x or x/2` exist. However, if we sort the array based on their abs value, then we need to only check for the existence of `2*x` because, x is the least value and so `x/2` can not exist.
