@@ -1050,8 +1050,6 @@ class Solution:
         return result
 ```
 
-
-
 ## Count Number of Nice Subarrays
 - https://leetcode.com/problems/count-number-of-nice-subarrays/description/
 
@@ -1074,6 +1072,34 @@ class Solution:
         return atMost(k) - atMost(k-1)
 ```
 
+### Binary Subarrays With Sum
+- https://leetcode.com/problems/binary-subarrays-with-sum/description/
+
+- be aware of edge case when goal is already 0!
+```py
+    def numSubarraysWithSum(self, nums: List[int], goal: int) -> int:
+        if goal == 0:
+            return self.atMost(nums, goal)
+
+        return self.atMost(nums, goal) - self.atMost(nums, goal - 1)
+
+    
+    def atMost(self, nums, goal):
+        left = 0
+        result = 0
+        goalSoFar = 0
+
+        for right in range(len(nums)):
+            goalSoFar += nums[right]
+
+            while goalSoFar > goal:
+                goalSoFar -= nums[left]
+                left += 1
+                
+            result += right - left + 1
+
+        return result
+```
 
 
 
