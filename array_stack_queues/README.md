@@ -992,7 +992,33 @@ class Solution:
         return result if result <= n else -1
 ```
 
-
+### Longest Substring Wihtout Repeating Characters
+- Similer to previous solutions
+```py
+def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if len(s) <= 1:
+            return len(s)
+        
+        left = 0
+        count = Counter()
+        result = 0
+        
+        for right in range(len(s)):
+            count[s[right]] += 1
+            
+            while count[s[right]] > 1:
+                count[s[left]] -= 1
+                left += 1
+            
+            result = max(result, right - left + 1)
+            
+                
+        return result
+```
 
 
 
