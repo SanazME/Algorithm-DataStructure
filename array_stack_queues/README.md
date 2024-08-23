@@ -1019,6 +1019,60 @@ def lengthOfLongestSubstring(self, s):
                 
         return result
 ```
+### Fruit Into Baskets
+- https://leetcode.com/problems/fruit-into-baskets/description/
+
+- This is also the same problem as sliding window for AtMost 2 different types of fruits, we want to return the longest subarray:
+```py
+class Solution:
+    def totalFruit(self, fruits: List[int]) -> int:
+        return self.atMost(fruits, 2)
+
+
+    def atMost(self, fruits, k):
+        result = 0
+        left = 0
+        count = Counter()
+
+        for right in range(len(fruits)):
+            if count[fruits[right]] == 0:
+                k -= 1
+
+            count[fruits[right]] += 1
+            while k < 0:
+                count[fruits[left]] -= 1
+                if count[fruits[left]] == 0:
+                    k += 1
+                left += 1
+
+            result = max(result, right - left + 1)
+
+        return result
+```
+
+
+
+## Count Number of Nice Subarrays
+- https://leetcode.com/problems/count-number-of-nice-subarrays/description/
+
+1. we can use sliding window and just count the number of odd numbers that we encountered so far.
+2. we calculate all valud subarrays that have **at most** K odd numbers using the lenght of the sliding window.
+3. Once the count goes beyond k we can start increasing `left` pointer.
+
+```py
+ def numberOfSubarrays(self, nums: List[int], k: int) -> int:
+        def atMost(k):
+            count = res = left = 0
+            for right in range(len(nums)):
+                count += nums[right] % 2
+                while count > k:
+                    count -= nums[left] % 2
+                    left += 1
+                res += right - left + 1
+            return res
+        
+        return atMost(k) - atMost(k-1)
+```
 
 
 
