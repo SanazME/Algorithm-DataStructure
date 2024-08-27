@@ -48,8 +48,10 @@
 
 #### Calculation of the hash of a string
 - **Polynomial Rolling Hash Function:**
-`hash(s) = s[0] + s[1].p + s[2].p^2 + ... + s[n - 1]. p^(n - 1) MOD m`
-`        = Sigma(i=0 -> n - 1) s[i].p^i  MOD m`
+```
+hash(s) = s[0] + s[1].p + s[2].p^2 + ... + s[n - 1]. p^(n - 1) MOD m
+       = Sigma(i=0 -> n - 1) s[i].p^i  MOD m
+```
 
 - `p` is a prime number:
       - for english lower case only alphabet (26 chars)-> `p = 31`
@@ -81,8 +83,11 @@ long long compute_hash(string const& s) {
 `hash(s[i...j]) = Sigma(k=i -> j) s[k].p^(k - i)  MOD m`
 
 multiplying by `p^i`:
-`hash(s[i...j]) . p^(i) = Sigma(k=i -> j) s[k].p^(k)  MOD m`
-`                       = hash(s[0...j] - s[0... i - 1]) MOD m`
+
+```
+hash(s[i...j]) . p^(i) = Sigma(k=i -> j) s[k].p^(k)  MOD m
+                       = hash(s[0...j] - s[0... i - 1]) MOD m
+```
 
 
 
