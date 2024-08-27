@@ -36,6 +36,58 @@
 **Serialization and Deserialization**
 - Serialization is the process of converting a data structure or object into a sequence of bits so that it can be saved in a file or memory buffer, or transmitted across a network connection.
 
+### Rolling Hash and String hashing
+- https://cp-algorithms.com/string/string-hashing.html
+- We want to solve the problem of comparing strings efficiently. The brute force way of doing so is just to compare the letters of both strings, which has a time complexity of  `O(min(n1, n2))` if n1 and n2 are the sizes of the two strings. We want to do better. The idea behind the string hashing is the following: we map each string into an integer and compare those instead of the strings. Doing this allows us to reduce the execution time of the string comparison to `O(1)`.
+- For the conversion, we need a so-called **hash** function. The goal of it is to convert a string into an integer, the so-called hash of the string. The following condition has to hold: if two strings `s` and `t` are equal `(s = t)`, then their hashes also have to be equal `(hash(s) = hash(t))`. Otherwise, we will not be able to compare strings.
+
+- Notice, the opposite direction doesn't have to hold. If the hashes are equal `(hash(s) = hash(t))`, then the strings do not necessarily have to be equal. E.g. a valid hash function would be simply `hahs(s) = 0` for each `s`. Now, this is just a stupid example, because this function will be completely useless, but it is a valid hash function.
+- The reason why the opposite direction doesn't have to hold, is because there are exponentially many strings. If we only want this hash function to distinguish between all strings consisting of lowercase characters of length smaller than 15, then already the hash wouldn't fit into a 64-bit integer (e.g. unsigned long long) any more, because there are so many of them. And of course, we don't want to compare arbitrary long integers, because this will also have the complexity `O(n)` .
+- So usually we want the hash function to map strings onto numbers of a fixed range `[0, m)` , then comparing strings is just a comparison of two integers with a fixed length. And of course, we want `hash(s) != hash(t)`  to be very likely if `s != t`.
+- That's the important part that you have to keep in mind. Using hashing will not be 100% deterministically correct, because two complete different strings might have the same hash (the **hashes collide**). However, in a wide majority of tasks, this can be safely ignored as the probability of the hashes of two different strings colliding is still very small.
+
+#### Calculation of the hash of a string
+- **Polynomial Rolling Hash Function:**
+`hash(s) = s[0] + s[1].p + s[2].p^2 + ... + s[n - 1]. p^(n - 1) MOD m`
+`        = Sigma(i=0 -> n - 1) s[i].p^i  MOD m`
+
+- `p` is a prime number:
+      - for english lower case only alphabet (26 chars)-> `p = 31`
+      - for english lower and upper case --> `p = 53`
+- `m` should be large prime number like `10^9 + 9` : a large number to avoid collision, but still small enough so that we can perform multiplication of two values using 64-bit integers, because:
+      - size of 64-bit signed integeres: from `-2^63 to 2^63 - 1`
+      - this range is approximately: `~ -9* 10^18 to 9*10^18`
+      - multiplication (10^9 + 9)^2 = 10^18 is well within the range of 64 bit integers.
+
+- Here is an example of calculating the hash of a string `s` , which contains only lowercase letters. We convert each character of `s` to an integer. Here we use the conversion  `a -> 1, b -> 2, ... , z -> 26`. Converting `a -> 0` is not a good idea, because then the hashes of the strings `aaa, aa, a, ...`  all evaluate to 0.
+
+```py
+long long compute_hash(string const& s) {
+    const int p = 31;
+    const int m = 1e9 + 9;
+    long long hash_value = 0;
+    long long p_pow = 1;
+    for (char c : s) {
+        hash_value = (hash_value + (c - 'a' + 1) * p_pow) % m;
+        p_pow = (p_pow * p) % m;
+    }
+    return hash_value;
+}
+```
+#### Fast hash calculation of substrings of given string
+**Problem**: Given a string `s` and indices `i` and 'j`, find the hash of the substring `s[i...j]`.
+- by definition, we have:
+- 
+`hash(s[i...j]) = Sigma(k=i -> j) s[k].p^(k - i)  MOD m`
+
+multiplying by `p^i`:
+`hash(s[i...j]) . p^(i) = Sigma(k=i -> j) s[k].p^(k)  MOD m`
+`                       = hash(s[0...j] - s[0... i - 1]) MOD m`
+
+
+
+
+
 **Tricks to remember**
 - To get digits of a number (base 10) from right to left, use modulu (`%`):
 ```py
