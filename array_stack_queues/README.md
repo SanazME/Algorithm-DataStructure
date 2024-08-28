@@ -992,7 +992,7 @@ class Solution:
         return result if result <= n else -1
 ```
 
-### Longest Substring Wihtout Repeating Characters
+### Longest Substring Without Repeating Characters
 - Similer to previous solutions
 ```py
 def lengthOfLongestSubstring(self, s):
@@ -1100,8 +1100,62 @@ class Solution:
 
         return result
 ```
+### Substring with Concatenation of All Words
+- https://leetcode.com/problems/substring-with-concatenation-of-all-words/description/?envType=study-plan-v2&envId=top-interview-150
+1. all words in `words` array have the same lenght: `word_lenght`
+2. the total length of all words concatenated will be `total_length=word_length * len(words)`
+3. we need to check every possible substring of length `total_length` in string `s`.
+4. we can defined a sliding window of size `total_length` and slide it one element at a time.
+5. For each iteration on that sliding window, we split the current substring of `total_lenght` into `word_length` chunks
+6. we count frequency of those words and compare the hash map to the hash map of our words list
+7. if those two are equal, we've found an answer and add it to the collection of our answers
+
+**After main solution we can do two optimization**
+
+**Time complexity**
+- `n` length of the string s
+- `m` number of words
+- `k` length of each word
+1. Outer loop: `O(n)`
+2. Inner loop: `O(m * k)`
+`---> O(n * m * k)`
+
+**Space complexity**
+1. `countShould`: `O(m)`
+2. `chunks` : `O(k * m)`
+3. `countIs` : `O(m)`
+4. `result` : `O(n)` the worst case where every position is a valid starting index
+`---> O(k * m)` the dominant factor
+
+```py
+from collections import Counter
+class Solution:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        if len(words) == 0 or len(s) == 0:
+            return []
+
+        countShould = Counter(words)
+        word_length = len(words[0])
+        total_length = word_length * len(words)
+
+        if len(s) < total_length:
+            return []
+
+        left = 0
+        result = []
+
+        while left + total_length <= len(s):
+            chunks = [s[i:i + word_length] for i in range(left, left + total_length, word_length)]
+            countIs = Counter(chunks)
+            if countIs == countShould:
+                result.append(left)
+                
+            left += 1
 
 
+        return result
+```
+**Optimization: Use Rolling hash to avoid creating the whole chunks list everytime, we just change one element**
 
 
 
