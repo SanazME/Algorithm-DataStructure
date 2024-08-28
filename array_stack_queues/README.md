@@ -1156,7 +1156,81 @@ class Solution:
         return result
 ```
 **Optimization: Use Rolling hash to avoid creating the whole chunks list everytime, we just change one element**
+- Rolling hash for substrings: https://cp-algorithms.com/string/string-hashing.html
+- https://github.com/SanazME/Algorithm-DataStructure/blob/master/README.md#rolling-hash-and-string-hashing
 
+
+```py
+from typing import List
+from collections import Counter
+
+class Solution:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        if not s or not words:
+            return []
+
+        word_length = len(words[0])
+        word_count = len(words)
+        total_length = word_length * word_count
+
+        if len(s) < total_length:
+            return []
+
+        p = 31
+        m = 10**9 + 7
+
+        def compute_rolling_hash(string: str) -> List[int]:
+            h = [0] * (len(string) + 1)
+            p_pow = 1
+            for i in range(1, len(string) + 1):
+                h[i] = (h[i-1] + (ord(string[i-1]) - ord('a') + 1) * p_pow) % m
+                p_pow = (p_pow * p) % m
+            return h
+
+        def get_substring_hash(h: List[int], start: int, end: int) -> int:
+            return (h[end] - h[start]) * pow(p, -start, m) % m
+
+        # Compute hashes for all words
+        word_hashes = {}
+        for word in words:
+            word_hash = compute_rolling_hash(word)[-1]
+            word_hashes[word_hash] = word_hashes.get(word_hash, []) + [word]
+
+        # Compute rolling hash for s
+        s_hash = compute_rolling_hash(s)
+
+        result = []
+        word_counter = Counter(words)
+
+        for i in range(word_length):
+            left = i
+            seen = Counter()
+
+            for j in range(left, len(s) - word_length + 1, word_length):
+                curr_hash = get_substring_hash(s_hash, j, j + word_length)
+                
+                if curr_hash in word_hashes:
+                    word = word_hashes[curr_hash][0]  # Take the first matching word
+                    seen[word] += 1
+
+                    while seen[word] > word_counter[word]:
+                        seen[word_hashes[get_substring_hash(s_hash, left, left + word_length)][0]] -= 1
+                        left += word_length
+
+                    if j + word_length - left == total_length:
+                        result.append(left)
+                else:
+                    seen.clear()
+                    left = j + word_length
+
+        return result
+
+# Example usage
+sol = Solution()
+s = "barfoothefoobarman"
+words = ["foo","bar"]
+print(sol.findSubstring(s, words))  # Expected output: [0, 9]
+```
 
 
 ### Array of Doubled Pairs
