@@ -1232,6 +1232,64 @@ words = ["foo","bar"]
 print(sol.findSubstring(s, words))  # Expected output: [0, 9]
 ```
 
+### Minimum Window Substring
+- https://leetcode.com/problems/minimum-window-substring/description
+
+
+- with sliding window, we increase the window size till we have all elements with correct frequency in the window, we then start shrinking the window from left as far as we still have all elements with correct frequency and then we save the smallest substring we found so far.
+
+```py
+import collections
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        if len(s) == len(t):
+            return s if s == t else ""
+    
+        if len(t) > len(s):
+            return ""
+        
+        dict_t = collections.Counter(t)
+        required = len(dict_t)
+        formed = 0
+        window_counts = {}
+        result = (float('Inf'), None, None)
+        
+        
+        left, right = 0, 0
+        
+        while right < len(s):
+            char = s[right]
+            
+            window_counts[char] = window_counts.get(char, 0) + 1
+            
+            if char in dict_t and window_counts[char] == dict_t[char]:
+                formed += 1
+                
+            
+            while formed == required and left <= right:
+                char = s[left]
+                
+                if right - left + 1 < result[0]:
+                    result = (right - left + 1, left, right)
+                
+                window_counts[char] -= 1
+                
+                if char in dict_t and window_counts[char] < dict_t[char]:
+                    formed -= 1
+                
+                
+                left += 1
+            
+            right += 1
+            
+        return "" if result[0] == float('inf') else s[result[1]: result[2] + 1]
+```    
+            
+        
+
+
+
+
 
 ### Array of Doubled Pairs
 - https://leetcode.com/problems/array-of-doubled-pairs/
