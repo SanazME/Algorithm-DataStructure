@@ -387,7 +387,7 @@ dup = set('1', '8'])
 for ele in orig - dup:
     print(ele)  # '2', '7'
 ```
-22. list comprehension, join, split, map:
+23. list comprehension, join, split, map:
 - by adding if else at the beginning of list comprehension we not only filter but change the value: `print([x if x[0] > 8 else (0,0) for x in arr30])`
 - For filtering if cond without else should come at the end: `print([x for x in arr30 if x[0] > 8 ])`
 ```py
@@ -428,11 +428,11 @@ print(','.join([str(x[0])+':'+str(x[1]) for x in arr4]))
 ```py
 
 ```
-23. - **`ss.isalpha(), ss.isnumeric()` to check if its a letter or number**
+24. - **`ss.isalpha(), ss.isnumeric()` to check if its a letter or number**
 
 23.1 - `ljust(maxWidth)`: to adjust line and padded to reach maxWidth. `' '.join(line).ljust(maxWidth)`, joins words in line list with a space in between them and then it left justifies the string within a field of width maxWidth. Add extra spacing from left to right.
 
-24. **Python combination and permutation**:
+25. **Python combination and permutation**:
 - for a given input if we should not change the place of elements in that input, use combination (n choose k: n!/(n-k)! k!):
 ```py
 cc = combonations('ABC', 2)  # returns an iterable
@@ -562,6 +562,11 @@ class TimeSlice(Enum):
   MIN = 2
   HR = 3
 
+```
+
+31. **formatted string**
+```py
+row_block = f"{num1} is inside row {i}" # instead of num1 + " is inside row " + i
 ```
 
 ####################################################################################
