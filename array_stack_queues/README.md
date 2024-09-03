@@ -1242,8 +1242,8 @@ print(sol.findSubstring(s, words))  # Expected output: [0, 9]
 import collections
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        if len(s) == len(t):
-            return s if s == t else ""
+        if s is None or t is None:
+            return ""
     
         if len(t) > len(s):
             return ""
