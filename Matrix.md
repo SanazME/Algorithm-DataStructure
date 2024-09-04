@@ -75,3 +75,59 @@ class Solution:
 
 ### Spiral Matrix II
 - https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions.md#13-spiral-matrix-ii
+
+
+### Rotate Image
+- https://leetcode.com/problems/rotate-image/description
+- Let's consider a step-by-step rotation of a single element:
+
+Think about the rotation in terms of layers. For an n x n matrix, you can divide the rotation into (n+1)/2 layers (rounded down). Start from the outermost layer and work your way inwards.
+For each layer:
+
+1. Consider four elements at a time - one from each corner of the current layer.
+2. Perform a 4-way swap of these elements to rotate them clockwise.
+3. Move to the next set of four elements in the layer.
+
+he key to this solution is understanding the index transformations:
+
+`[i][j] → [j][n-1-i] → [n-1-i][n-1-j] → [n-1-j][i] → [i][j]`
+
+1. Start with position (i, j)
+2. After a 90-degree clockwise rotation:
+```sh
+Before rotation:     After rotation:
+  0 1 2                2 1 0
+0 * - -              0 - - *
+1 - - -              1 - - -
+2 - - -              2 - - -
+```
+Here, * represents our element at (i, j) = (0, 0)
+Notice that:
+1. The element's distance from the top (i = 0) becomes its distance from the right side (j = 2 = n-1).
+2. The element's distance from the left side (j = 0) becomes its distance from the top (i = 0).
+
+This is why:
+- i becomes the new j (distance from left becomes distance from top)
+- j becomes n-1-i (distance from top becomes distance from right)
+```py
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        n = len(matrix)
+        
+        for i in range(n//2):
+            for j in range(i, n - 1 - i):
+                tmp = matrix[i][j]
+
+                matrix[i][j] = matrix[n - 1 - j][i]
+                matrix[n - 1 - j][i] = matrix[n - 1 - i][n - 1 - j]
+                matrix[n - 1 - i][n - 1 - j] = matrix[j][n - 1 - i]
+                matrix[j][n - 1 - i] = tmp
+
+```
+
+
+
+
