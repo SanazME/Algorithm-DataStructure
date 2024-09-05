@@ -128,6 +128,59 @@ class Solution:
 
 ```
 
+## Set Matrix Zeros
+- https://leetcode.com/problems/set-matrix-zeroes/
+Algorithm Explanation:
+- a. First, we check if the first row and first column contain any zeros. We store this information in first_row_zero and first_col_zero variables.
+- b. We then use the first row and first column as markers. For any cell matrix[i][j] that is 0, we set matrix[i][0] and matrix[0][j] to 0.
+- c. After marking, we iterate through the matrix again (except the first row and column) and set cells to 0 based on the markers in the first row and column.
+- d. Finally, we handle the first row and column based on the first_row_zero and first_col_zero variables we set earlier.
 
-
+Space; `O(1)`
+Time: `O(nm)`
+```py
+class Solution:
+    def setZeroes(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        m, n = len(matrix), len(matrix[0])
+        first_row_zero = False
+        first_col_zero = False
+        
+        # Check if the first row contains zero
+        for j in range(n):
+            if matrix[0][j] == 0:
+                first_row_zero = True
+                break
+        
+        # Check if the first column contains zero
+        for i in range(m):
+            if matrix[i][0] == 0:
+                first_col_zero = True
+                break
+        
+        # Use first row and column as markers
+        for i in range(1, m):
+            for j in range(1, n):
+                if matrix[i][j] == 0:
+                    matrix[i][0] = 0
+                    matrix[0][j] = 0
+        
+        # Set zeros based on markers
+        for i in range(1, m):
+            for j in range(1, n):
+                if matrix[i][0] == 0 or matrix[0][j] == 0:
+                    matrix[i][j] = 0
+        
+        # Set first row to zero if needed
+        if first_row_zero:
+            for j in range(n):
+                matrix[0][j] = 0
+        
+        # Set first column to zero if needed
+        if first_col_zero:
+            for i in range(m):
+                matrix[i][0] = 0
+```
 
