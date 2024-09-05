@@ -1,13 +1,74 @@
 ## Important conversions their meaning
-0. Whenever you need to convert a list of bytes with size n to its n-bit integer representation:
+- The number `a` is always the number that we try to shift it and the number on the right is how much offset we want to do:
+- `a << 1` : moves the bits of its first operand to the **left** by the **number of places specified in its second operand**. It also takes care of inserting enough zero bits to fill the gap that arises on the **right edge** of the new bit pattern 
+- `a >> 1` : moves the bits of its first operand to the **right** by the **number of places specified in its second operand**. It also takes care of inserting enough zero bits to fill the gap that arises on the **left edge** of the new bit pattern and **The rightmost bits always get dropped**.
+
+
+### 1. Converting a list of bytes to an n-bit integer:
+This conversion is used when you have a list of bytes (each byte representing an 8-bit value) and you want to combine them into a single n-bit integer. 
 ```py
 # most significant byte + .... + least significant byte
 (l[0] << (n-1)*8) + (l[1] << (n-2)*8) + ...
-#OR
-(next(l) << (n-1)*8) + (next(l) << (n-2)*8) + ...
 ```
-- `next(iterator)` is used to get the next value from an interator like map **but not list!!**...
-- it is similar to : `l[0] * 2^((n-1)*8) + ....`
+Suppose we have a list of 4 bytes: `[0xAA, 0xBB, 0xCC, 0xDD]`. We want to convert this to a 32-bit integer (n = 4 bytes = 32 bits).
+The calculation would be:
+```py
+(0xAA << 24) + (0xBB << 16) + (0xCC << 8) + 0xDD
+```
+This is equivalent to:
+```py
+0xAABBCCDD
+```
+In decimal, this would be `2864434397`.
+
+The alternative method using `next()` is useful when you're working with an iterator:
+```py
+l = iter([0xAA, 0xBB, 0xCC, 0xDD])
+result = (next(l) << 24) + (next(l) << 16) + (next(l) << 8) + next(l)
+```
+These 24, 16, and 8 numbers comes from the position of each byte in the final 32-bit integer:
+- we're working with a 32-bit integer, which is 4 bytes.
+- each byte is 8 bits.
+- we want to place each byte in its correct position within the 32-bit integer.
+For our example:
+- 0xAA << 24: This shifts 0xAA left by 24 bits, placing it in the most significant byte position.
+- 0xBB << 16: This shifts 0xBB left by 16 bits, placing it in the second most significant byte position.
+- 0xCC << 8: This shifts 0xCC left by 8 bits, placing it in the third byte position.
+- 0xDD: This doesn't need to be shifted as it's already in the least significant byte position.
+```sh
+0xAA << 24 = 0xAA000000
+0xBB << 16 =   0xBB0000
+0xCC << 8  =     0xCC00
+0xDD       =       0xDD
+--------------------
+           0xAABBCCDD (when added together)
+```
+
+### 2. Converting an n-bit integer to a list of bytes:
+This is the reverse operation of the previous one. Given a 32-bit integer, we want to extract each byte. The formula you provided is:
+```py
+[(number >> 24) & 255, (number >> 16) & 255, (number >> 8) & 255, number & 255]
+```
+
+Let's use the same example: 0xAABBCCDD (2864434397 in decimal)
+```sh
+(number >> 24) & 255: This extracts 0xAA
+(number >> 16) & 255: This extracts 0xBB
+(number >> 8) & 255: This extracts 0xCC
+number & 255: This extracts 0xDD
+```
+The result would be [0xAA, 0xBB, 0xCC, 0xDD] or [170, 187, 204, 221] in decimal.
+
+Let's break down the operation (number >> 24) & 255 using 0xAABBCCDD as an example:
+
+1. First, number >> 24: 10xAABBCCDD >> 24 = 0x000000AA`. This right-shift brings the most significant byte (0xAA) to the least significant position.
+2. Then, & 255: `0x000000AA & 0x000000FF = 0x000000AA`. The bitwise AND operation with 255 (0xFF) ensures that even if there were any remaining 1 bits in the upper 24 bits (which there aren't in this case due to the right shift), they would be set to 0.
+```sh
+00000000 00000000 00000000 10101010  (0x000000AA after right shift)
+& 00000000 00000000 00000000 11111111  (0xFF or 255)
+-------------------------------------
+  00000000 00000000 00000000 10101010  (Result: 0xAA)
+```
 
 0.1. When you need to convert a n-bit integer number to its n//8 byte representations: for example convert a 32-bit integer into a list of 4 byte integers:
 
@@ -24,10 +85,18 @@ number >> 8 & 255: This operation shifts the bits of number 8 places to the righ
 
 number & 255: This operation performs a bitwise AND operation between number and 255. This effectively extracts the least significant 8 bits of number.
 
+### 3. Finding the index of the least significant set bit:
 
+First, let's clarify what we mean by "least significant set bit":
 
+- In binary representation, it's the **rightmost bit that is 1**.
+- The index starts from 0, counting from right to left.
 
-2. To find the index of the least significant set bit in the binary representation of a the **input integer x**, to find the position of the first 1 bit starting from the bit at position 0:
+For example, in the binary number 1010100:
+- The least significant set bit is the rightmost 1.
+- Its index is 2 (counting from right, starting at 0).
+
+To find the index of the least significant set bit in the binary representation of a the **input integer x**, to find the position of the first 1 bit starting from the bit at position 0:
 
 - `1 << i` where i is the location of the least significant set bit, the left shift calculated the value of that bit: 1, 2, 4, 8, ... 
 
