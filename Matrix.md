@@ -184,3 +184,55 @@ class Solution:
                 matrix[i][0] = 0
 ```
 
+## Game of Life
+- https://leetcode.com/problems/game-of-life/
+- we need to track both current and the next state in each cell and for that we can use bit manipulation. we will have the following combinations:
+```sh
+next start - current state
+00  : dead now and dead later
+10  : dead now and alive later
+01  : live now and dead later
+11  : live now and live later
+```
+
+```py
+class Solution:
+    def gameOfLife(self, board: List[List[int]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+
+        n, m = len(board), len(board[0])
+        
+        def getNeighboarSum(i, j):
+            neighbors = [(i-1, j-1), (i-1,j), (i-1,j+1),
+            (i, j-1), (i, j+1),
+            (i+1, j-1), (i+1, j), (i+1, j+1)]
+
+            result = 0
+            for row, col in neighbors:
+                if 0 <= row < n and 0 <= col < m:
+                    result += board[row][col] & 1
+
+            return result
+            
+
+        for i in range(n):
+            for j in range(m):
+                countNeighbors = getNeighboarSum(i, j)
+                if board[i][j] & 1:
+                    if countNeighbors in [2,3]:
+                        board[i][j] = 3 # 11
+                    else: 
+                        board[i][j] = 1  # 01
+                    
+                else:
+                    if countNeighbors == 3:
+                        board[i][j] = 2  # 10
+
+            
+        for i in range(n):
+            for j in range(m):
+                board[i][j] = board[i][j] >> 1
+
+```
