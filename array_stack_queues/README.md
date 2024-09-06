@@ -3160,3 +3160,21 @@ class Solution:
                         
         return root
 ```
+
+### Contains Duplicate II
+- https://leetcode.com/problems/contains-duplicate-ii/description/
+```py
+class Solution:
+    def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
+        if len(nums) <= 1:
+            return False
+
+        freq = {}
+        for i, num in enumerate(nums):
+            if num in freq:
+                if i - freq[num] <= k:
+                    return True    
+            freq[num] = i
+
+        return False
+```
