@@ -1751,6 +1751,10 @@ class Solution:
 - https://github.com/SanazME/Algorithm-DataStructure/blob/master/Graph.md#problem-2-1
 
 
+### Two sum
+- https://leetcode.com/problems/two-sum
+
+
 ## Binary Tree in-order traversal
 - https://leetcode.com/problems/binary-tree-inorder-traversal/
 1. DFS recursive:
