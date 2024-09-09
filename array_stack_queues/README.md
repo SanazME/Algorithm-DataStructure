@@ -3178,3 +3178,41 @@ class Solution:
 
         return False
 ```
+
+### Summary Ranges
+- https://leetcode.com/problems/summary-ranges/description
+```py
+class Solution:
+    def summaryRanges(self, nums: List[int]) -> List[str]:
+        if len(nums) == 0:
+            return None
+
+        if len(nums) == 1:
+            return [str(nums[0])]
+
+        result = []
+
+        start = float('Inf')
+        count = 1
+
+        for i in range(len(nums)):
+            curr = nums[i]
+            start = min(start, curr)
+            if i < len(nums) - 1:
+                if nums[i+1] == curr + 1:
+                    continue
+
+                else:
+                    if curr == start:
+                        result.append(f"{curr}")                
+                    else:
+                        result.append(f"{start}->{curr}")
+                    start = float('Inf')
+            else:
+                if curr == start:
+                    result.append(f"{curr}")
+                elif start != float('Inf'):
+                    result.append(f"{start}->{curr}")
+
+        return result
+```
