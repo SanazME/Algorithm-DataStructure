@@ -3216,3 +3216,33 @@ class Solution:
 
         return result
 ```
+
+### Merge Intervals
+- https://github.com/SanazME/Algorithm-DataStructure/blob/8a346cedc9364544fe3443034fd0b7135f7bdcb1/AmazonQuestions.md?plain=1#L265
+```py
+def merge(self, intervals):
+    """
+    :type intervals: List[List[int]]
+    :rtype: List[List[int]]
+    """
+    # sort the intervals based on the starting value
+    intervals.sort(key=lambda x: x[0])
+
+    globStart, globEnd = intervals[0][0], intervals[0][1]
+    result = []
+
+    for interval in intervals:
+        localStart, localEnd = interval[0], interval[1]
+
+        if localStart > globEnd:
+            result.append([globStart, globEnd])
+            globStart, globEnd = localStart, localEnd
+
+        else:
+            if localEnd > globEnd:
+                globEnd = localEnd
+
+    result.append([globStart, globEnd])
+
+    return result
+```
