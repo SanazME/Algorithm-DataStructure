@@ -3246,3 +3246,47 @@ def merge(self, intervals):
 
     return result
 ```
+
+### Insert Interval
+- https://leetcode.com/problems/insert-interval/description
+- The key observation is that the intervals are already sorted by their start times. This gives us a significant advantage.
+We can divide the problem into three parts:
+    - a) Intervals that come before the new interval (no overlap)
+    - b) Intervals that overlap with the new interval
+    - c) Intervals that come after the new interval (no overlap)
+    - 
+- For part (a), we can simply add these intervals to our result as they are.
+- For part (b), we need to merge all overlapping intervals. To do this:
+
+Keep track of the start of the merged interval (it will be the minimum of the new interval's start and the start of the first overlapping interval)
+Keep track of the end of the merged interval (it will be the maximum of the new interval's end and the end of the last overlapping interval)
+
+
+For part (c), we can add these intervals to our result as they are.
+```py
+def insert(intervals, newInterval):
+    result = []
+    i = 0
+    n = len(intervals)
+    
+    # Part 1: Add all intervals ending before newInterval starts
+    while i < n and intervals[i][1] < newInterval[0]:
+        result.append(intervals[i])
+        i += 1
+    
+    # Part 2: Merge all overlapping intervals
+    while i < n and intervals[i][0] <= newInterval[1]:
+        newInterval[0] = min(newInterval[0], intervals[i][0])
+        newInterval[1] = max(newInterval[1], intervals[i][1])
+        i += 1
+    
+    # Add the merged interval
+    result.append(newInterval)
+    
+    # Part 3: Add all the rest
+    while i < n:
+        result.append(intervals[i])
+        i += 1
+    
+    return result
+```
