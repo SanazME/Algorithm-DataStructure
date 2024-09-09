@@ -569,6 +569,13 @@ class TimeSlice(Enum):
 row_block = f"{num1} is inside row {i}" # instead of num1 + " is inside row " + i
 ```
 
+32. **lambda**
+- Anonymous, `lambda` function in python:
+```py
+g = lambda x, y: x + y
+# sort a list of arrays based on their first element:
+arr.sort(key: lambda x: x[0])
+```
 ####################################################################################
 - In dividing a even or odd array into two partitions and later on calculate the median. We put the partition line in a place where the left side partition would always have one more element than the right side so the median was calculated:
     - if the array has even number of elements: median = (left of partition + partition line) / 2
