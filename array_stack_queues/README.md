@@ -3290,3 +3290,52 @@ def insert(intervals, newInterval):
     
     return result
 ```
+
+### Minimum Number of Arros to Burst Balloons
+- https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/description
+
+- we can either sort from start or the end and we want to find the most overlapped areas. Sorting from end is easier.
+```py
+# Sorting from back
+def findMinArrowShots(self, points: List[List[int]]) -> int:
+    if len(points) == 0:
+        return None
+
+    if len(points) == 1:
+        return 1
+    points.sort(key= lambda x: x[1])
+    globalStart, globalEnd = points[0][0], points[0][1]
+    count = 1
+
+    for point in points:
+        localStart, localEnd = point[0], point[1]
+
+        if localStart > globalEnd:
+            count += 1
+            globalEnd = localEnd
+
+    return count
+
+
+# Sorting from front
+def findMinArrowShots(self, points: List[List[int]]) -> int:
+    if len(points) == 0:
+        return None
+
+    if len(points) == 1:
+        return 1
+
+    points.sort(key = lambda x: x[0])
+    globalStart, globalEnd = points[0][0], points[0][1]
+    count = 1
+
+    for point in points:
+        localStart, localEnd = point[0], point[1]
+        globalEnd = min(localEnd, globalEnd)
+
+        if localStart > globalEnd:
+            count += 1
+            globalEnd = localEnd
+
+    return count
+```
