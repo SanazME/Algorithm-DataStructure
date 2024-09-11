@@ -1656,17 +1656,24 @@ class Solution:
         def division(a, b):
             return int(a / b)
         
-        operatorsMap = {"+": add, "-": minus, "*": multiply, "/": division}
+        operations = {
+        "+" : add,
+        "-" : minus,
+        "*" : multiply,
+        "/" : division,
+        }
         
-        for ele in tokens:
-            
-            if ele in operatorsMap:
-                b, a = stack.pop(), stack.pop()
-                stack.append(operatorsMap[ele](int(a), int(b)))
-                
+        for token in tokens:
+            if token not in operations:
+                stack.append(int(token))
             else:
-                stack.append(ele)
-        
+                if len(stack) < 2:
+                    return None
+
+                # print("1", stack, token)
+                n2, n1 = stack.pop(), stack.pop()
+                stack.append(operations[token](n1, n2)) 
+                    
         return stack.pop()
 ```
 
