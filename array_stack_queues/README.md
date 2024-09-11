@@ -3339,3 +3339,25 @@ def findMinArrowShots(self, points: List[List[int]]) -> int:
 
     return count
 ```
+
+### Simplify Path
+- https://leetcode.com/problems/simplify-path/description/?envType=study-plan-v2&envId=top-interview-150
+
+- we use forward iteration through the path components and we keep them in stack so when we see `..` we pop the last element (if it exists) from the stack.
+```py
+def simplifyPath(self, path: str) -> str:
+    components = path.split('/')
+    stack = []
+    
+    for component in components:
+        #print(component, not component)
+        if component == "." or not component:
+            continue
+        elif component == "..":
+            if stack:
+                stack.pop()
+        else:
+            stack.append(component)
+
+    return '/' + '/'.join(stack)
+```
