@@ -3368,3 +3368,48 @@ def simplifyPath(self, path: str) -> str:
 
     return '/' + '/'.join(stack)
 ```
+
+### Basic Calculater
+- https://leetcode.com/problems/basic-calculator/description/
+
+We want to put results in stack:
+1. when hitting digit, make sure to add it to the curr number (we can have multi-digit numbers)
+2. when + or -, multiply our existing sign with our curr number, then update sign to what I see now and reset current
+3. when (, we push down existing result and sign to stack, reset curr and sign
+4. when ), we finish current calculation, and combine it from results from stack and reset curr number
+```py
+class Solution:
+    def calculate(self, s: str) -> int:
+        stack = []
+        current_number = 0
+        result = 0
+        sign = 1  # 1 means positive, -1 means negative
+        
+        for char in s:
+            if char.isdigit():
+                current_number = current_number * 10 + int(char)
+            elif char in ['+', '-']:
+                result += sign * current_number
+                current_number = 0
+                sign = 1 if char == '+' else -1
+            elif char == '(':
+                result += sign * current_number
+                # Push the current result and sign onto the stack
+                stack.append(result)
+                stack.append(sign)
+                # Reset the current result and sign for the new sub-expression
+                result = 0
+                sign = 1
+            elif char == ')':
+                result += sign * current_number
+                # Apply the sign from before the parenthesis
+                result *= stack.pop()
+                # Add the result from before the parenthesis
+                result += stack.pop()
+                current_number = 0
+        
+        # Add the last number
+        result += sign * current_number
+        
+        return result
+```
