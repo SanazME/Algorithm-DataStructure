@@ -15,7 +15,12 @@ Write a wrapper class for the file object which allows us to buffer the writes i
 - **Buffer state:**
   - empty buffer is when the read and write indices are the same: `reader == writer`
   - full buffer is when the next byte to write is equal to reader so if write the next byte, we overwrite the data: `(writer + 1) % buffer_size == reader`
-  - available space: `(buffer_size - writer + reader) % buffer_size`
+  - available space:
+      - if write_pointer >= read_pointer:
+        - `[---RXXXXXW---]`, where `-` is available space, `X` is data hasn't been flushed yet.
+        - so the available space is the total length - (write - read)
+        - `[XXXW-----RXXX]`, where `-` is available space, `X` is data hasn't been flushed yet.
+        - so the available space is the (write - read)
       - it's a cricular buffer so for available space, when we subtract writer from buffer_size, we also need to add reader posotion because we can overwrite elements that were alreadt read and flushed to disk so that space is also available.
    
 ```py
