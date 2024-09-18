@@ -81,3 +81,141 @@ with BufferedFile(file_obj, buffer_size) as bf:
     bf.write(more_data)
 # The file is automatically flushed here when exiting the 'with' block
 ```
+
+### Quert log processing
+You are given a stream of log entries and queries. Your task is to process these entries and generate an output that matches logs with relevant queries. The system should work as follows:
+- Process input strings that start with either "Q:" (queries) or "L:" (logs).
+- For each query (Q:), generate an acknowledgment (ACK:) with a unique ID.
+- For each log (L:), check if it matches any of the previously seen queries.
+- A log matches a query if all the words in the query are present in the log (case-insensitive, order doesn't matter).
+- Generate an output for each matching log (M:) along with the IDs of all matching queries.
+```py
+livetail_stream = [
+  "Q: database",
+  "Q: Stacktrace",
+  "Q: loading failed",
+  "L: Database service started",
+  "Q: snapshot loading",
+  "Q: fail",
+  "L: Started processing events",
+  "L: Loading main DB snapshot",
+  "L: Loading snapshot failed no stacktrace available",
+]
+
+livetail_output = [
+  "ACK: database; ID=1",
+  "ACK: Stacktrace; ID=2",
+  "ACK: loading failed; ID=3",
+  "M: Database service started; Q=1",
+  "ACK: snapshot loading; ID=4",
+  "ACK: fail; ID=5",
+  "M: Loading main DB snapshot; Q=4",
+  "M: Loading snapshot failed no stacktrace available; Q=2,3,4",
+]
+```
+
+**Solution**
+- Solution 1 is simple and uses less memory. However, `query_words.issubset(log_words)` in the worst case can have time complexity of `O(Q * W)` where `Q` is the number of queries and `W` is the average number of words in a query. 
+
+- In the second solution, Improved matching algorithm: We first find the intersection of all query IDs that match any word in the log. Then we filter this set to ensure all words from each query are present in the log.
+- 
+```py
+from collections import defaultdict
+
+def process_livetail(stream):
+    query_id = 0
+    queries = {}
+    word_to_queries = defaultdict(set)
+    output = []
+
+    def process_query(content):
+        nonlocal query_id
+        query_id += 1
+        words = set(content.lower().split())
+        queries[query_id] = words
+        for word in words:
+            word_to_queries[word].add(query_id)
+        output.append(f"ACK: {content}; ID={query_id}")
+
+    def process_log(content):
+        log_words = set(content.lower().split())
+        matching_queries = set.intersection(*(word_to_queries[word] for word in log_words if word in word_to_queries))
+        matching_queries = {q for q in matching_queries if queries[q].issubset(log_words)}
+        if matching_queries:
+            query_ids = ",".join(map(str, sorted(matching_queries)))
+            output.append(f"M: {content}; Q={query_ids}")
+
+    for entry in stream:
+        entry_type, content = entry.split(":", 1)
+        content = content.strip()
+        if entry_type == "Q":
+            process_query(content)
+        elif entry_type == "L":
+            process_log(content)
+
+    return output
+
+# Test the function
+livetail_stream = [
+    "Q: database",
+    "Q: Stacktrace",
+    "Q: loading failed",
+    "L: Database service started",
+    "Q: snapshot loading",
+    "Q: fail",
+    "L: Started processing events",
+    "L: Loading main DB snapshot",
+    "L: Loading snapshot failed no stacktrace available",
+]
+
+result = process_livetail(livetail_stream)
+for line in result:
+    print(line)
+```
+
+**Solution 1**
+```py
+def process(stream):    
+    def processQuery(content):
+        nonlocal query_id
+        query_id += 1
+        
+        query_words = set(content.lower().split())
+        query_dic[query_id] = query_words
+        
+        
+        return f"ACK: {content}; ID={query_id}"
+        
+        
+    def processLog(content):
+        log_words = set(content.lower().split())
+        matched_queries = []
+        for query_id, query_words in query_dic.items():
+            if query_words.issubset(log_words):
+                matched_queries.append(str(query_id))
+
+        if matched_queries:
+            return f"M: {content}; Q={','.join(matched_queries)}" 
+        
+        else:
+            return
+        
+     
+    output = []
+    query_id = 0
+    query_dic = {}
+    for entry in stream:
+        content_type, content = entry.split(":", 1)
+        content = content.strip()
+        if content_type == "Q":
+            out = processQuery(content)
+            print(out)
+            output.append(out)
+        elif content_type == "L":
+            out = processLog(content)
+            print(out)
+            output.append(out)
+            
+        
+    return output
+```
