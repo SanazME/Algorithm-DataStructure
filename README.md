@@ -185,6 +185,18 @@ hashset.add(5)
 hashset.update(result) # to add update multiple elements, result can be a list, tuples or strings
 hashset.remove(3)
 hashset.clear() # ()
+# issubset if A is a subset of B: all A elements appear in B
+A.issubset(B)
+```
+6.0. To order a set element:
+
+```py
+map(str, sorted(some_set))
+```
+
+7. To apply a function on all elements in a list  `map`:
+```py
+map(str, someListOR_some_set)
 ```
 
 6.1 For hash map:
