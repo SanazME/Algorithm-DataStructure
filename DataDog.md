@@ -24,6 +24,14 @@ Write a wrapper class for the file object which allows us to buffer the writes i
       - it's a cricular buffer so for available space, when we subtract writer from buffer_size, we also need to add reader posotion because we can overwrite elements that were alreadt read and flushed to disk so that space is also available.
    
 ```py
+ class File:
+    def __init__(self, file_path: str):
+        self.file_path = file_path
+
+    def write(self, bytes: bytearray):
+        with open(self.file_path) as f:
+            f.write(bytes)
+
 class BufferedFile:
     def __init__(self, file_obj, buffer_size):
         self.file = file_obj
@@ -226,3 +234,54 @@ def process(stream):
         
     return output
 ```
+### Latencies in bucket ranges:
+Question 1 - Given array of latencies[], sort them in bucket ranges.
+ranges - 0-9, 10-19, 20-29, 30-39, 40-49,50-59, 60-69, 70-79, 80-89, 90-99, 100>=
+
+Input: latencies[6,7,50, 100,110]
+output:
+0-9 - 2
+50-59 - 1
+100 - 2
+
+
+### Files and subsirectories
+Question 2: Given root directory find the total sizes for the files in the sub-directories.
+
+
+### Screen : count words repetition + DFS type
+Coding-1 : buffered file + follow ups (can be found in others DD posts)
+
+
+
+### High Perf filtering
+There is a stream that has coming tags and also has a list of keywords, design a high performance filter to output these keywords remaining tags.
+For example: given stream `['apple, facebook, google', 'banana, facebook', 'facebook, google, tesla', 'intuit, google, facebook']`, if the keyword is `['apple']` the output should `['facebook', 'google']` because only `'apple, facebook, google'` has `apple`. Similarly if the keyword is `['facebook', 'google']`, the output should `['apple', 'tesla', 'intuit']`. The output can be in any order and can be put into a single list/array.
+
+I was not sure how to handle these:
+
+High performance filter.
+The tags are coming as in a stream.
+
+maybe similar to: https://leetcode.com/problems/people-whose-list-of-favorite-companies-is-not-a-subset-of-another-list/description/
+
+### Another filetring
+"You are given the list of logs of HTTP requests in the given format:
+
+`[IP, HTTP Verb, status, response time, size, request time]`
+Write the code to answer the various queries. For example, list all HTTP requests for the last 2 months or show all requests with 200 status, etc."
+
+
+### Rm -rf
+Assuming you have these functions:
+```py
+Delete(path) -> bool: deletes the file or empty directory
+IsDirectory(path) -> bool: checks whether filepath is directory or not
+GetAllFiles(path) -> List<string>: gets the absolute paths of all files in a directory, including other directories
+```
+Implement rm -rf.
+```py
+define DeleteAllFilesAndDir(path):
+```
+
+How do you code it in a way that prevents out of memory (OOM) errors?
