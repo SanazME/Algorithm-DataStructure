@@ -134,15 +134,22 @@ def process_livetail(stream):
         words = set(content.lower().split())
         queries[query_id] = words
         for word in words:
+            if word not in word_to_queries:
+                 word_to_queries[word] = set()
             word_to_queries[word].add(query_id)
         output.append(f"ACK: {content}; ID={query_id}")
 
     def process_log(content):
         log_words = set(content.lower().split())
-        matching_queries = set.intersection(*(word_to_queries[word] for word in log_words if word in word_to_queries))
-        matching_queries = {q for q in matching_queries if queries[q].issubset(log_words)}
+        intersec_queries = set()
+        for word in log_words:
+            if word in word_dic:
+                intersec_queries.update(word_dic[word])
+
+        matching_queries = {str(queryId) for queryId in intersec_queries if query_dic[queryId].issubset(log_words)}
         if matching_queries:
-            query_ids = ",".join(map(str, sorted(matching_queries)))
+            //query_ids = ",".join(map(str, sorted(matching_queries)))
+            query_ids = ",".join(sorted(matching_queries))
             output.append(f"M: {content}; Q={query_ids}")
 
     for entry in stream:
