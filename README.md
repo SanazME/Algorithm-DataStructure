@@ -588,6 +588,47 @@ g = lambda x, y: x + y
 # sort a list of arrays based on their first element:
 arr.sort(key: lambda x: x[0])
 ```
+
+33. **generator**
+- when we have a large list or dataset and we want to reduce memory usage, we can try to use generator `yield form [...large list]` to generate items one at a time and pass that into our function (instead passing a large list to the function as once!):
+```py
+# Example usage with a generator function
+def latency_generator():
+    yield from [6, 7, 50, 100, 110, 15, 30, 75, 190, 250]
+    # In a real scenario, this could be reading from a file or database
+
+myFunction(latency_generator())
+```
+34. **To read from file using generator**
+```py
+import csv
+from itertools import islice
+
+# Method 1: Using a generator function with file.readline()
+def latency_generator_readline(filename):
+    with open(filename, 'r') as file:
+        for line in file:
+            yield float(line.strip())
+
+# Method 2: Using a generator function with csv module
+def latency_generator_csv(filename):
+    with open(filename, 'r') as file:
+        csv_reader = csv.reader(file)
+        for row in csv_reader:
+            yield float(row[0])
+
+# Method 3: Using itertools.islice for processing in chunks
+def latency_generator_chunks(filename, chunk_size=1000):
+    with open(filename, 'r') as file:
+        while True:
+            chunk = list(islice(file, chunk_size))
+            if not chunk:
+                break
+            for line in chunk:
+                yield float(line.strip())
+```
+
+
 ####################################################################################
 - In dividing a even or odd array into two partitions and later on calculate the median. We put the partition line in a place where the left side partition would always have one more element than the right side so the median was calculated:
     - if the array has even number of elements: median = (left of partition + partition line) / 2
