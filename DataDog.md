@@ -244,6 +244,184 @@ output:
 50-59 - 1
 100 - 2
 
+**Initial Solution**
+```py
+def sortLatency(latencies):
+    buckets = [x for x in range(0,101,10)]
+    freq = defaultdict(list)
+    binNameMap = {
+        0 : "0-9",
+        10 : "10-19",
+        20 : "20-29",
+        30 : "30-39",
+        40 : "40-49",
+        50 : "50-59",
+        60 : "60-69",
+        70 : "70-79",
+        80 : "80-89",
+        90 : "90-99",
+        100 : "100",
+        
+    }
+   
+    def binarySearch(nums, target):
+        if len(nums) == 0:
+            return -1
+        left, right = 0, len(nums) - 1
+        
+        while left <= right:
+            mid = (left + right) // 2
+            # print(target, nums[mid])
+            
+            if nums[mid] == target:
+                return nums[mid]
+            elif nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+
+        if right < 0:
+            return nums[0]
+        elif left >= len(nums):
+            return nums[-1]
+        else:
+            return nums[right]
+    
+    for ele in latencies:
+        binVal = binarySearch(buckets, ele)
+        freq[binVal] = freq.get(binVal, 0) + 1
+    
+    result = ""
+    for key in freq:
+        result += f"{binNameMap[key]} - {freq[key]}\n"
+        
+    return result
+```
+
+
+**Follow-up questions**
+a) How would you modify the solution to handle custom bucket ranges that aren't evenly spaced?
+b) Can you implement this solution using a streaming approach, processing one number at a time?
+e) How would you modify the code to make it more memory-efficient for very large input arrays?
+
+**a) Handle custom buckets**
+```py
+def sortLatency(latencies, custom_buckets):
+    
+    def binarySearch(nums, target):
+        if len(nums) == 0:
+            return -1
+        
+        left, right = 0, len(nums) - 1
+        
+        while left <= right:
+            mid = (left + right) // 2
+            
+            if nums[mid] == target:
+                return nums[mid]
+            elif nums[mid] > target:
+                right = mid - 1
+            else:
+                left = mid + 1
+                
+        if right < 0:
+            return nums[0]
+        elif left >= len(nums):
+            return nums[-1]
+        else:
+            return nums[right]
+        
+    freq = defaultdict(list)
+    for latency in latencies:
+        bucketVal = binarySearch(custom_buckets, latency)
+        print(f"{latency} belongs in bucket: {bucketVal}")
+        freq[bucketVal] = freq.get(bucketVal, 0) + 1
+        
+    result = ""
+    for i in range(len(custom_buckets)):
+        if i == len(custom_buckets) - 1:
+            bucketName = f"{custom_buckets[i]}"
+        else:
+            bucketName = f"{custom_buckets[i]}-{custom_buckets[i+1] - 1}"
+        result += f"{bucketName} - {freq[custom_buckets[i]]}\n"
+        
+    return result
+        
+custom_buckets = [0, 10, 25, 50, 100, 200]
+latencies = [6, 7, 50, 100, 110, 15, 30, 75, 190, 250]
+print(sortLatency(latencies, custom_buckets))
+```
+
+**e) more memeory efficient**
+- user generator to pass in latencies one at a time to the function instead of passing a too large list of latencies. Also, we use integer division instead of binary search for our fixed lenght buckets:
+```py
+def latency_generator():
+    yield from [6, 7, 50, 100, 110, 15, 30, 75, 190, 250]
+
+def sortLatency(latencies):
+    
+    def bucketName(latency):
+        if latency >= 100:
+            return 100
+        else:
+            return (latency // 10) * 10
+        
+    freq = defaultdict(list)
+    for latency in latencies:
+        bucketVal = bucketName(latency)
+        print(f"{latency} belongs in bucket: {bucketVal}")
+        freq[bucketVal] = freq.get(bucketVal, 0) + 1
+        
+    result = ""
+    keySorted = sorted(freq.keys())
+    for bucket in keySorted:
+        if bucket == 100:
+            bucketName = "100"
+        else:
+            bucketName = f"{bucket}-{bucket + 10 - 1}"
+        result += f"{bucketName} - {freq[bucket]}\n"
+        
+    return result
+        
+custom_buckets = [0, 10, 25, 50, 100, 200]
+latencies = [6, 7, 50, 100, 110, 15, 30, 75, 190, 250]
+print(sortLatency(latency_generator()))
+```
+**b) streaming solution**
+we persist the information with streaming and so anytime the user asks for results, we can return the results up to now that we have processed:
+```py
+class StreamingLatencySorter:
+    def __init__(self):
+        self.freq = defaultdict(list)
+        self.bin_name_map = {
+            i : f"{i}-{i+9} " for i in range(0,100,10)
+        }
+        self.bin_name_map[100] = "100"
+        
+    def bucketName(self, latency):
+        if latency >= 100:
+            return 100
+        else:
+            return (latency // 10) * 10
+        
+    def process(self, latency):
+        bucket = self.bucketName(latency)
+        self.freq[bucket] = self.freq.get(bucket, 0) + 1
+        
+    def getResult(self):
+        result = ""
+        for key in sorted(self.freq.keys()):
+            result += f"{self.bin_name_map[key]} - {self.freq[key]}\n"
+            
+        return result
+            
+streamer = StreamingLatencySorter()    
+latencies = [6, 7, 50, 100, 110, 15, 30, 75, 190, 250]
+for latency in latencies:
+    streamer.process(latency)
+    
+print(streamer.getResult())
+```
 
 ### Files and subsirectories
 Question 2: Given root directory find the total sizes for the files in the sub-directories.
