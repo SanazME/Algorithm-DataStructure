@@ -426,6 +426,103 @@ print(streamer.getResult())
 ### Files and subsirectories
 Question 2: Given root directory find the total sizes for the files in the sub-directories.
 
+```py
+import os
+
+def get_directory_size(path):
+    total_size = 0
+    
+    # Iterate over all items in the directory
+    for item in os.listdir(path):
+        item_path = os.path.join(path, item)
+        
+        if os.path.isfile(item_path):
+            # Base case: If it's a file, add its size
+            total_size += os.path.getsize(item_path)
+        elif os.path.isdir(item_path):
+            # Recursive case: If it's a directory, recurse into it
+            total_size += get_directory_size(item_path)
+    
+    return total_size
+
+# Usage
+root_dir = "/path/to/root/directory"
+total_size = get_directory_size(root_dir)
+print(f"Total size: {total_size} bytes")
+```
+- However, if there are many recursive dirctories, we get OOM (out of memory) from recursive solution because the recursive function holds the space till nested functions are completed and if there are too many nested function calls, it will eventually OOM. Instead let's use iterative approach:
+
+```py
+import os
+
+def get_directory_size(path):
+    stack = [path]
+    total_size = 0
+    
+    while stack:
+        current_path = stack.pop()
+        
+        try:
+            # If it's a file, add its size
+            if os.path.isfile(current_path):
+                total_size += os.path.getsize(current_path)
+            # If it's a directory, add its contents to the stack
+            elif os.path.isdir(current_path):
+                with os.scandir(current_path) as it:
+                    stack.extend(entry.path for entry in it)
+        except PermissionError:
+            print(f"Permission denied: {current_path}")
+        except FileNotFoundError:
+            print(f"File or directory not found: {current_path}")
+        except Exception as e:
+            print(f"Error processing {current_path}: {e}")
+    
+    return total_size
+
+# Usage
+root_dir = "/path/to/root/directory"
+total_size = get_directory_size(root_dir)
+print(f"Total size: {total_size} bytes")
+```
+Another solution that uses `os.DirEntry` methods:
+- Loop structure: Instead of extending the stack with all entries at once, we process them one by one. This can be more memory-efficient for large directories.
+- File size calculation: Use entry.stat().st_size instead of os.path.getsize(). This is more efficient as it doesn't require another system call.
+- Directory handling: When we encounter a directory, we push a new scandir object onto the stack instead of its contents.
+```py
+import os
+
+def get_directory_size(path):
+    if not path or not os.path.exists(path):
+        return 0
+    
+    total_size = 0
+    stack = [os.scandir(path)]
+    
+    while stack:
+        try:
+            entry = next(stack[-1])
+            if entry.is_file(follow_symlinks=False):
+                total_size += entry.stat().st_size
+            elif entry.is_dir(follow_symlinks=False):
+                stack.append(os.scandir(entry.path))
+        except StopIteration:
+            stack.pop()
+        except PermissionError:
+            print(f"Permission denied: {entry.path}")
+        except FileNotFoundError:
+            print(f"File or directory not found: {entry.path}")
+        except Exception as e:
+            print(f"Error processing {entry.path}: {e}")
+    
+    return total_size
+
+# Usage
+root_dir = "/path/to/root/directory"
+total_size = get_directory_size(root_dir)
+print(f"Total size: {total_size} bytes")
+```
+
+
 
 ### Screen : count words repetition + DFS type
 Coding-1 : buffered file + follow ups (can be found in others DD posts)
