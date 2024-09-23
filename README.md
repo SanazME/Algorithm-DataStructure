@@ -627,8 +627,38 @@ def latency_generator_chunks(filename, chunk_size=1000):
             for line in chunk:
                 yield float(line.strip())
 ```
+35. **Some os methods**
+- list entries Using `scandir()` instead of `listdir()` can significantly increase the performance of code that also needs file type or file attribute information, and you can use all methods from `os.DirEntry`. `os.scandir(path)` returns an iterator so it can be use with `with ... as ...:`
+https://docs.python.org/3/library/os.html#os.DirEntry:
+```py
+"""
+method:
+entry.path --> equivalent to os.path.join(scandir_path, entry.name)
+entry.name ---> entry base filename
+entry.is_file(follow_symlinks = ..)
+entry.is_dir(follow_symlinks = ..)
+entry.is_symlink()
+"""
+for entry in os.scandir(path):
+    if entry.is_file(follow_symlinks = ...):
 
-
+    elif entry.is_dir(follow_symlinks = False):
+        with os.scandir(entry) as it:
+           stack.extend(entry.path for entry in it)
+            
+    elif entry.is_symlink()
+   
+```
+- list entries in a directory: `os.listdir(path)` : Return a list containing the names of the entries in the directory given by path. The list is in arbitrary order, and does not include the special entries **.** and **..** even if they are present in the directory.
+```py
+for item in os.listdir(path):
+```
+- construct entry's full path name: `os.path.join(path, item)` like:
+```py
+item_path = os.path.join(path, item)
+```
+- check if an entry is a file: `os.isfile(item_path)`
+- get size of a file in bytes: `os.path.getsize(item_path)`
 ####################################################################################
 - In dividing a even or odd array into two partitions and later on calculate the median. We put the partition line in a place where the left side partition would always have one more element than the right side so the median was calculated:
     - if the array has even number of elements: median = (left of partition + partition line) / 2
