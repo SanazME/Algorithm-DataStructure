@@ -500,7 +500,7 @@ def get_directory_size(path):
     
     while stack:
         try:
-            entry = next(stack[-1])
+            entry = next(stack[-1])   # because os.scandir(path) returns an iterator
             if entry.is_file(follow_symlinks=False):
                 total_size += entry.stat().st_size
             elif entry.is_dir(follow_symlinks=False):
@@ -521,8 +521,131 @@ root_dir = "/path/to/root/directory"
 total_size = get_directory_size(root_dir)
 print(f"Total size: {total_size} bytes")
 ```
+**Follow up questions**
+**1. How would you modify the function to return a dictionary mapping each subdirectory to its total size?**
+```py
+import os
+from collections import defaultdict
+
+def get_directory_size_mapping(root_path):
+    if not root_path or not os.path.exists(root_path):
+        return {}
+
+    size_mapping = defaultdict(int)
+    stack = [(root_path, os.scandir(root_path))]
+    
+    while stack:
+        current_path, it = stack[-1]
+        try:
+            entry = next(it)
+            full_path = entry.path
+            if entry.is_file(follow_symlinks=False):
+                try:
+                    file_size = entry.stat().st_size
+                    size_mapping[current_path] += file_size
+                    # Update all parent directories
+                    parent = os.path.dirname(current_path)
+                    while parent and parent >= root_path:
+                        size_mapping[parent] += file_size
+                        parent = os.path.dirname(parent)
+                except (PermissionError, FileNotFoundError):
+                    print(f"Error accessing file: {full_path}")
+            elif entry.is_dir(follow_symlinks=False):
+                stack.append((full_path, os.scandir(full_path)))
+        except StopIteration:
+            stack.pop()
+        except PermissionError:
+            print(f"Permission denied: {current_path}")
+            stack.pop()
+        except Exception as e:
+            print(f"Error processing {current_path}: {e}")
+            stack.pop()
+
+    return dict(size_mapping)
+
+# Usage
+root_dir = "/path/to/root/directory"
+size_map = get_directory_size_mapping(root_dir)
+for directory, size in size_map.items():
+    print(f"{directory}: {size} bytes")
+```
+- We use a defaultdict(int) to store the size mapping. This automatically initializes a new key with 0 when we first access it.
+- The stack now contains tuples of (current_path, scandir_iterator) instead of just paths. This allows us to keep track of which directory we're currently processing.
+- At the end, we convert the defaultdict to a regular dictionary before returning.
 
 
+**2. How can you optimize the solution for very large directory structures?**
+There are several strategies we can use to improve performance and reduce memory usage:
+1. Multithreading: we can use `concurrent.futures` to scan directories in parallel
+2. Batch processing, instead of adding individual tasks for each directory, we can process directories in batches.
+
+```py
+import os
+import concurrent.futures
+import threading
+from collections import defaultdict
+
+def scan_directory(path):
+    total_size = 0
+    file_count = 0
+    try:
+        for entry in os.scandir(path):
+            if entry.is_file(follow_symlinks=False):
+                total_size += entry.stat().st_size
+                file_count += 1
+    except PermissionError:
+        print(f"Permission denied: {path}")
+    except Exception as e:
+        print(f"Error scanning {path}: {e}")
+    return path, total_size, file_count
+
+def get_directory_size_optimized(root_path, max_threads=os.cpu_count()):
+    if not root_path or not os.path.exists(root_path):
+        return {}
+
+    size_mapping = defaultdict(lambda: [0, 0])  # [total_size, file_count]
+    dir_queue = [root_path]
+    lock = threading.Lock()
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_threads) as executor:
+        while dir_queue:
+            batch = []
+            for _ in range(min(len(dir_queue), max_threads * 2)):  # Process in batches
+                if dir_queue:
+                    batch.append(dir_queue.pop(0))
+
+            futures = [executor.submit(scan_directory, dir_path) for dir_path in batch]
+
+            for future in concurrent.futures.as_completed(futures):
+                dir_path, dir_size, file_count = future.result()
+                with lock:
+                    size_mapping[dir_path][0] += dir_size
+                    size_mapping[dir_path][1] += file_count
+                    
+                    # Update parent directories
+                    parent = os.path.dirname(dir_path)
+                    while parent and parent >= root_path:
+                        size_mapping[parent][0] += dir_size
+                        size_mapping[parent][1] += file_count
+                        parent = os.path.dirname(parent)
+
+                # Add subdirectories to the queue
+                try:
+                    dir_queue.extend(entry.path for entry in os.scandir(dir_path) 
+                                     if entry.is_dir(follow_symlinks=False))
+                except PermissionError:
+                    print(f"Permission denied: {dir_path}")
+                except Exception as e:
+                    print(f"Error processing {dir_path}: {e}")
+
+    return {k: {'size': v[0], 'file_count': v[1]} for k, v in size_mapping.items()}
+
+# Usage
+root_dir = "/path/to/large/directory"
+result = get_directory_size_optimized(root_dir)
+for directory, info in result.items():
+    print(f"{directory}: Size: {info['size']} bytes, Files: {info['file_count']}")
+```
 
 ### Screen : count words repetition + DFS type
 Coding-1 : buffered file + follow ups (can be found in others DD posts)
