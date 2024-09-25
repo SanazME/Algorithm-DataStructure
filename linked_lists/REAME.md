@@ -336,68 +336,35 @@ def isPalindrome(self, head):
 
 ### Add two numbers with digits restored in reverse order (from least-significant to most...) in linked list. 
 - (https://leetcode.com/problems/add-two-numbers/)
-- We can start adding two linked list from least-significat to most ones and keep track of carry which is either 0 or 1 (because the max number + carry: 9 + 9 + 1 = 19).
-- Another way which might be a bit expensive is read through both linked lists and save the digits in reverse as strings and then add them as ints and then create a new linked list from it. 
-- Time complexity : `O(max(m, n))`. Assume that m and m represents the length of l1 and l2 respectively, the algorithm above iterates at most `max(m,n)` times.
-- Space complexity : `O(max(m,n))`. The length of the new list is at most `max(m,n)+1`.
-
 ```py
-def addTwoNumbers(self, l1, l2):
-    """
-    :type l1: ListNode
-    :type l2: ListNode
-    :rtype: ListNode
-    """
-    dummy = head = ListNode(-999)
-    carry = 0
+# Definition for singly-linked list.
+#class ListNode:
+#    def __init__(self, x):
+#        self.val = x
+#        self.next = None
 
-    while l1 and l2:
-        sumTwo = (l1.val + l2.val + carry) % 10
-        head.next = ListNode(sumTwo)
-        head = head.next
-        carry = (l1.val + l2.val + carry) // 10
-        l1 = l1.next
-        l2 = l2.next
-
-    while l1:
-        leastSignificant = (l1.val + carry) % 10
-        carry = (l1.val + carry) // 10
-        head.next = ListNode(leastSignificant)
-        head = head.next
-        l1 = l1.next
-
-    while l2:
-        leastSignificant = (l2.val + carry) % 10
-        carry = (l2.val + carry) // 10
-        head.next = ListNode(leastSignificant)
-        head = head.next
-        l2 = l2.next
-
-    if carry != 0:
-        head.next = ListNode(carry)
-
-    return dummy.next
+class Solution:
+    def addTwoNumbers(self, l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+        headList = current = ListNode(0)
+        carry = 0
         
-# second approach:
-        num1 = ''
-        num2 = ''
-        
-        while l1:
-            num1 = str(l1.val) + num1
-            l1 = l1.next
-            
-        while l2:
-            num2 = str(l2.val) + num2
-            l2 = l2.next
-            
-        sumTwo = str(int(num2) + int(num1))
-        
-        dummy = head = ListNode(-99)
-        
-        for i in range(len(sumTwo)-1, -1, -1):
-            head.next = ListNode(sumTwo[i])
-            head = head.next
-            
-        return dummy.next
+        while l1 or l2 or carry:
+            v1 = v2 = 0
+            if l1:
+                v1 = l1.val
+                l1 = l1.next
+            if l2:
+                v2 = l2.val
+                l2 = l2.next
+             
+            carry, nodeVal = divmod(v1+v2+carry, 10)
+            current.next = ListNode(nodeVal)
+            current = current.next
+        return headList.next
 ```
 
