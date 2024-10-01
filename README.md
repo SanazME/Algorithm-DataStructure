@@ -153,6 +153,13 @@ for ele in list_a:
     dic[ele] = dic.get(ele, 0) + 1
 ```
 
+3.2. dictionary sorted by keys:
+https://grantjenks.com/docs/sortedcontainers/sorteddict.html
+```py
+d = SortedDict()
+
+```
+
 4. To round toward zero in integers (positive or negative):
 ```py
 return a//b if a*b>0 else (a+(-a%b))//b
