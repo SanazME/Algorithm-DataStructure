@@ -156,6 +156,7 @@ for ele in list_a:
 3.2. dictionary sorted by keys:
 https://grantjenks.com/docs/sortedcontainers/sorteddict.html
 ```py
+from sortedcontainers import SortedDict
 d = SortedDict()
 
 ```
