@@ -58,8 +58,6 @@ class MyCalendarTwo:
         self.overlap_bookings = SortedDict()
         self.maxOverlap = 2
 
-        
-
     def book(self, start: int, end: int) -> bool:
         self.overlap_bookings[start] = self.overlap_bookings.get(start, 0) + 1
         self.overlap_bookings[end] = self.overlap_bookings.get(end, 0) - 1
@@ -72,11 +70,11 @@ class MyCalendarTwo:
                 self.overlap_bookings[start] -= 1
                 self.overlap_bookings[end] += 1
                 return False
-
+                # Remove entries if their count becomes zero to clean up the SortedDict. So we optimize the space
+                if self.booking_count[start] == 0:
+                    del self.booking_count[start]
 
         return True
-
-        
 
 # Your MyCalendarTwo object will be instantiated and called as such:
 # obj = MyCalendarTwo()
