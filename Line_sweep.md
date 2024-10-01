@@ -1,3 +1,6 @@
+## Line Sweep Algorithm
+- https://leetcode.com/discuss/study-guide/2166045/line-sweep-algorithms
+
 ## My Calendar II 
 - https://leetcode.com/problems/my-calendar-ii/description/
 
@@ -79,4 +82,96 @@ class MyCalendarTwo:
 # Your MyCalendarTwo object will be instantiated and called as such:
 # obj = MyCalendarTwo()
 # param_1 = obj.book(start,end)
+```
+## Meeting Rooms II 
+- https://github.com/SanazME/Algorithm-DataStructure/blob/master/AmazonQuestions.md#41-meeting-rooms-ii
+- Another way of solution using Line Sweep:
+```py
+def minMeetingRooms(self, intervals: List[List[int]]) -> int:
+    map_rooms = SortedDict()
+
+    for interval in intervals:
+        start, end = interval[0], interval[1]
+        map_rooms[start] = map_rooms.get(start, 0) + 1
+        map_rooms[end] = map_rooms.get(end, 0) - 1
+
+    globalMax = 0
+    currMax = 0
+    for key in map_rooms.keys():
+        currMax += map_rooms[key]
+        globalMax = max(globalMax, currMax)
+
+    return globalMax
+```
+
+## Count positions on street with required brightness
+- https://leetcode.com/problems/count-positions-on-street-with-required-brightness/description/
+
+- we don't have to set values for all entries, we just set for start and end + 1 (which there is no light). Then we can compute the factor as we check against requirement slice.
+```py
+def meetRequirement(self, n: int, lights: List[List[int]], requirement: List[int]) -> int:
+    if len(lights) == 0:
+        return 0
+
+    map_position = defaultdict(int)
+
+    for light in lights:
+        position, rad = light[0], light[1]
+        start = max(0, position - rad)
+        end = min(n - 1, position + rad) + 1
+        map_position[start] += 1
+        map_position[end] -= 1
+
+            
+    count = 1 if map_position[0] >= requirement[0] else 0
+    for i in range(1, len(requirement)):
+        map_position[i] += map_position[i - 1]
+        if map_position[i] >= requirement[i]:
+            count += 1
+
+    return count
+```
+
+## Range Addition
+- https://leetcode.com/problems/range-addition/description/
+```py
+def getModifiedArray(self, length: int, updates: List[List[int]]) -> List[int]:
+        arr = [0 for _ in range(length)]
+
+        if len(updates) == 0:
+            return arr
+
+        for update in updates:
+            start, end, inc = update[0], update[1], update[2]
+            arr[start] += inc
+            if end + 1 <= length - 1:
+                arr[end + 1] -= inc
+
+        for i in range(1, length):
+            arr[i] += arr[i - 1]
+
+        return arr
+```
+
+## Car Pooling
+- https://leetcode.com/problems/car-pooling/description/
+```py
+def carPooling(self, trips: List[List[int]], capacity: int) -> bool:
+        trip_map = SortedDict()
+
+        for trip in trips:
+            count, start, end = trip[0], trip[1], trip[2]
+            trip_map[start] = trip_map.get(start, 0) + count
+            trip_map[end] = trip_map.get(end, 0) - count
+
+        globalMax = 0
+        currMax = 0
+
+        for key in trip_map.keys():
+            currMax += trip_map[key]
+            globalMax = max(currMax, globalMax)
+            if globalMax > capacity:
+                return False
+
+        return True
 ```
