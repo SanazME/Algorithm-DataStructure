@@ -175,3 +175,52 @@ def carPooling(self, trips: List[List[int]], capacity: int) -> bool:
 
         return True
 ```
+
+## Burst Balloons
+- https://github.com/SanazME/Algorithm-DataStructure/blob/cd312b33bc0c5a4231bb856e9b39eff80487beeb/array_stack_queues/README.md#minimum-number-of-arros-to-burst-balloons
+
+## Non-overlapping Intervals
+- https://leetcode.com/problems/non-overlapping-intervals/description/
+
+Finding the minimum number of intervals to remove is equivalent to finding the maximum number of non-overlapping intervals. This is the famous interval scheduling problem.
+
+Let's start by considering the intervals according to their end times. Consider the two intervals with the earliest end times. Let's say the earlier end time is x and the later one is y. We have x < y.
+
+If we can only choose to keep one interval, should we choose the one ending at x or ending at y? To avoid overlap, We should always greedily choose the interval with an earlier end time x. The intuition behind this can be summarized as follows:
+
+- We choose either x or y. Let's call our choice k.
+- To avoid overlap, the next interval we choose must have a start time greater than or equal to k.
+- We want to maximize the intervals we take (without overlap), so we want to maximize our choices for the next interval.
+- Because the next interval must have a start time greater than or equal to k, a larger value of k can never give us more choices than a smaller value of k.
+- As such, we should try to minimize k. Therefore, we should always greedily choose x, since x < y.
+
+**Sorting by end time is a greedy algorithm**: This means that it makes the best possible choice at each step, without considering the future. As a result, it is usually more efficient than sorting by start time.
+
+**Sorting by start time is a dynamic programming algorithm**: This means that it makes a choice at each step, based on the choices that it has made in the past. As a result, it is usually more robust to errors in the input data.
+
+```py
+def eraseOverlapIntervals(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+        if len(intervals) <= 1:
+            return 0
+        # intervals.sort(key=lambda x:x[0])
+        
+        intervals.sort(key=lambda x:x[1])
+
+        globalStart, globalEnd = intervals[0][0], intervals[0][1]
+
+        count = 0
+        for i in range(1, len(intervals)):
+            localStart, localEnd = intervals[i][0], intervals[i][1]
+            # globalEnd = min(localEnd, globalEnd)
+
+            if localStart < globalEnd:
+                count += 1
+            else:
+                globalEnd = localEnd
+
+        return count
+```
