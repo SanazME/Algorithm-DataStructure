@@ -258,3 +258,39 @@ def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[Lis
         return result
 ```
 **Solution 1: using Map Counter**
+- using Line sweep, we first create the map of frequencies. Then to construct a new results, we iterate throught the keys in order, we say if the start is not defined, we set the start and then add count, when count is zero, it means that we reached to the end of the range so we push that interval to the result and reset the start. We ignore all the overlapping intervals in between:
+```py
+def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        if len(newInterval) == 0:
+            return intervals
+        
+        if len(intervals) == 0:
+            return [newInterval]
+
+        changes = defaultdict(int)
+        for start, end in intervals:
+            changes[start] += 1
+            changes[end] -= 1
+        
+        changes[newInterval[0]] += 1
+        changes[newInterval[1]] -= 1
+
+        print(changes)
+
+        count = 0
+        start = None
+        result = []
+
+        for key in sorted(changes.keys()):
+            print(key)
+            if start is None:
+                start = key
+            
+            count += changes[key]
+
+            if count == 0:
+                result.append([start, key])
+                start = None
+        
+        return result
+```
