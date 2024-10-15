@@ -294,3 +294,4 @@ def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[Lis
         
         return result
 ```
+## Remove Interval
