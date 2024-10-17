@@ -330,3 +330,84 @@ class Solution(object):
 
         return visited
 ```
+
+## Topological Order/Sort for DAG (Directed Acyclic Graphs)
+- https://leetcode.com/problems/course-schedule/?envType=company&envId=amazon&favoriteSlug=amazon-thirty-days
+- https://www.youtube.com/watch?v=cIBFEhD77b4
+- many real world situations can be modeled as a graph with directed esges, where some events must occur before others:
+  - program build dependencies
+  - college class pre-requisites
+  - Event scheduling
+- A topological ordering is an ordering of the nodes in a directed graph where for each directed esge from node A to node B, node A appears before node B in the ordering.
+- Kahn's algorithm is a simple topological sort algorithm can find a topological ordering in `O(E + V)` time.
+- Topological orderdings are **NOT unique.**
+- ONly certain types of graphs have a topological orderings. These are DAGs. A DAG is a finite directed graph with no directed cycles.
+- **Kahn's algorithm:** an intuition behind Kahn's algorithm is to repeatedely remove nodes without any dependencies from the graph and add them to the topological ordering. As nodes without (incoming degree of the node is zero)depenedencies (and their outgoing edges) are removed from the graph, new nodes without dependencies should become free. We repeat removing nodes without dependencies from the graph untill all nodes are processed or a cycle is discovered.
+```py
+if len(prerequisites) == 0:
+            return True
+
+        outGress = defaultdict(int)
+        inGress = [0] * numCourses
+
+        for node in prerequisites:
+            start, end = node[0], node[1]
+            inGress[end] += 1
+            if start in outGress:
+                outGress[start].append(end)
+            else:
+                outGress[start] = [end]
+
+        queue = collections.deque([])
+        for k, v in enumerate(inGress):
+            if v == 0:
+                queue.append(k)
+
+        inOrder = []
+        while queue:
+            node = queue.popleft()
+            inOrder.append(node)
+            if node in outGress:
+                for child in outGress[node]:
+                    inGress[child] -= 1
+                    if inGress[child] == 0:
+                        queue.append(child)
+        
+        return len(inOrder) == numCourses
+```
+**A more efficient Runtime and space:**
+```py
+if len(prerequisites) == 0:
+            return True
+        
+        ingressMap = defaultdict(int)
+        outgressMap = defaultdict(list)
+        
+        for pre in prerequisites:
+            ingressMap[pre[1]] = ingressMap.get(pre[1], 0) + 1
+            if pre[0] in outgressMap:
+                outgressMap[pre[0]].append(pre[1])
+            else:
+                outgressMap[pre[0]] = [pre[1]]
+            
+        
+        
+        queue = collections.deque()
+        for course in range(0, numCourses):
+            ingress = ingressMap.get(course, 0)
+            if ingress == 0:
+                queue.append(course)
+        
+        count = 0
+        while queue:
+            course = queue.popleft()
+            count += 1
+            if course in outgressMap and len(outgressMap[course]) > 0:
+                for c in outgressMap[course]:
+                    if c in ingressMap:
+                        ingressMap[c] -= 1
+                        if ingressMap[c] == 0:
+                            queue.append(c)
+            
+        return count == numCourses
+```
