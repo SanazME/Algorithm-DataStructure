@@ -82,3 +82,73 @@ class Solution:
 - Time complexity: `O(n⋅logm)`: The initial search space is from 1 to m, it takes logm comparisons to reduce the search space to 1.
 
 ## https://github.com/SanazME/Algorithm-DataStructure/blob/master/array_stack_queues/README.md#longest-substring-without-repeating-characters
+
+## 621. Task Scheduler
+- https://leetcode.com/problems/task-scheduler/description/?envType=company&envId=amazon&favoriteSlug=amazon-thirty-days
+- Ans: https://leetcode.com/problems/task-scheduler/editorial/?envType=company&envId=amazon&favoriteSlug=amazon-thirty-days
+```py
+from heapq import *
+from collections import Counter
+
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        if n == 0 or len(tasks) <= 1:
+            return len(tasks)
+
+        freq = Counter(tasks)
+        queue = [(-v, k) for k, v in freq.items()]
+        heapq.heapify(queue)
+        time = 0
+        arr = []
+
+        print(queue)
+
+        while queue:
+            cycle = n + 1
+            store = []
+            task_count = 0
+
+            while cycle > 0 and queue:
+                currFreq, task = heappop(queue)
+                print(currFreq, task)
+                task_count += 1
+                arr.append(task)
+
+                if currFreq * -1 > 1:
+                    store.append((currFreq + 1, task))
+                cycle -= 1
+            # extra
+            if len(store) > 0:
+                if task_count < n + 1:
+                    diff = n + 1 - task_count
+                    arr.extend('idle' for _ in range(diff))
+            
+            for ele in store:
+                heapq.heappush(queue, ele)
+
+            if queue:
+                time += n + 1
+            else:
+                time += task_count
+
+        print(arr)
+        return time
+```
+Let the number of tasks be N. Let k be the size of the priority queue. k can, at maximum, be 26 because the priority queue stores the frequency of each distinct task, which is represented by the letters A to Z.
+
+Time complexity: O(N)
+
+In the worst case, all tasks must be processed, and each task might be inserted and extracted from the priority queue. The priority queue operations (insertion and extraction) have a time complexity of O(logk) each. Therefore, the overall time complexity is O(N⋅logk). Since k is at maximum 26, logk is a constant term. We can simplify the time complexity to O(N). This is a linear time complexity with a high constant factor.
+
+Space complexity: O(26) = O(1)
+
+The space complexity is mainly determined by the frequency array and the priority queue. The frequency array has a constant size of 26, and the priority queue can have a maximum size of 26 when all distinct tasks are present. Therefore, the overall space complexity is O(1) or O(26), which is considered constant.
+
+### More similar problems:
+767. Reorganize String
+1054. Distant Barcodes
+1405. Longest Happy String
+1953. Maximum Number of Weeks for Which You Can Work
+2335. Minimum Amount of Time to Fill Cups
+358. Rearrange String k Distance Apart (premium)
+984. String Without AAA or BBB
