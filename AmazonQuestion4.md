@@ -211,3 +211,44 @@ def numberOfWeeks(self, milestones: List[int]) -> int:
         
         return 2 * remainingSums + 1
 ```
+
+### 358. Rearrange String k Distance Apart (premium)
+Better Cooldown Management:
+- Instead of trying to process k+1 characters at once, we process one character at a time
+- We keep track of when each character can be used again using a waitQueue
+- The waitQueue stores tuples of (next_valid_position, count, char)
+
+```py
+def rearrangeString(self, s: str, k: int) -> str:
+    if k == 0:
+        return s
+    if len(s) <= 1:
+        return s
+
+    freq = Counter(s)
+
+    queue = [(-v, k) for k, v in freq.items()]
+    heapq.heapify(queue)
+    result = []
+    waitQueue = [] #(next_valid_position, freq, val)
+
+    while queue or waitQueue:
+        # check if there are characters in the waitQueue that can be back to queue
+        if waitQueue and waitQueue[0][0] <= len(result):
+            _, ff, vv = heapq.heappop(waitQueue)
+            heapq.heappush(queue, (ff, vv))
+
+        if not queue:
+            return ""
+       
+        currFreq, val = heapq.heappop(queue)
+        result.append(val)
+
+        if currFreq * -1 > 1:
+            # Add to waitQueue
+            heapq.heappush(waitQueue, (len(result) + k - 1, currFreq + 1, val))
+
+            
+
+    return "".join(result)
+```
