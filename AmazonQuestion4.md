@@ -152,3 +152,62 @@ The space complexity is mainly determined by the frequency array and the priorit
 2335. Minimum Amount of Time to Fill Cups
 358. Rearrange String k Distance Apart (premium)
 984. String Without AAA or BBB
+
+For 
+### 1953. Maximum Number of Weeks for Which You Can Work
+- we can't use heap because with heap we hit timeline exceeded as the max milestone can be super large. This solution:
+```pyclass Solution:
+    def numberOfWeeks(self, milestones: List[int]) -> int:
+        if len(milestones) == 0:
+            return 0
+
+        if len(milestones) == 1:
+            return milestones[0]
+
+        queue = [(-v, k) for k, v in enumerate(milestones)]
+        heapq.heapify(queue)
+        weeks = 0
+        prev = None
+
+        while queue:
+            cycle = 2
+            store = []
+            while cycle > 0 and queue:
+                currFreq, val = heapq.heappop(queue)
+                if val != prev:
+                    weeks += 1
+                prev = val
+                if currFreq * -1 > 1:
+                    store.append((currFreq + 1, val))
+
+                cycle -= 1
+
+            for ele in store:
+                heapq.heappush(queue, ele)
+        
+        return weeks
+```
+- Your solution was simulating the process week by week using a heap
+- For large numbers like 355359359, this means millions of heap operations
+- The heap-based solution has a time complexity of O(M log N) where M is the maximum milestone value
+The intuition behind this solution is:
+1. If the maximum project's milestones can be interleaved with other projects `(max_milestone ≤ remaining_sum + 1)`, we can complete everything.
+2. Otherwise, we can only use up all the remaining projects' milestones by alternating them with the maximum project, plus one more milestone from the maximum project. For example for [5,2,1] it will be 3*2 + 1 = 7
+
+```py
+def numberOfWeeks(self, milestones: List[int]) -> int:
+        if len(milestones) == 0:
+            return 0
+
+        if len(milestones) == 1:
+            return 1
+
+        maxMilestone = max(milestones)
+        totalSum = sum(milestones)
+        remainingSums = totalSum - maxMilestone
+
+        if maxMilestone <= remainingSums + 1:
+            return totalSum
+        
+        return 2 * remainingSums + 1
+```
