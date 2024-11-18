@@ -309,3 +309,93 @@ ef timeTaken(self, arrival: List[int], state: List[int]) -> List[int]:
 
         return ans
 ```
+
+### 1676. Lowest Common Ancestor of a Binary Tree IV
+- https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iv/description/
+
+- starting from root, traverse the left and the right subtrees, checking if one of the nodes exist there. If one of subtress doesn't contain any given node, the LCA can be the node returned from the other subtree. If both subtrees contain nodes, the lCA node is the current node.
+
+**Recursive approach**
+```py
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', nodes: 'List[TreeNode]') -> 'TreeNode':
+        if len(nodes) == 1:
+            return nodes[0]
+
+        nodesSet = set(nodes)
+        
+        return self.helper(root, nodesSet)
+        
+
+
+    def helper(self, node, nodesSet):
+
+        if node is None:
+            return None
+
+        if node in nodesSet:
+            return node
+        
+        left = self.helper(node.left, nodesSet)
+        right = self.helper(node.right, nodesSet)
+
+        if left and right:
+            return node
+
+        return left or right
+```
+**Iterative approach**
+- User post-order traversal (left -> right -> node to count target nodes in each subtree, post-order because when we visit a node, we've already visited and processed its entire subtree.
+- when finding a node whose subtree contains all targets, checks if it's the lowest such node by verifying neither child subtrees contains all targets. 
+
+```py
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', nodes: 'List[TreeNode]') -> 'TreeNode':
+        if len(nodes) == 1:
+            return nodes[0]
+            
+        nodesSet = set(nodes)
+        
+        # Store node -> count of target nodes in subtree
+        count_map = {}
+        stack = [(root, False)]  # (node, visited)
+        
+        while stack:
+            node, visited = stack.pop()
+            
+            if not node:
+                continue
+                
+            if visited:
+                # Post-order visit: calculate count
+                count = 0
+                if node in nodesSet:
+                    count += 1
+                if node.left:
+                    count += count_map.get(node.left, 0)
+                if node.right:
+                    count += count_map.get(node.right, 0)
+                count_map[node] = count
+                
+                # If this node's subtree contains all target nodes, check if it's the LCA
+                if count == len(nodesSet):
+                    left_count = count_map.get(node.left, 0)
+                    right_count = count_map.get(node.right, 0)
+                    if (left_count != len(nodesSet) and 
+                        right_count != len(nodesSet)):
+                        return node
+            else:
+                # Pre-order visit: add children to stack
+                stack.append((node, True))
+                stack.append((node.right, False))
+                stack.append((node.left, False))
+                
+        return root
+```
