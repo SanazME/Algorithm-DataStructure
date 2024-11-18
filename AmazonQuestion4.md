@@ -252,3 +252,60 @@ def rearrangeString(self, s: str, k: int) -> str:
 
     return "".join(result)
 ```
+
+### 2534. Time Taken to Cross the Door
+- https://leetcode.com/problems/time-taken-to-cross-the-door/description
+
+
+  - we keep two queues one for exit and one for enter, we add all entries from arrival to those queues up to where the arrival time stays less or equal to the current time. Then we process stuff in the queues based on the rules. Then we move to the next iteration to add the next batch of arrivals to those queues and increase the curr time by one. Now, if no one is waiting, we fast forward to the next arrival time for curr_time.
+
+```py
+ef timeTaken(self, arrival: List[int], state: List[int]) -> List[int]:
+        if len(arrival) == 1:
+            return arrival
+
+        n = len(arrival)
+        curr_time = arrival[0]
+        i = 0
+        ans = [curr_time for _ in range(len(arrival))]
+        enter_q = deque() # Queue for people wanting to enter
+        exit_q = deque()  # Queue for people wanting to exit
+        prev_state = None  # exit: True, enter: False, None: Not used
+
+
+        while i < n or exit_q or enter_q:
+            # Add new arrivals to respective queues
+            while i < n and arrival[i] <= curr_time:
+                if state[i] == 0:
+                    enter_q.append(i)
+                else:
+                    exit_q.append(i)
+
+                i += 1
+            # Process queues based on rules
+            if enter_q or exit_q:
+                # Determin who goes next
+                use_exit = (
+                    exit_q and (
+                        not prev_state or # door wasn't used
+                        prev_state or # last was exit
+                        not enter_q # No one wants to enter
+                        )
+                )
+
+                if use_exit:
+                    person = exit_q.popleft()
+                    prev_state = True
+                else:
+                    person = enter_q.popleft()
+                    prev_state = False
+
+                ans[person] = curr_time
+                curr_time += 1
+            else:
+                # No one waiting, fast forward to next arrival
+                curr_time = arrival[i] if i < n else curr_time + 1
+                prev_state = None
+
+        return ans
+```
