@@ -1285,7 +1285,31 @@ class Solution:
         return "" if result[0] == float('inf') else s[result[1]: result[2] + 1]
 ```    
             
-        
+### Two Sum II - Input Array Is Sorted
+- https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/
+- If we use TwoSum (https://leetcode.com/problems/two-sum/?envType=company&envId=hubspot&favoriteSlug=hubspot-all) solution, we have space complexity of `O(n)` because of saving into hashmap for all elements and their indexes, instead for having a Space `O(1)`, we can take advantage of sorted array and use binary search using two pointers:
+
+```py
+def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        if len(numbers) < 2:
+            return []
+
+        low, high = 0, len(numbers) - 1
+
+        while low < high:
+            lowNum, highNum = numbers[low], numbers[high]
+
+            sumTwo = lowNum + highNum
+
+            if sumTwo == target:
+                return [low + 1, high + 1]
+            elif sumTwo < target:
+                low += 1
+            else:
+                high -= 1
+
+        return []
+```
 
 
 
