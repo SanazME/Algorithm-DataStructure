@@ -48,7 +48,7 @@
 - Insert in BST
 - Delete in BST
 
-### My own interview Q: Implement a function to compare two json templates. A template can contain either strings or nested templates. 
+### My own interview Q: Implement a function to compare two json templates. A template can contain either strings or nested templates. we want to get diff/unmatched values from dict1 where the keys are matched in both dictionaries.
 
 ```py
 def compareTemplates(dict1, dict2):
