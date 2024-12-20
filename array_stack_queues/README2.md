@@ -27,3 +27,25 @@ class Solution:
                     
         return [num for _, num in heap]
 ```
+
+### Given two arrays/lists, write a function that merges them up to the nth item. For example, if n=2:
+List1: ['a', 'b', 'c']
+List2: [1, 2, 3]
+Result should merge only first 2 items from each list
+
+- we can use slice to values:
+```py
+def merge(list1, list2, n):
+    if not list1:
+        return list2[:n]
+    if not list2:
+        return list1[:n]
+    
+    result = []
+    for i in range(n):
+        if i < len(list1):
+            result.append(list1[i])
+        if i < len(list2):
+            result.append(list2[i])
+    return result
+```
