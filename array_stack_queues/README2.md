@@ -61,6 +61,15 @@ def topKFrequent(self, words: List[str], k: int) -> List[str]:
 
         return result
 ```
+### Kth Largest Element in an Array
+- https://leetcode.com/problems/kth-largest-element-in-an-array/description/
+- Here we can use min heap to store the number and we don't need any extra comparable value, just the number itself. If the lenght of heap exceeds we pop it. Note that in the heap we have repeate numbers. Because it is the min-heap the top of the heap **will be the kth largest element**:
+```py
+class Solution:
+    def findKthLargest(self, nums, k):
+        nums.sort(reverse=True)
+        return nums[k - 1]
+```
 
 ### Given two arrays/lists, write a function that merges them up to the nth item. For example, if n=2:
 List1: ['a', 'b', 'c']
