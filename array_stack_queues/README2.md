@@ -49,3 +49,9 @@ def merge(list1, list2, n):
             result.append(list2[i])
     return result
 ```
+
+### 1772. Sort Features by popularity
+- https://leetcode.com/problems/sort-features-by-popularity/description/
+```py
+
+```
