@@ -1,5 +1,14 @@
-## Top K Frequent Elements
+## Comparison in Python
+The comparison uses lexicographical ordering: first the first two items are compared, and if they differ this determines the outcome of the comparison; if they are equal, the next two items are compared, and so on,
+```py
+[1, 2, 3]              < [1, 2, 4]
+'ABC' < 'C' < 'Pascal' < 'Python'
+```
+
+### Top K Frequent Elements
 - https://leetcode.com/problems/top-k-frequent-elements/description
+- If we don't need to return in any other ordering other than the most frequent and return the results **in any order**, we can just use min heap with size of `k` to filter out smallest counts. In this case, it's also guaranteed that the answer is **unique**. Meaning that we won't have multipe entries with the same count that we need to decide and order further based on other criteria.
+-  However this approach won't work if in addition to frequncy we also need to return results in order of index or lexicographically or etc. In that case, take a look at the next problem.
 - for getting a better time complexity than O(n log n), we can use heap to save the most k frequent elements. Basically, we iterate through the list and add elements to the heap with their freq and if an element freq is larger than the heap first ele, we then pop that element and replace it. At the end, we will have the most k frequent elements
 ```py
 from heapq import *
@@ -27,6 +36,31 @@ class Solution:
                     
         return [num for _, num in heap]
 ```
+### Top k Frequent words
+- https://leetcode.com/problems/top-k-frequent-words/description/
+- here we can't just filter out lowest counts of words in min heap because we need to decide for the same freq, the words with min lexicographical order will be before other words. For this case, we dont limit the length of our min heap and also try to use it as max heap so that at the end we can remove the first k words from heap. This works if the input size is small otherwise we end up creating a very large heap.
+```py
+def topKFrequent(self, words: List[str], k: int) -> List[str]:
+        if k == 0:
+            return []
+        if len(words) <= 1:
+            return words
+        
+        freq = Counter(words)
+        heap = []
+        
+        for word, count in freq.items():
+            heappush(heap, (-count, word))
+        
+        i = 0
+        result = []
+        while i < k:
+            _, word = heappop(heap)
+            result.append(word)
+            i += 1
+
+        return result
+```
 
 ### Given two arrays/lists, write a function that merges them up to the nth item. For example, if n=2:
 List1: ['a', 'b', 'c']
@@ -53,5 +87,15 @@ def merge(list1, list2, n):
 ### 1772. Sort Features by popularity
 - https://leetcode.com/problems/sort-features-by-popularity/description/
 ```py
+def sortFeatures(self, features: List[str], responses: List[str]) -> List[str]:
+        freq = {}
+        for rep in responses:
+            words = set(rep.split(' '))
+
+            for feat in features:
+                if feat in words:
+                    freq[feat] = freq.get(feat, 0) + 1
+
+        return sorted(features, key = lambda x: freq.get(x, 0), reverse=True)   
 
 ```
