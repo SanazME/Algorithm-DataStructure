@@ -156,3 +156,79 @@ class Solution:
 
         return result
 ```
+
+### 169 Majority Element
+- https://leetcode.com/problems/majority-element/description/
+- To solve in Space `O(1)`, we can use **Boyer-Moore Voting Algorithm**:If we had some way of counting instances of the majority element as +1 and instances of any other element as −1, summing them would make it obvious that the majority element is indeed the majority element.
+```py
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        count = 0
+        majority = None
+
+        for i in range(len(nums)):
+            if count == 0:
+                majority = nums[i]
+                count += 1
+
+            elif nums[i] == majority:
+                count += 1
+            else:
+                count -= 1
+
+        return majority
+```
+
+### 229 Majority Element II
+- https://leetcode.com/problems/majority-element-ii/editorial/
+**Intuition**
+To figure out a O(1) space requirement, we would need to get this simple intuition first. For an array of length `n`:
+- There can be at most one majority element which is more than `⌊n/2⌋` times.
+- There can be at most two majority elements which are more than `⌊n/3⌋` times.
+- There can be at most three majority elements which are more than `⌊n/4⌋` times. etc
+
+```py
+class Solution:
+    def majorityElement(self, nums: List[int]) -> List[int]:
+        if not nums:
+            return []
+        
+        majority1 = None
+        majority2 = None
+        counter1, counter2 = 0, 0
+
+        for num in nums:
+            if majority1 == num:
+                counter1 += 1
+
+            elif majority2 == num:
+                counter2 += 1
+
+            elif counter1 == 0:
+                majority1 = num
+                counter1 += 1
+            
+            elif counter2 == 0:
+                majority2 = num
+                counter2 += 1
+
+            else:
+                counter1 -= 1
+                counter2 -= 1
+
+        # Now that we checked two majorities, we check if they occurred more than n//3
+        count1, count2 = 0, 0
+        for num in nums:
+            if majority1 == num:
+                count1 += 1
+            if majority2  == num:
+                count2 += 1
+
+        result = []
+        if count1 > len(nums) // 3:
+            result.append(majority1)
+        if count2 > len(nums) // 3:
+            result.append(majority2)
+
+        return result
+```
