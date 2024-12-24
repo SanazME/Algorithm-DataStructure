@@ -232,3 +232,34 @@ class Solution:
 
         return result
 ```
+
+### 3063. Linked List Frequency
+- https://leetcode.com/problems/linked-list-frequency/description/
+- we want to preserver and return the same oder of elements so for that we create a hashmap with key of elements and value their frequency:
+```py
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def frequenciesOfElements(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head:
+            return None
+
+        tmp = curr = ListNode()
+        freq = {}
+        
+        while head:
+            if head.val in freq:
+                existingNode = freq[head.val] 
+                existingNode.val += 1
+            else:
+                curr.next = ListNode(1)
+                freq[head.val] = curr.next
+                curr = curr.next
+            
+            head = head.next
+
+        return tmp.next
+```
