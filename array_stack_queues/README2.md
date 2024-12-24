@@ -4,6 +4,7 @@ The comparison uses lexicographical ordering: first the first two items are comp
 [1, 2, 3]              < [1, 2, 4]
 'ABC' < 'C' < 'Pascal' < 'Python'
 ```
+## Recall that Bucket Sort is the sorting algorithm where items are placed at Array indexes based on their values (the indexes are called "buckets")
 
 ### Top K Frequent Elements
 - https://leetcode.com/problems/top-k-frequent-elements/description
@@ -107,4 +108,51 @@ def sortFeatures(self, features: List[str], responses: List[str]) -> List[str]:
 
         return sorted(features, key = lambda x: freq.get(x, 0), reverse=True)   
 
+```
+
+### 451 Sort Characters by their frequencies
+- https://leetcode.com/problems/sort-characters-by-frequency/editorial/
+**Solution 1**
+  - use hashmap and then heap to get the most frequent letters: **Time : O(n log n) and space O(n)**
+```py
+def frequencySort(self, s: str) -> str:
+    if len(s) <= 1:
+        return s
+    
+    freq = Counter(s)
+
+    heap = []
+
+    for char, count in freq.items():
+        heappush(heap, (-count, char))
+
+    result = []
+    while heap:
+        count, char = heappop(heap)
+        result.extend([char for _ in range(-1*count)])
+
+    return ''.join(result)
+```
+**Solution 2**:
+- **for Time complexity O(n)** we can use **bucket sort** for a string of size n, max frequency of a char is `n` so we can have an array of size n and save the char at each index where index represent the frequency of that char.  We can also look at the max frequency happened and have an array of that size, instead of size `n`. Recall that Bucket Sort is the sorting algorithm where items are placed at Array indexes based on their values (the indexes are called "buckets")
+```py
+from collections import Counter
+class Solution:
+    def frequencySort(self, s: str) -> str:
+        if len(s) <= 1:
+            return s
+        
+        freq = Counter(s)
+        maxFreq = max(freq.values())
+
+        bucketSort = [[] for _ in range(maxFreq + 1)]
+
+        for char, fr in freq.items():
+            bucketSort[fr].extend([char*fr])
+
+        result = ''
+        for i in range(len(bucketSort) - 1, -1, -1):
+            result += ''.join(bucketSort[i])
+
+        return result
 ```
