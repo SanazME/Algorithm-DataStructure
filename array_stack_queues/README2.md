@@ -263,3 +263,89 @@ class Solution:
 
         return tmp.next
 ```
+
+##
+- Suppose, at the ith index, we have x number of subsequences. There are two options we have:
+1. Add `nums[i]` to one of the `x` subsequences if possible.
+2. Create a new subsequence with `nums[i]` as the starting number.
+
+to save each subsequence we can save their last element and the length of that subsequence. what if the last element is the same for two or more subsequences? (Yes, it is possible, consider `{0, 1, 1, 2, 2, 3}`). In this case, at `5th` index, `3` has two subsequences that it can be a part of: `{0, 1, 2}, {1, 2}`. But if it becomes a part of the first subsequence, the second subsequence will become invalid. So we need to save the subsequences so the shortest length comes up in heap.
+Given a num:
+1. If no subs, we create a new one
+2. If subs and last element is one unit less than our `num` since the shortest length of that subsequence is on the top of the heap, we add to that and update the last element of it.
+3. if subs and last element is smaller than one unit from `num`, we can't add num to that subsequence and we need to create a new one but first we need to pop subs and check if their length is 3 or larger and if not, we return false.
+for the case : `[1,2,3,3,4,5]` in our heap, we will have `[3,3] #1, 2, 3 and [4,2] #3, 4` , now for element 5, first we want to pop all subs that are less than 5-1=4 before trying to add 5 because in that heap the top element is `[3,3]` and not `[4,2]`
+```py
+from collections import Counter
+from heapq import *
+class Solution:
+    def isPossible(self, nums: List[int]) -> bool:
+        if len(nums) < 3:
+            return False
+
+        subs = [] #(end, len)
+
+        for num in nums:
+            while subs and subs[0][0] + 1 < num:
+                sub = heappop(subs)
+                if sub[1] < 3:
+                    return False
+
+            if not subs or subs[0][0] == num:
+                heappush(subs, [num, 1])
+
+            else:
+                sub = heappop(subs)
+                sub[0] += 1
+                sub[1] += 1
+                heappush(subs, sub)
+
+        while subs:
+            sub = heappop(subs)
+            if sub[1] < 3:
+                return False
+
+        
+        return True
+```
+- Time complexity: `O(n logn)`
+- Another solution with time complexity of `O(N)` is not use heap and instead use maps;  In our previous approach, we applied the Greedy algorithm to create increasing subsequences consisting of consecutive elements. In this approach, for each element (say nums[i]) we will see if it is possible to form a valid subsequence with the remaining elements. Previously we were trying to find a subsequence to which we can append nums[i]. We will continue to do that here as well. However, while creating a new subsequence with nums[i] as the starting element, we will check if a valid subsequence is possible or not with nums[i] as the starting element. If not, we will return false without any further operations.For a valid subsequence we need nums[i] + 1 and nums[1] + 2 to be present in the array. So we don't need a heap to record the length or sort the subsequences. For adding nums[i] to an existing subsequence we only need to know if such a subsequence exists whose last element is `nums[i] - 1`.But what if there is more than one subsequence with the same last element? Well, in this case, we need to store the frequency as well.
+
+- **we only reduce the frequency if we start creating a new subsequence**
+- `subsequences` to store the frequency of subsequences ending with the key
+```py
+from collections import Counter
+from heapq import *
+class Solution:
+    def isPossible(self, nums: List[int]) -> bool:
+        if len(nums) < 3:
+            return False
+
+        freq = Counter(nums)
+        subs = {} # last_ele: freq
+
+        for num in nums:
+            # num already part of a valid subsequence.
+            if freq[num] == 0:
+                continue
+            
+            # If a valid subsequence exists with the last element = num - 1
+            if subs.get(num - 1, 0) > 0:
+                subs[num - 1] -= 1
+                subs[num] = subs.get(num, 0) + 1
+
+            # // If we want to start a new subsequence, check if num + 1 and num + 2 exist.
+            elif (freq.get(num + 1, 0) > 0 and freq.get(num + 2, 0) > 0):
+                subs[num + 2] = subs.get(num + 2, 0) + 1
+                freq[num + 2] = freq.get(num + 2, 0) - 1
+                freq[num + 1] = freq.get(num + 1, 0) - 1
+
+            else:
+                # No valid subsequence is possible with num
+                return False
+
+
+            freq[num] -= 1
+
+        return True
+```
