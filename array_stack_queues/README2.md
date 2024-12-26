@@ -349,3 +349,30 @@ class Solution:
 
         return True
 ```
+
+### Merge intervals
+- https://leetcode.com/problems/merge-intervals/description
+- if we oder based on last element, the for this example: `[[2,3], [4,5], [6,7], [1,10]]` we don't solve correctly!But if we order based on the first element (start) then we're correct:
+```py
+from heapq import *
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        if len(intervals) <= 1:
+            return intervals
+
+        intervals.sort(key = lambda x:x[0])
+        start = intervals[0][0]
+        end = intervals[0][1]
+        result = []
+        for interval in intervals:
+            if interval[0] > end:
+                result.append([start, end])
+                start = interval[0]
+                end = interval[1]
+            else:
+                start = min(interval[0], start)
+                end = max(interval[1], end)
+        
+        result.append([start, end])
+        return result
+```
