@@ -376,7 +376,7 @@ class Solution:
         result.append([start, end])
         return result
 ```
-### sdfs
+### Find K length Substrings with no repeated characters
 - https://leetcode.com/problems/find-k-length-substrings-with-no-repeated-characters/description/
 1. Brute force Time O(n . min(m, k))
 2. Sliding window Time O(n)
@@ -423,4 +423,34 @@ if len(s) == 0 or k == 0 or len(s) < k or k > 26:
             right += 1
 
         return count
+```
+### 340. Longest Substring with at most K Distinct Characters
+- https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/
+- sliding window:
+```py
+class Solution:
+    def lengthOfLongestSubstringKDistinct(self, s: str, k: int) -> int:
+        if len(s) == 0:
+            return 0
+        
+        left, right = 0, 0
+        freq = {}
+        maxLength = 0
+        start, end = 0, 0
+
+        while right < len(s):
+            freq[s[right]] = freq.get(s[right], 0) + 1
+            while len(freq) > k:
+                freq[s[left]] -= 1
+                if freq[s[left]] == 0:
+                    del freq[s[left]]
+                left += 1
+
+            if right - left + 1 > maxLength:
+                start, end = left, right
+            maxLength = max(maxLength, right - left + 1)
+
+            right += 1
+
+        return maxLength
 ```
