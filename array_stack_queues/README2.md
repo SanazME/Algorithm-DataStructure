@@ -376,3 +376,51 @@ class Solution:
         result.append([start, end])
         return result
 ```
+### sdfs
+- https://leetcode.com/problems/find-k-length-substrings-with-no-repeated-characters/description/
+1. Brute force Time O(n . min(m, k))
+2. Sliding window Time O(n)
+```py
+# brute force
+    def numKLenSubstrNoRepeats(self, s: str, k: int) -> int:
+        if len(s) == 0 or k == 0 or len(s) < k or k > 26:
+            return 0
+
+        count = 0
+        for i in range(len(s) - k + 1):
+            freq = [0] * 26
+            for j in range(i, i + k):
+                idx = ord(s[j]) - ord('a')
+                freq[idx] += 1
+                if freq[idx] > 1:
+                    break
+            else:
+                count += 1
+
+        return count
+# Sliding window
+if len(s) == 0 or k == 0 or len(s) < k or k > 26:
+            return 0
+
+        count = 0
+        left = right = 0
+        freq = [0] * 26
+
+        while right < len(s):
+            idx = ord(s[right]) - ord('a')
+            freq[idx] += 1
+
+            while freq[idx] > 1:
+                idx1 = ord(s[left]) - ord('a')
+                freq[idx1] -= 1
+                left += 1
+
+            if right - left + 1 == k:
+                count += 1
+                freq[ord(s[left]) - ord('a')] -= 1
+                left += 1
+
+            right += 1
+
+        return count
+```
